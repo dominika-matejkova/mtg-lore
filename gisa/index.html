@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gisa, ghoulcaller of Innistrad</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a chronicle of a feud. One reading column, wide breakouts for card art and tables.
+   Palette: bone-parchment paper, ghoul-green ink, moss rules; blue marks her brother Geralf. Type: Fraunces (display), Newsreader (text), Plex Mono (costs, labels). */
+:root {
+  --bg: #E8E6DA;
+  --surface: #F2F0E6;
+  --ink: #1B1A12;
+  --ink-2: #4A4738;
+  --rule: #CFC9B4;
+  --accent: #5C7A2E;
+  --accent-soft: #DEE4C6;
+  --silver: #6B6F52;
+  --win: #2E5C7A;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-text: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11130D;
+    --surface: #191C13;
+    --ink: #E9ECE0;
+    --ink-2: #AEB49C;
+    --rule: #2C3122;
+    --accent: #9CC357;
+    --accent-soft: #2A331C;
+    --silver: #9AA084;
+    --win: #6CA0C0;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11130D;
+  --surface: #191C13;
+  --ink: #E9ECE0;
+  --ink-2: #AEB49C;
+  --rule: #2C3122;
+  --accent: #9CC357;
+  --accent-soft: #2A331C;
+  --silver: #9AA084;
+  --win: #6CA0C0;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  padding-block: 0 4rem;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 68rem; margin-inline: auto; }
+.measure { max-width: 42rem; }
+img { height: auto; }
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+p { margin: 0 0 1em; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; font-weight: 600; line-height: 1.1; margin: 0; }
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--silver);
+}
+
+/* hero */
+.hero { overflow-x: clip; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 2.5rem; align-items: center; padding-block: 3rem 2.5rem; }
+.hero h1 { font-size: clamp(3.2rem, 9vw, 6.4rem); font-weight: 800; letter-spacing: -0.01em; margin: 0.6rem 0 1.2rem; }
+.hero h1 em { display: block; font-style: italic; font-weight: 600; color: var(--accent); font-size: 0.5em; line-height: 1.15; margin-top: 0.3em; }
+.hero .lead { font-size: 1.3rem; line-height: 1.5; color: var(--ink); max-width: 34rem; }
+.fan { position: relative; aspect-ratio: 1.3 / 1; width: 100%; max-width: 34rem; justify-self: center; }
+.fan img { position: absolute; top: 0; width: 42%; border-radius: 4.6% / 3.3%; box-shadow: 0 14px 30px -12px rgba(8, 20, 12, 0.55); }
+.fan img:nth-child(1) { left: 2%; top: 8%; transform: rotate(-6deg); }
+.fan img:nth-child(2) { left: 28%; top: 0; z-index: 2; }
+.fan img:nth-child(3) { left: 52%; top: 8%; transform: rotate(6deg); }
+
+nav.toc { display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; padding-block: 1rem; border-block: 1px solid var(--rule); font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; }
+nav.toc a { color: var(--ink-2); text-decoration: none; padding-block: 0.25rem; }
+nav.toc a:hover { color: var(--accent); }
+
+section { padding-top: 4rem; scroll-margin-top: 1rem; }
+section > h2 { font-size: clamp(2rem, 4.6vw, 3rem); margin-bottom: 1.4rem; }
+h3 { font-size: 1.5rem; margin: 2.2rem 0 0.8rem; }
+
+/* facts list */
+dl.facts { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); gap: 0; margin: 2rem 0 0; border-top: 1px solid var(--rule); }
+dl.facts dt, dl.facts dd { padding-block: 0.9rem; border-bottom: 1px solid var(--rule); margin: 0; }
+dl.facts dt { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); padding-top: 1.1rem; }
+dl.facts dd { min-width: 0; }
+
+/* timeline */
+ol.timeline { list-style: none; counter-reset: stage; margin: 2rem 0 0; padding: 0; border-left: 2px solid var(--rule); }
+ol.timeline > li { counter-increment: stage; position: relative; padding: 0 0 2rem 2.2rem; }
+ol.timeline > li::before {
+  content: counter(stage);
+  position: absolute; left: -1.05rem; top: 0;
+  width: 2rem; height: 2rem; border-radius: 50%;
+  background: var(--bg); border: 2px solid var(--accent); color: var(--accent);
+  font-family: var(--font-mono); font-size: 0.85rem; display: grid; place-items: center;
+}
+ol.timeline h3 { margin: 0 0 0.4rem; font-size: 1.35rem; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 0.8rem; }
+ol.timeline p { margin: 0 0 0.5rem; }
+.src { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.04em; color: var(--silver); }
+.src a { color: var(--silver); }
+.tag { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.15rem 0.5rem; border-radius: 3px; border: 1px solid currentColor; }
+.tag.gisa { color: var(--accent); }
+.tag.geralf { color: var(--win); }
+ol.timeline blockquote { margin: 0.6rem 0; padding: 0.1rem 0 0.1rem 1rem; border-left: 3px solid var(--accent-soft); color: var(--ink-2); font-style: italic; }
+
+.aside { background: var(--surface); border: 1px solid var(--rule); padding: 1.2rem 1.4rem; margin-block: 1.6rem; max-width: 42rem; }
+.aside p:last-child { margin-bottom: 0; }
+.aside .label { display: block; margin-bottom: 0.4rem; }
+ul.plain { padding-left: 1.2rem; margin: 0 0 1em; }
+ul.plain li { margin-bottom: 0.7rem; padding-left: 0.2rem; }
+
+/* cards */
+.card-entry { display: grid; grid-template-columns: minmax(0, 17rem) minmax(0, 1fr); gap: 2rem; padding-block: 2rem; border-top: 1px solid var(--rule); align-items: start; }
+.card-entry.pair { grid-template-columns: minmax(0, 24rem) minmax(0, 1fr); }
+.card-entry .art { display: flex; gap: 0.8rem; }
+.card-entry img, .gallery img { width: 100%; height: auto; display: block; border-radius: 4.6% / 3.3%; box-shadow: 0 10px 24px -14px rgba(8, 20, 12, 0.6); }
+.card-entry .art img { min-width: 0; flex: 1 1 0; }
+.card-entry h3 { margin: 0.3rem 0 0.5rem; font-size: 1.8rem; }
+.card-entry .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1rem; margin-bottom: 0.9rem; font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink-2); }
+.rules { background: var(--surface); border: 1px solid var(--rule); padding: 0.9rem 1.1rem; font-size: 1.02rem; }
+.rules p { margin: 0 0 0.5em; }
+.rules p:last-child { margin-bottom: 0; }
+.rules .flavor { font-style: italic; color: var(--ink-2); }
+.rules .face { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); display: block; margin-bottom: 0.15rem; }
+.loy { font-family: var(--font-mono); font-weight: 500; color: var(--accent); }
+
+.mana { display: inline-flex; gap: 2px; align-items: center; vertical-align: middle; font-family: var(--font-mono); }
+.sym { display: inline-grid; place-items: center; width: 1.6em; height: 1.6em; border-radius: 50%; font-style: normal; font-size: 0.8em; line-height: 1; background: #CFC8D2; color: #231C27; }
+.s-w { background: #F2EBC9; color: #3A3320; }
+.s-u { background: #BBD6EE; color: #10283A; }
+.s-b { background: #3A3040; color: #EDE7EE; }
+.s-r { background: #E0704C; color: #2A0D05; }
+.s-g { background: #5BA26F; color: #0D2514; }
+
+/* gallery */
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(11.5rem, 1fr)); gap: 1.6rem 1.2rem; margin: 2rem 0; }
+.gallery figure { margin: 0; min-width: 0; }
+.gallery figcaption { margin-top: 0.6rem; font-size: 0.92rem; line-height: 1.4; color: var(--ink-2); }
+.gallery figcaption b { display: block; color: var(--ink); font-weight: 600; font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.04em; }
+
+/* tables */
+.table-scroll { overflow-x: auto; margin: 1.4rem 0; border-top: 1px solid var(--ink); }
+table { border-collapse: collapse; width: 100%; font-size: 0.98rem; }
+th, td { text-align: left; vertical-align: top; padding: 0.65rem 1rem 0.65rem 0; border-bottom: 1px solid var(--rule); }
+th { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); white-space: nowrap; }
+td.num, th.num { font-variant-numeric: tabular-nums; }
+table td:first-child { font-weight: 600; }
+
+/* bars */
+.bars { list-style: none; margin: 1.6rem 0; padding: 0; max-width: 46rem; }
+.bars li { display: grid; grid-template-columns: minmax(8rem, 12rem) minmax(0, 1fr) 3.6rem; gap: 0.9rem; align-items: center; padding-block: 0.3rem; }
+.bars .name { font-size: 1rem; }
+.bars .track { height: 0.85rem; background: var(--surface); border: 1px solid var(--rule); }
+.bars .fill { display: block; height: 100%; background: var(--accent); }
+.bars .val { font-family: var(--font-mono); font-size: 0.85rem; text-align: right; font-variant-numeric: tabular-nums; }
+
+footer { margin-top: 5rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); font-size: 0.9rem; color: var(--ink-2); max-width: 42rem; }
+
+@media (max-width: 52rem) {
+  .hero { grid-template-columns: minmax(0, 1fr); padding-block: 2rem; }
+  .card-entry, .card-entry.pair { grid-template-columns: minmax(0, 1fr); }
+  .card-entry .art { max-width: 22rem; }
+  .card-entry.pair .art { max-width: 28rem; }
+}
+@media (max-width: 34rem) {
+  body { font-size: 1.05rem; }
+  dl.facts { grid-template-columns: minmax(0, 1fr); }
+  dl.facts dt { border-bottom: 0; padding-bottom: 0; }
+  dl.facts dd { padding-top: 0.2rem; }
+  .bars li { grid-template-columns: minmax(0, 1fr) 3.4rem; }
+  .bars .track { grid-column: 1 / -1; grid-row: 2; }
+  .bars .val { grid-row: 1; grid-column: 2; }
+  ol.timeline > li { padding-left: 1.7rem; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div>
+    <span class="label"><a href="../">MTG character archive</a> &middot; Innistrad &middot; Necromancer</span>
+    <h1>Gisa<em>ghoulcaller of Innistrad</em></h1>
+    <p class="lead">Gisa Cecani is a black-aligned necromancer from Innistrad who has fought an on-and-off zombie war with her twin brother Geralf for well over a decade of story time. Four cards show her under her own name, spanning 2014 to 2024: Ghoulcaller Gisa, Gisa and Geralf, Gisa, Glorious Resurrector, and Gisa, the Hellraiser.</p>
+    <p class="label">Compiled 28 October 2026</p>
+  </div>
+  <div class="fan">
+    <img src="img/gisa-the-hellraiser-otj-89.jpg" alt="Gisa, the Hellraiser, Outlaws of Thunder Junction" width="488" height="680">
+    <img src="img/gisa-and-geralf-inr-237.jpg" alt="Gisa and Geralf, Innistrad Remastered" width="488" height="680">
+    <img src="img/gisa-glorious-resurrector-mid-103.jpg" alt="Gisa, Glorious Resurrector, Midnight Hunt" width="488" height="680">
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <a href="#who">Who she is</a>
+  <a href="#story">Her story</a>
+  <a href="#cards">Cards</a>
+  <a href="#printings">Printings</a>
+  <a href="#commander">As a commander</a>
+  <a href="#open">Open questions</a>
+  <a href="#sources">Sources</a>
+</nav>
+
+<section id="who">
+  <h2>Who she is</h2>
+  <div class="measure">
+    <p>The <a href="https://mtg.wiki/page/Gisa_Cecani">MTG Wiki</a> describes Gisa as &ldquo;a beautiful but crazed woman who knows no restraint in proving that she is the best&rdquo; &mdash; a pale young woman with dark hair and pale gray eyes. She and her twin brother Geralf are scions of a noble Thraben family and distant relatives of the former Lunarch Mikaeus Cecani.</p>
+  </div>
+  <dl class="facts">
+    <dt>Nature</dt>
+    <dd>A black-aligned necromancer called a <strong>ghoulcaller</strong>. She raises corpses directly from their graves as ghouls, a rawer and less formal craft than Geralf&rsquo;s blue &ldquo;stitcher&rdquo; work building skaabs out of mismatched parts.</dd>
+    <dt>Craft</dt>
+    <dd>She can feel every dead and dying thing for miles around her. Individual ghouls answer to a whistle; calling a whole horde takes a full-throated song.</dd>
+    <dt>Family</dt>
+    <dd>Twin brother Geralf Cecani. Parents Geralf II and Gretchen Cecani, grandfather Geralf I Cecani, and cousin Mikaeus Cecani, a former Lunarch of the Avacynian church.</dd>
+    <dt>The rivalry</dt>
+    <dd>Gisa and Geralf have raised competing undead armies against each other on and off since their exile from Thraben &mdash; a running contest they themselves called &ldquo;NecroWarfare.&rdquo;</dd>
+    <dt>Status</dt>
+    <dd>As of the Outlaws of Thunder Junction story (2024), she has left Innistrad for Thunder Junction via an Omenpath, travelling with Geralf as part of Oko&rsquo;s outlaw crew.</dd>
+  </dl>
+</section>
+
+<section id="story">
+  <h2>Her story</h2>
+  <div class="measure">
+    <p>Gisa and Geralf&rsquo;s feud runs through most of Innistrad&rsquo;s major story arcs: a fire that got them exiled, a private &ldquo;NecroWarfare&rdquo; that escalated into a real siege, years of letters and petty one-upmanship, and two separate occasions where they dropped the feud to fight something worse together.</p>
+  </div>
+
+  <ol class="timeline">
+    <li>
+      <h3>Exile and NecroWarfare <span class="tag gisa">Gisa</span> <span class="tag geralf">Geralf</span></h3>
+      <p>The twins are banished from Thraben after a fire destroys the family manor; each blames the other in letters to their father, though both agree a reanimated zombie started the blaze. Exiled to the Moorland, Geralf takes Trostad (likely massacring those who did not flee), and Gisa attacks the town simply to best her brother, starting what they call &ldquo;NecroWarfare.&rdquo; Geralf drafts five formal rules &mdash; no spontaneous awakenings, no harming bystanders or livestock, scheduled bouts, three-limb minimums, headquarters off-limits &mdash; and adds a sixth, no magical swords, after Gisa gets hold of the cursed blade Bloodletter. She ignores his rules whenever it annoys him.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Gisa_Cecani">MTG Wiki: Gisa Cecani</a></p>
+    </li>
+    <li>
+      <h3>The siege of Thraben <span class="tag gisa">Gisa</span> <span class="tag geralf">Geralf</span></h3>
+      <p>Geralf calls off NecroWarfare to besiege Thraben itself, inviting Gisa along with the promise of the ruined city once it falls. He sneaks in ahead of the attack and kills their cousin Mikaeus; Liliana Vess later raises Mikaeus&rsquo;s corpse as a zombie to learn what she can from him. Gisa is left commanding the siege with Geralf&rsquo;s skaabs added to her own ghouls, and the combined horde breaks the outer wall before the guardian Thalia scatters burning thatch and destroys most of the attackers. Gisa abandons the siege and is captured by the champion Odric, who imprisons her at Rider&rsquo;s Lock.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Gisa_Cecani">MTG Wiki: Gisa Cecani</a></p>
+    </li>
+    <li>
+      <h3>Freed, and back to the feud <span class="tag gisa">Gisa</span> <span class="tag geralf">Geralf</span></h3>
+      <p>Geralf sends a horde of skaabs to break Gisa out of Rider&rsquo;s Lock, though she insists afterward that she didn&rsquo;t need the help. She wants to restart the war, but Geralf is busy on what he calls his masterpiece under the alchemist Ludevic. Gisa retreats to their parents&rsquo; ruined manor, revives both parents as zombies, then sends her father back into the ground. She befriends the lithomancer Nahiri and supplies the ghouls used to build the Drownyard temple.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Gisa_Cecani">MTG Wiki: Gisa Cecani</a></p>
+    </li>
+    <li>
+      <h3>A truce against the Eldrazi <span class="tag gisa">Gisa</span> <span class="tag geralf">Geralf</span></h3>
+      <p>When Liliana Vess moves to raise a zombie army against the Eldrazi that have invaded Innistrad, Gisa and Geralf briefly set their rivalry aside to fight alongside her.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Gisa_Cecani">MTG Wiki: Gisa Cecani</a></p>
+    </li>
+    <li>
+      <h3>Queen of ruined Thraben <span class="tag gisa">Gisa</span></h3>
+      <p>Two years after Emrakul&rsquo;s sealing, Gisa takes over Liliana&rsquo;s abandoned zombie army and claims Thraben&rsquo;s ruins for herself, settling into the city&rsquo;s least-destroyed building. She hasn&rsquo;t heard from Geralf since and writes begging him to attack the city just to relieve her boredom; he refuses. Her undead suitor Wilhelt arrives seeking her acknowledgment as more than a pawn, and Gisa &mdash; more annoyed than moved &mdash; crushes his army and sends him away. She then writes to Geralf again, announcing she&rsquo;s coming to live with him, &ldquo;to his horror.&rdquo;</p>
+      <p class="src"><a href="https://mtg.wiki/page/Gisa_Cecani">MTG Wiki: Gisa Cecani</a></p>
+    </li>
+    <li>
+      <h3>The Phyrexian invasion of Innistrad <span class="tag gisa">Gisa</span> <span class="tag geralf">Geralf</span></h3>
+      <p>Gisa moves into Geralf&rsquo;s lab in Havengul, but he soon finds the arrangement too cramped and pushes her out; she takes over the Engelturm, a tower the angels left behind, and spends her time defiling their work and teasing Geralf by letter. She meets a compleated Phyrexian warrior and warns the vampire Jeleva off trying to devour her mind. When New Phyrexia invades Innistrad, Geralf writes to warn her and the siblings join forces again, defeating the invaders before returning, immediately, to their sibling rivalry.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Gisa_Cecani">MTG Wiki: Gisa Cecani</a></p>
+    </li>
+    <li>
+      <h3>The Thunder Junction heist <span class="tag gisa">Gisa</span> <span class="tag geralf">Geralf</span></h3>
+      <p>The twins travel by Omenpath to the plane of Thunder Junction and join Oko&rsquo;s outlaw crew, Geralf hired as medic and Gisa brought along as a case study in how interplanar travel affects spellcasters. During a train heist to extract the archaeologist Nolan, Gisa unleashes her zombies too early; the horde reaches the locomotive, eats the conductor, and sends the train careening over a broken bridge, though the gang survives and the extraction succeeds anyway. Later, hunting a map in the necropolis of Thief&rsquo;s Folly, she triggers a trap that frees a zombie abomination; with help from the nomad Stella Lee, the siblings disable it and secure the map. The gang eventually corners their mysterious benefactor, who turns out to be Jace Beleren in disguise; he vanishes with the prize unpaid, leaving Gisa ready to team up with Oko again, next time for revenge.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Gisa_Cecani">MTG Wiki: Gisa Cecani</a></p>
+    </li>
+  </ol>
+
+  <p class="src measure">This timeline rests on one primary source, the MTG Wiki&rsquo;s Gisa Cecani page, which cites the original Wizards of the Coast story articles throughout. A secondary summary from <a href="https://www.mtggoldfish.com/articles/loreweaving-gisa-and-geralf-the-unauthorized-biography">MTGGoldfish&rsquo;s Loreweaving column</a> agrees on the fire, the exile, and the rivalry&rsquo;s shape, with no contradictions found between the two.</p>
+</section>
+
+<section id="cards">
+  <h2>Cards that depict her</h2>
+
+  <article class="card-entry">
+    <div class="art">
+      <img src="img/ghoulcaller-gisa-cmm-161.jpg" alt="Ghoulcaller Gisa" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">First printed Commander 2014 &middot; shown here Commander Masters, 2023</span>
+      <h3>Ghoulcaller Gisa</h3>
+      <div class="meta"><span class="mana">{3}{B}{B}</span><span>Legendary Creature &mdash; Human Wizard &middot; 3/4 &middot; rare</span></div>
+      <div class="rules">
+        <p>{B}, {T}, Sacrifice another creature: Create X 2/2 black Zombie creature tokens, where X is the sacrificed creature&rsquo;s power.</p>
+        <p class="flavor">&ldquo;Geralf, must you always whine? I agreed to nothing. I&rsquo;ll raise ghouls anytime I wish.&rdquo;</p>
+      </div>
+      <p class="src">Art: Karla Ortiz. Legal in Commander, Legacy, Vintage; not legal in Modern or Standard.</p>
+    </div>
+  </article>
+
+  <article class="card-entry">
+    <div class="art">
+      <img src="img/gisa-and-geralf-inr-237.jpg" alt="Gisa and Geralf" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">First printed Eldritch Moon, 2016 &middot; shown here Innistrad Remastered, 2024</span>
+      <h3>Gisa and Geralf</h3>
+      <div class="meta"><span class="mana">{2}{U}{B}</span><span>Legendary Creature &mdash; Human Wizard &middot; 4/4 &middot; rare</span></div>
+      <div class="rules">
+        <p>When Gisa and Geralf enters, mill four cards.</p>
+        <p>Once during each of your turns, you may cast a Zombie creature spell from your graveyard.</p>
+        <p class="flavor">&ldquo;These fiends are slightly less tolerable than you.&rdquo; &ldquo;A sentiment that warms my heart, sister.&rdquo;</p>
+      </div>
+      <p class="src">Art: Karla Ortiz. Legal in Commander, Legacy, Vintage, Modern; not legal in Standard.</p>
+    </div>
+  </article>
+
+  <article class="card-entry">
+    <div class="art">
+      <img src="img/gisa-glorious-resurrector-mid-103.jpg" alt="Gisa, Glorious Resurrector" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">Innistrad: Midnight Hunt &middot; 2021</span>
+      <h3>Gisa, Glorious Resurrector</h3>
+      <div class="meta"><span class="mana">{2}{B}{B}</span><span>Legendary Creature &mdash; Human Wizard &middot; 4/4 &middot; rare</span></div>
+      <div class="rules">
+        <p>If a creature an opponent controls would die, exile it instead.</p>
+        <p>At the beginning of your upkeep, put all creature cards exiled with Gisa onto the battlefield under your control. They gain decayed. (A creature with decayed can&rsquo;t block. When it attacks, sacrifice it at end of combat.)</p>
+      </div>
+      <p class="src">Art: Yongjae Choi. Legal in Commander, Legacy, Vintage, Modern; not legal in Standard.</p>
+      <p>Rulings note that returned creatures don&rsquo;t get haste, that opponents&rsquo; &ldquo;dies&rdquo; triggers won&rsquo;t fire since the exile replaces the death, and that decayed doesn&rsquo;t force an attack &mdash; you can choose not to swing with a decayed creature at all.</p>
+    </div>
+  </article>
+
+  <article class="card-entry">
+    <div class="art">
+      <img src="img/gisa-the-hellraiser-otj-89.jpg" alt="Gisa, the Hellraiser" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">Outlaws of Thunder Junction &middot; 2024</span>
+      <h3>Gisa, the Hellraiser</h3>
+      <div class="meta"><span class="mana">{3}{B}{B}</span><span>Legendary Creature &mdash; Human Warlock &middot; 4/4 &middot; mythic</span></div>
+      <div class="rules">
+        <p>Ward&mdash;{2}, Pay 2 life.</p>
+        <p>Skeletons and Zombies you control get +1/+1 and have menace.</p>
+        <p>Whenever you commit a crime, create two tapped 2/2 blue and black Zombie Rogue creature tokens. This ability triggers only once each turn. (Targeting opponents, anything they control, and/or cards in their graveyards is a crime.)</p>
+      </div>
+      <p class="src">Art: Chris Rahn. Legal in Commander, Legacy, Vintage, Modern and Standard.</p>
+    </div>
+  </article>
+
+  <div class="measure">
+    <p>The MTG Wiki also lists a handful of cards named for her rather than depicting her as the main subject &mdash; Gisa&rsquo;s Bidding, Gisa&rsquo;s Favorite Shovel, and the Ghoulcaller&rsquo;s Accomplice / Chant / Harvest cycle &mdash; plus cameo appearances of her ghouls in art for other cards. Those aren&rsquo;t treated as full depictions here.</p>
+  </div>
+</section>
+
+<section id="printings">
+  <h2>Printings</h2>
+  <div class="measure">
+    <p>Prices are single current lookups in USD. Ghoulcaller Gisa (Commander Masters #161) costs about $4.17 non-foil and $6.74 foil. Gisa and Geralf (Innistrad Remastered #237) costs about $0.43 non-foil and $0.50 foil. Gisa, Glorious Resurrector (Midnight Hunt #103) costs about $2.88 non-foil and $2.82 foil. Gisa, the Hellraiser (Outlaws of Thunder Junction #89) costs about $6.91 non-foil and $7.16 foil.</p>
+  </div>
+
+  <div class="gallery">
+    <figure><img src="img/ghoulcaller-gisa-cmm-161.jpg" alt="Ghoulcaller Gisa, CMM 161" width="488" height="680"><figcaption><b>CMM &middot; 161</b>Reprint; first printed in Commander 2014. Art by Karla Ortiz</figcaption></figure>
+    <figure><img src="img/gisa-and-geralf-inr-237.jpg" alt="Gisa and Geralf, INR 237" width="488" height="680"><figcaption><b>INR &middot; 237</b>Reprint; first printed in Eldritch Moon (2016)</figcaption></figure>
+    <figure><img src="img/gisa-glorious-resurrector-mid-103.jpg" alt="Gisa, Glorious Resurrector, MID 103" width="488" height="680"><figcaption><b>MID &middot; 103</b>Original printing. Art by Yongjae Choi</figcaption></figure>
+    <figure><img src="img/gisa-the-hellraiser-otj-89.jpg" alt="Gisa, the Hellraiser, OTJ 89" width="488" height="680"><figcaption><b>OTJ &middot; 89</b>Original printing. Art by Chris Rahn</figcaption></figure>
+  </div>
+
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Card</th><th>Set</th><th class="num">No.</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td>Ghoulcaller Gisa</td><td>Commander 2014</td><td class="num">23</td><td>First printing (2014)</td></tr>
+        <tr><td>Ghoulcaller Gisa</td><td>Commander Masters</td><td class="num">161</td><td>Reprint shown above (2023)</td></tr>
+        <tr><td>Gisa and Geralf</td><td>Eldritch Moon</td><td class="num">&mdash;</td><td>First printing (2016)</td></tr>
+        <tr><td>Gisa and Geralf</td><td>Innistrad Remastered</td><td class="num">237</td><td>Reprint shown above (2024)</td></tr>
+        <tr><td>Gisa, Glorious Resurrector</td><td>Innistrad: Midnight Hunt</td><td class="num">103</td><td>Original printing (2021)</td></tr>
+        <tr><td>Gisa, the Hellraiser</td><td>Outlaws of Thunder Junction</td><td class="num">89</td><td>Original printing (2024)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="measure">The card-data tool returns one entry per card, not a full printing list, so I cross-checked first printings and original collector numbers against Scryfall through the browser (Scryfall blocks direct automated requests). Other treatments &mdash; showcase frames, foils, promos &mdash; may exist beyond what&rsquo;s listed here.</p>
+</section>
+
+<section id="commander">
+  <h2>Playing her as a commander</h2>
+  <div class="measure">
+    <p>All four of her solo and paired cards can lead a Commander deck. Gisa and Geralf is the most played, leading 8,022 decks on EDHREC, almost all built around the zombies theme (843 decks) with reanimator (534) and graveyard (296) close behind. Gisa, the Hellraiser is the most popular solo build at 6,121 decks, again led by zombies (435), tokens (308) and the crime mechanic she shares with the rest of Thunder Junction (234). Gisa, Glorious Resurrector trails at 1,663 decks, mostly aristocrats and reanimator builds; Ghoulcaller Gisa is the oldest and smallest of the four. EDHREC counts decks of every pod size, not 1v1 specifically.</p>
+  </div>
+  <h3>Share of Gisa, the Hellraiser decks that play each card</h3>
+  <ul class="bars">
+    <li><span class="name">Death Baron</span><span class="track"><span class="fill" style="width:73.5%"></span></span><span class="val">73.5%</span></li>
+    <li><span class="name">Cemetery Reaper</span><span class="track"><span class="fill" style="width:66.8%"></span></span><span class="val">66.8%</span></li>
+    <li><span class="name">Jet Medallion</span><span class="track"><span class="fill" style="width:66.5%"></span></span><span class="val">66.5%</span></li>
+    <li><span class="name">Undead Augur</span><span class="track"><span class="fill" style="width:65.4%"></span></span><span class="val">65.4%</span></li>
+    <li><span class="name">Feed the Swarm</span><span class="track"><span class="fill" style="width:64.6%"></span></span><span class="val">64.6%</span></li>
+  </ul>
+  <p class="src">Source: EDHREC data, retrieved through a card-data tool on 28 October 2026.</p>
+</section>
+
+<section id="open">
+  <h2>What could not be confirmed</h2>
+  <ul class="plain measure">
+    <li><strong>Where the feud goes next.</strong> The MTG Wiki says the siblings&rsquo; future story &ldquo;is not yet confirmed&rdquo; as of the Thunder Junction heist. The dotesports coverage I found adds nothing past that point.</li>
+    <li><strong>Associated-but-not-depicting cards.</strong> I could not confirm whether Gisa&rsquo;s Bidding, Gisa&rsquo;s Favorite Shovel, or the Ghoulcaller&rsquo;s cycle actually show her likeness or are simply named for her, so they&rsquo;re noted but not given full entries above.</li>
+    <li><strong>Exact wording of the siege and heist chapters.</strong> I read the MTG Wiki through a page-reading tool rather than the original Wizards story articles it cites, so check direct quotes against the source stories before relying on exact phrasing.</li>
+    <li><strong>Prices and printings.</strong> Single lookups taken on one day; the printing list above may not be exhaustive.</li>
+    <li><strong>Scryfall</strong> blocks direct automated requests, so oracle and flavor text came from a card-data tool, cross-checked against Scryfall pages loaded in a browser.</li>
+  </ul>
+</section>
+
+<section id="sources">
+  <h2>Sources</h2>
+  <ul class="plain measure">
+    <li><a href="https://mtg.wiki/page/Gisa_Cecani">MTG Wiki: Gisa Cecani</a></li>
+    <li><a href="https://mtg.wiki/page/Geralf">MTG Wiki: Geralf Cecani</a></li>
+    <li><a href="https://www.mtggoldfish.com/articles/loreweaving-gisa-and-geralf-the-unauthorized-biography">MTGGoldfish: Loreweaving &mdash; Gisa and Geralf, the Unauthorized Biography</a></li>
+    <li><a href="https://scryfall.com">Scryfall</a> (card text, flavor text, and printing history)</li>
+  </ul>
+</section>
+
+<footer>
+  <p>Fan-made reference page. Magic: The Gathering and its card images are property of Wizards of the Coast.</p>
+  <p>More in this series: <a href="../">all characters</a> &middot; <a href="../dihada/">Dihada, binder of wills</a> &middot; <a href="../edgar-markov/">Edgar Markov, first of the vampires</a> &middot; <a href="../sheoldred/">Sheoldred, the apocalypse</a></p>
+</footer>
+
+</div>
+
+<script>
+(function () {
+  var els = document.querySelectorAll('.mana');
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    var text = el.textContent;
+    var parts = text.match(/\{[^}]+\}/g);
+    if (!parts) continue;
+    el.setAttribute('role', 'img');
+    el.setAttribute('aria-label', 'Mana cost ' + parts.map(function (p) { return p.slice(1, -1); }).join(' '));
+    el.textContent = '';
+    for (var j = 0; j < parts.length; j++) {
+      var k = parts[j].slice(1, -1);
+      var s = document.createElement('i');
+      s.className = 'sym s-' + (/^\d+$/.test(k) ? 'n' : k.toLowerCase());
+      s.textContent = k;
+      s.setAttribute('aria-hidden', 'true');
+      el.appendChild(s);
+    }
+  }
+})();
+</script>
+
+</body>
+</html>

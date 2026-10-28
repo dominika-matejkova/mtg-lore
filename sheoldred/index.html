@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sheoldred, the Whispering One</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a praetor's file. One reading column, wide breakouts for card art and tables.
+   Palette: oil-stained parchment, phyrexian-teal ink, oxblood for Norn/Ajani. Type: Fraunces (display), Newsreader (text), Plex Mono (costs, labels). */
+:root {
+  --bg: #E7E3DA;
+  --surface: #F3F0E9;
+  --ink: #15130F;
+  --ink-2: #433F36;
+  --rule: #D1C9B9;
+  --accent: #1F6B5C;
+  --accent-soft: #CDE6DF;
+  --silver: #5C6B5E;
+  --win: #B23A3A;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-text: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F1210;
+    --surface: #161B18;
+    --ink: #E7ECE8;
+    --ink-2: #A8B5AC;
+    --rule: #263129;
+    --accent: #3FCBAF;
+    --accent-soft: #17332C;
+    --silver: #8FA89A;
+    --win: #E86B6B;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F1210;
+  --surface: #161B18;
+  --ink: #E7ECE8;
+  --ink-2: #A8B5AC;
+  --rule: #263129;
+  --accent: #3FCBAF;
+  --accent-soft: #17332C;
+  --silver: #8FA89A;
+  --win: #E86B6B;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  padding-block: 0 4rem;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 68rem; margin-inline: auto; }
+.measure { max-width: 42rem; }
+img { height: auto; }
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+p { margin: 0 0 1em; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; font-weight: 600; line-height: 1.1; margin: 0; }
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--silver);
+}
+
+/* hero */
+.hero { overflow-x: clip; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 2.5rem; align-items: center; padding-block: 3rem 2.5rem; }
+.hero h1 { font-size: clamp(3.2rem, 9vw, 6.4rem); font-weight: 800; letter-spacing: -0.01em; margin: 0.6rem 0 1.2rem; }
+.hero h1 em { display: block; font-style: italic; font-weight: 600; color: var(--accent); font-size: 0.5em; line-height: 1.15; margin-top: 0.3em; }
+.hero .lead { font-size: 1.3rem; line-height: 1.5; color: var(--ink); max-width: 34rem; }
+.fan { position: relative; aspect-ratio: 1.3 / 1; width: 100%; max-width: 34rem; justify-self: center; }
+.fan img { position: absolute; top: 0; width: 42%; border-radius: 4.6% / 3.3%; box-shadow: 0 14px 30px -12px rgba(8, 20, 12, 0.55); }
+.fan img:nth-child(1) { left: 2%; top: 8%; transform: rotate(-6deg); }
+.fan img:nth-child(2) { left: 28%; top: 0; z-index: 2; }
+.fan img:nth-child(3) { left: 52%; top: 8%; transform: rotate(6deg); }
+
+nav.toc { display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; padding-block: 1rem; border-block: 1px solid var(--rule); font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; }
+nav.toc a { color: var(--ink-2); text-decoration: none; padding-block: 0.25rem; }
+nav.toc a:hover { color: var(--accent); }
+
+section { padding-top: 4rem; scroll-margin-top: 1rem; }
+section > h2 { font-size: clamp(2rem, 4.6vw, 3rem); margin-bottom: 1.4rem; }
+h3 { font-size: 1.5rem; margin: 2.2rem 0 0.8rem; }
+
+/* facts list */
+dl.facts { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); gap: 0; margin: 2rem 0 0; border-top: 1px solid var(--rule); }
+dl.facts dt, dl.facts dd { padding-block: 0.9rem; border-bottom: 1px solid var(--rule); margin: 0; }
+dl.facts dt { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); padding-top: 1.1rem; }
+dl.facts dd { min-width: 0; }
+
+/* timeline */
+ol.timeline { list-style: none; counter-reset: stage; margin: 2rem 0 0; padding: 0; border-left: 2px solid var(--rule); }
+ol.timeline > li { counter-increment: stage; position: relative; padding: 0 0 2rem 2.2rem; }
+ol.timeline > li::before {
+  content: counter(stage);
+  position: absolute; left: -1.05rem; top: 0;
+  width: 2rem; height: 2rem; border-radius: 50%;
+  background: var(--bg); border: 2px solid var(--accent); color: var(--accent);
+  font-family: var(--font-mono); font-size: 0.85rem; display: grid; place-items: center;
+}
+ol.timeline h3 { margin: 0 0 0.4rem; font-size: 1.35rem; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 0.8rem; }
+ol.timeline p { margin: 0 0 0.5rem; }
+.src { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.04em; color: var(--silver); }
+.src a { color: var(--silver); }
+.tag { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.15rem 0.5rem; border-radius: 3px; border: 1px solid currentColor; }
+.tag.sheoldred { color: var(--accent); }
+.tag.norn { color: var(--win); }
+ol.timeline blockquote { margin: 0.6rem 0; padding: 0.1rem 0 0.1rem 1rem; border-left: 3px solid var(--accent-soft); color: var(--ink-2); font-style: italic; }
+
+.aside { background: var(--surface); border: 1px solid var(--rule); padding: 1.2rem 1.4rem; margin-block: 1.6rem; max-width: 42rem; }
+.aside p:last-child { margin-bottom: 0; }
+.aside .label { display: block; margin-bottom: 0.4rem; }
+ul.plain { padding-left: 1.2rem; margin: 0 0 1em; }
+ul.plain li { margin-bottom: 0.7rem; padding-left: 0.2rem; }
+
+/* cards */
+.card-entry { display: grid; grid-template-columns: minmax(0, 17rem) minmax(0, 1fr); gap: 2rem; padding-block: 2rem; border-top: 1px solid var(--rule); align-items: start; }
+.card-entry.pair { grid-template-columns: minmax(0, 24rem) minmax(0, 1fr); }
+.card-entry .art { display: flex; gap: 0.8rem; }
+.card-entry img, .gallery img { width: 100%; height: auto; display: block; border-radius: 4.6% / 3.3%; box-shadow: 0 10px 24px -14px rgba(8, 20, 12, 0.6); }
+.card-entry .art img { min-width: 0; flex: 1 1 0; }
+.card-entry h3 { margin: 0.3rem 0 0.5rem; font-size: 1.8rem; }
+.card-entry .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1rem; margin-bottom: 0.9rem; font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink-2); }
+.rules { background: var(--surface); border: 1px solid var(--rule); padding: 0.9rem 1.1rem; font-size: 1.02rem; }
+.rules p { margin: 0 0 0.5em; }
+.rules p:last-child { margin-bottom: 0; }
+.rules .flavor { font-style: italic; color: var(--ink-2); }
+.rules .face { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); display: block; margin-bottom: 0.15rem; }
+.loy { font-family: var(--font-mono); font-weight: 500; color: var(--accent); }
+
+.mana { display: inline-flex; gap: 2px; align-items: center; vertical-align: middle; font-family: var(--font-mono); }
+.sym { display: inline-grid; place-items: center; width: 1.6em; height: 1.6em; border-radius: 50%; font-style: normal; font-size: 0.8em; line-height: 1; background: #CFC8D2; color: #231C27; }
+.s-w { background: #F2EBC9; color: #3A3320; }
+.s-u { background: #BBD6EE; color: #10283A; }
+.s-b { background: #3A3040; color: #EDE7EE; }
+.s-r { background: #E0704C; color: #2A0D05; }
+.s-g { background: #5BA26F; color: #0D2514; }
+
+/* gallery */
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(11.5rem, 1fr)); gap: 1.6rem 1.2rem; margin: 2rem 0; }
+.gallery figure { margin: 0; min-width: 0; }
+.gallery figcaption { margin-top: 0.6rem; font-size: 0.92rem; line-height: 1.4; color: var(--ink-2); }
+.gallery figcaption b { display: block; color: var(--ink); font-weight: 600; font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.04em; }
+
+/* tables */
+.table-scroll { overflow-x: auto; margin: 1.4rem 0; border-top: 1px solid var(--ink); }
+table { border-collapse: collapse; width: 100%; font-size: 0.98rem; }
+th, td { text-align: left; vertical-align: top; padding: 0.65rem 1rem 0.65rem 0; border-bottom: 1px solid var(--rule); }
+th { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); white-space: nowrap; }
+td.num, th.num { font-variant-numeric: tabular-nums; }
+table td:first-child { font-weight: 600; }
+
+/* bars */
+.bars { list-style: none; margin: 1.6rem 0; padding: 0; max-width: 46rem; }
+.bars li { display: grid; grid-template-columns: minmax(8rem, 12rem) minmax(0, 1fr) 3.6rem; gap: 0.9rem; align-items: center; padding-block: 0.3rem; }
+.bars .name { font-size: 1rem; }
+.bars .track { height: 0.85rem; background: var(--surface); border: 1px solid var(--rule); }
+.bars .fill { display: block; height: 100%; background: var(--accent); }
+.bars .val { font-family: var(--font-mono); font-size: 0.85rem; text-align: right; font-variant-numeric: tabular-nums; }
+
+footer { margin-top: 5rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); font-size: 0.9rem; color: var(--ink-2); max-width: 42rem; }
+
+@media (max-width: 52rem) {
+  .hero { grid-template-columns: minmax(0, 1fr); padding-block: 2rem; }
+  .card-entry, .card-entry.pair { grid-template-columns: minmax(0, 1fr); }
+  .card-entry .art { max-width: 22rem; }
+  .card-entry.pair .art { max-width: 28rem; }
+}
+@media (max-width: 34rem) {
+  body { font-size: 1.05rem; }
+  dl.facts { grid-template-columns: minmax(0, 1fr); }
+  dl.facts dt { border-bottom: 0; padding-bottom: 0; }
+  dl.facts dd { padding-top: 0.2rem; }
+  .bars li { grid-template-columns: minmax(0, 1fr) 3.4rem; }
+  .bars .track { grid-column: 1 / -1; grid-row: 2; }
+  .bars .val { grid-row: 1; grid-column: 2; }
+  ol.timeline > li { padding-left: 1.7rem; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div>
+    <span class="label"><a href="../">MTG character archive</a> &middot; New Phyrexia &middot; Praetor</span>
+    <h1>Sheoldred<em>the Whispering One</em></h1>
+    <p class="lead">Sheoldred was the praetor of New Phyrexia&rsquo;s black-aligned Steel Thanes, a covert manipulator who ruled through sleeper agents and whispered secrets. Three cards show her: Sheoldred, Whispering One (2011), Sheoldred, the Apocalypse (2022), and the transforming Sheoldred // The True Scriptures (2023), which depicts her final battle.</p>
+    <p class="label">Compiled 28 October 2026</p>
+  </div>
+  <div class="fan">
+    <img src="img/sheoldred-the-apocalypse-dmu-107.jpg" alt="Sheoldred, the Apocalypse, Dominaria United" width="488" height="680">
+    <img src="img/sheoldred-whispering-one-jmp-278.jpg" alt="Sheoldred, Whispering One, Jumpstart" width="488" height="680">
+    <img src="img/sheoldred-true-scriptures-mom-125.jpg" alt="Sheoldred // The True Scriptures, March of the Machine" width="488" height="680">
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <a href="#who">Who she is</a>
+  <a href="#story">Her story</a>
+  <a href="#cards">Cards</a>
+  <a href="#printings">Printings</a>
+  <a href="#commander">As a commander</a>
+  <a href="#open">Open questions</a>
+  <a href="#sources">Sources</a>
+</nav>
+
+<section id="who">
+  <h2>Who she is</h2>
+  <div class="measure">
+    <p>The <a href="https://mtg.wiki/page/Sheoldred">MTG Wiki</a> describes Sheoldred as &ldquo;the Praetor of the Black Faction of New Phyrexia&rdquo; &mdash; graceful, cruel, and the cleverest of the Steel Thanes, who earned her rank by turning the other thanes against each other.</p>
+  </div>
+  <dl class="facts">
+    <dt>Body</dt>
+    <dd>A feminine humanoid torso locked into an access inlet on top of a huge-mouthed, many-jointed fiend body covered in corroded metal plates. She can shed the lower body and skitter off to a new one, speaking through its mouth while attached.</dd>
+    <dt>Method</dt>
+    <dd>Covert and underhanded, relying on lies and misinformation. She kept informants everywhere and hid knowledge inside whispering puzzle boxes called &ldquo;astral coffers.&rdquo; Her main tool against other planes was the sleeper agent.</dd>
+    <dt>Philosophy</dt>
+    <dd>Of all the praetors, hers was said to be the closest to Old Phyrexia&rsquo;s: power acquired by any means necessary, enslaving believers and unbelievers alike.</dd>
+    <dt>Domain</dt>
+    <dd>Ruled the Dross Pits on New Phyrexia, where she ran a coliseum, until Elesh Norn laid waste to it.</dd>
+    <dt>Status</dt>
+    <dd>Deceased. Beheaded by Ajani Goldmane on Elesh Norn&rsquo;s order in 4562 AR &mdash; the first known death of a New Phyrexian praetor.</dd>
+  </dl>
+</section>
+
+<section id="story">
+  <h2>Her story</h2>
+  <div class="measure">
+    <p>Sheoldred rose by outmaneuvering her fellow Steel Thanes on Mirrodin, lost her domain to Elesh Norn, and spent the rest of her story as Norn&rsquo;s rival &mdash; sent on distant, dangerous missions to keep her out of the way, until a bid for power finally got her killed.</p>
+  </div>
+
+  <ol class="timeline">
+    <li>
+      <h3>Steel Thane of the Dross Pits <span class="tag sheoldred">Sheoldred</span></h3>
+      <p>On Phyrexianized Mirrodin, Sheoldred is one of the Seven Steel Thanes, warlords of the black faction who each secretly intend to seize the whole plane for themselves. Using knowledge and secrecy as her weapons, she outsmarts the thane Roxith, who dies trying to force open one of her astral coffers. She establishes her territory in the Dross Pits and runs a grand coliseum there.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Sheoldred">MTG Wiki: Sheoldred</a></p>
+    </li>
+    <li>
+      <h3>Defeated by Elesh Norn <span class="tag sheoldred">Sheoldred</span> <span class="tag norn">Norn</span></h3>
+      <p>Elesh Norn lays waste to Sheoldred&rsquo;s domain. Sheoldred goes on to serve under Norn during Phyrexia&rsquo;s invasions of other planes, but remains a powerful enough rival that Norn deliberately sends her on these missions to keep her occupied and distracted.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Sheoldred">MTG Wiki: Sheoldred</a></p>
+    </li>
+    <li>
+      <h3>Arrival on Dominaria <span class="tag sheoldred">Sheoldred</span></h3>
+      <p>Sheoldred travels to Dominaria seeking ancient artifacts and, potentially, conquest. Damaged by the journey through the Blind Eternities, she recuperates in the Caves of Koilos, where Karn discovers her being rebuilt by the planeswalker Rona and the Society of Mishra. She mass-produces sleeper agents that infiltrate Dominarian societies across the plane, resurrects the wizard Ertai, compleats the planeswalker Ajani Goldmane, and leads the attack on the Battle of the Mana Rig while affixed to a dragon engine &mdash; capturing Karn and carrying him back to New Phyrexia.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Sheoldred">MTG Wiki: Sheoldred</a> &middot; <a href="https://articles.starcitygames.com/magic-the-gathering/dominaria-united-story-confirms-phyrexian-invasion-return-of-sheoldred">StarCityGames: Dominaria United story coverage</a></p>
+    </li>
+    <li>
+      <h3>Return to the Dross Pits <span class="tag sheoldred">Sheoldred</span></h3>
+      <p>Tezzeret carries Sheoldred back to New Phyrexia and her lair in the Dross Pits after the Dominaria campaign.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Sheoldred">MTG Wiki: Sheoldred</a></p>
+    </li>
+    <li>
+      <h3>Rebellion against the Mother of Machines <span class="tag sheoldred">Sheoldred</span> <span class="tag norn">Norn</span></h3>
+      <p>Within weeks of returning, Sheoldred moves against Elesh Norn to seize power, allying with Urabrask&rsquo;s rebellion alongside fellow thanes Geth, Roxith, and Vraan. Norn declares her an apostate, and she is captured by Ajani Goldmane.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Sheoldred">MTG Wiki: Sheoldred</a></p>
+    </li>
+    <li>
+      <h3>Death <span class="tag sheoldred">Sheoldred</span> <span class="tag norn">Norn</span></h3>
+      <p>As Elesh Norn launches the Invasion of the Multiverse, a defiant Sheoldred is brought before her. Norn declares there is no place in New Phyrexia for those who seek power over unity, and orders Ajani to behead her with his axe. He does. It is the first known death of a New Phyrexian praetor, and the MTG Wiki says the effect on the black faction is &ldquo;currently unknown.&rdquo;</p>
+      <p class="src"><a href="https://mtg.wiki/page/Sheoldred">MTG Wiki: Sheoldred</a></p>
+    </li>
+  </ol>
+
+  <p class="src measure">This timeline rests on one primary source, the MTG Wiki&rsquo;s Sheoldred page, itself built from citations to the original Wizards of the Coast story chapters. A StarCityGames recap of the Dominaria United story agrees on her arrival in the Caves of Koilos and discovery by Karn, with no contradictions found.</p>
+</section>
+
+<section id="cards">
+  <h2>Cards that depict her</h2>
+
+  <article class="card-entry">
+    <div class="art">
+      <img src="img/sheoldred-whispering-one-jmp-278.jpg" alt="Sheoldred, Whispering One" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">First printed New Phyrexia &middot; 2011 &middot; shown here Jumpstart, 2020</span>
+      <h3>Sheoldred, Whispering One</h3>
+      <div class="meta"><span class="mana">{5}{B}{B}</span><span>Legendary Creature &mdash; Phyrexian Praetor &middot; 6/6 &middot; mythic</span></div>
+      <div class="rules">
+        <p>Swampwalk (This creature can&rsquo;t be blocked as long as defending player controls a Swamp.)</p>
+        <p>At the beginning of your upkeep, return target creature card from your graveyard to the battlefield.</p>
+        <p>At the beginning of each opponent&rsquo;s upkeep, that player sacrifices a creature of their choice.</p>
+      </div>
+      <p class="src">Art: Jana Schirmer &amp; Johannes Voss. Legal in Commander, Legacy, Vintage, Modern; not legal in Standard.</p>
+    </div>
+  </article>
+
+  <article class="card-entry">
+    <div class="art">
+      <img src="img/sheoldred-the-apocalypse-dmu-107.jpg" alt="Sheoldred, the Apocalypse" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">Dominaria United &middot; 2022</span>
+      <h3>Sheoldred, the Apocalypse</h3>
+      <div class="meta"><span class="mana">{2}{B}{B}</span><span>Legendary Creature &mdash; Phyrexian Praetor &middot; 4/5 &middot; mythic</span></div>
+      <div class="rules">
+        <p>Deathtouch</p>
+        <p>Whenever you draw a card, you gain 2 life.</p>
+        <p>Whenever an opponent draws a card, they lose 2 life.</p>
+      </div>
+      <p class="src">Art: Chris Rahn. Legal in Commander, Legacy, Vintage, Modern; not legal in Standard. Depicts her on Dominaria.</p>
+    </div>
+  </article>
+
+  <article class="card-entry">
+    <div class="art">
+      <img src="img/sheoldred-true-scriptures-mom-125.jpg" alt="Sheoldred // The True Scriptures" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">March of the Machine &middot; 2023 &middot; transforming double-faced card</span>
+      <h3>Sheoldred // The True Scriptures</h3>
+      <div class="meta"><span>Legendary Creature &mdash; Phyrexian Praetor // Enchantment &mdash; Saga &middot; mythic</span></div>
+      <div class="rules">
+        <span class="face">Front &middot; Sheoldred &middot; {3}{B}{B} &middot; 4/5</span>
+        <p>Menace</p>
+        <p>When Sheoldred enters, each opponent sacrifices a nontoken creature or planeswalker of their choice.</p>
+        <p>{4}{B}: Exile Sheoldred, then return it to the battlefield transformed under its owner&rsquo;s control. Activate only as a sorcery and only if an opponent has eight or more cards in their graveyard.</p>
+      </div>
+      <div class="rules" style="margin-top:0.8rem">
+        <span class="face">Back &middot; The True Scriptures &middot; Saga</span>
+        <p><span class="loy">I</span> &mdash; For each opponent, destroy up to one target creature or planeswalker that player controls.</p>
+        <p><span class="loy">II</span> &mdash; Each opponent discards three cards, then mills three cards.</p>
+        <p><span class="loy">III</span> &mdash; Put all creature cards from all graveyards onto the battlefield under your control. Exile this Saga, then return it to the battlefield (front face up).</p>
+      </div>
+      <p class="src">Art: Ryan Pancoast. Legal in Commander, Legacy, Vintage, Modern, Pioneer; not legal in Standard or Pauper. This is the only card showing her transformed into The True Scriptures, art I read as depicting her climactic battle.</p>
+    </div>
+  </article>
+</section>
+
+<section id="printings">
+  <h2>Printings</h2>
+  <div class="measure">
+    <p>Prices are single current lookups in USD. Sheoldred, Whispering One (Jumpstart #278) costs about $21.70. Sheoldred, the Apocalypse (Dominaria United #107) costs about $101.89 non-foil and $108.25 foil. Sheoldred // The True Scriptures (March of the Machine #125) costs about $18.72 non-foil and $19.19 foil.</p>
+  </div>
+
+  <div class="gallery">
+    <figure><img src="img/sheoldred-whispering-one-jmp-278.jpg" alt="Sheoldred, Whispering One, JMP 278" width="488" height="680"><figcaption><b>JMP &middot; 278</b>Reprint; first printed in New Phyrexia (2011). Art by Jana Schirmer &amp; Johannes Voss</figcaption></figure>
+    <figure><img src="img/sheoldred-the-apocalypse-dmu-107.jpg" alt="Sheoldred, the Apocalypse, DMU 107" width="488" height="680"><figcaption><b>DMU &middot; 107</b>Original printing. Art by Chris Rahn</figcaption></figure>
+    <figure><img src="img/sheoldred-true-scriptures-mom-125.jpg" alt="Sheoldred // The True Scriptures, MOM 125" width="488" height="680"><figcaption><b>MOM &middot; 125</b>Original printing. Art by Ryan Pancoast</figcaption></figure>
+  </div>
+
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Card</th><th>Set</th><th class="num">No.</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td>Sheoldred, Whispering One</td><td>New Phyrexia</td><td class="num">73</td><td>First printing (2011)</td></tr>
+        <tr><td>Sheoldred, Whispering One</td><td>Jumpstart</td><td class="num">278</td><td>Reprint shown above (2020)</td></tr>
+        <tr><td>Sheoldred, the Apocalypse</td><td>Dominaria United</td><td class="num">107</td><td>Original printing (2022)</td></tr>
+        <tr><td>Sheoldred // The True Scriptures</td><td>March of the Machine</td><td class="num">125</td><td>Original printing (2023)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="measure">The card-data tool returns one entry per card, not a full printing list, so I cross-checked first printings and collector numbers against Scryfall through the browser (Scryfall blocks direct automated requests). Other treatments &mdash; showcase frames, foils, promos, the Secret Lair &ldquo;Phyrexian language&rdquo; edition &mdash; may exist beyond what&rsquo;s listed here.</p>
+</section>
+
+<section id="commander">
+  <h2>Playing her as a commander</h2>
+  <div class="measure">
+    <p>Sheoldred, the Apocalypse is by far her most played build, leading 12,272 decks on EDHREC &mdash; built around wheel effects (830 decks), lifegain (562), raw card draw (341), group slug (311) and combo (261). Sheoldred, Whispering One leads a much smaller 1,246 decks, mostly reanimator strategies that abuse her graveyard-return trigger. Sheoldred // The True Scriptures is Commander-legal but EDHREC tracks it under its front face. EDHREC counts decks of every pod size, not 1v1 specifically.</p>
+  </div>
+  <h3>Share of Sheoldred, the Apocalypse decks that play each card</h3>
+  <ul class="bars">
+    <li><span class="name">Dark Ritual</span><span class="track"><span class="fill" style="width:82.4%"></span></span><span class="val">82.4%</span></li>
+    <li><span class="name">Peer into the Abyss</span><span class="track"><span class="fill" style="width:80%"></span></span><span class="val">80.0%</span></li>
+    <li><span class="name">Phyrexian Arena</span><span class="track"><span class="fill" style="width:76.2%"></span></span><span class="val">76.2%</span></li>
+    <li><span class="name">Underworld Dreams</span><span class="track"><span class="fill" style="width:75.9%"></span></span><span class="val">75.9%</span></li>
+    <li><span class="name">Jet Medallion</span><span class="track"><span class="fill" style="width:74.4%"></span></span><span class="val">74.4%</span></li>
+  </ul>
+  <p class="src">Source: EDHREC data, retrieved through a card-data tool on 28 October 2026.</p>
+</section>
+
+<section id="open">
+  <h2>What could not be confirmed</h2>
+  <ul class="plain measure">
+    <li><strong>What her death means for the black faction.</strong> The MTG Wiki states outright that the effects of her death on New Phyrexia&rsquo;s black faction are &ldquo;currently unknown.&rdquo; I found nothing resolving this since.</li>
+    <li><strong>Whether death is final for her.</strong> Magic has brought characters back before, but I found no source suggesting a return for Sheoldred, so her page here treats her as deceased per the MTG Wiki.</li>
+    <li><strong>Exact wording of the story chapters.</strong> I read the MTG Wiki and StarCityGames through page-reading tools rather than the original Wizards story articles both cite, so check direct quotes against the source stories before relying on exact phrasing.</li>
+    <li><strong>Prices and printings.</strong> Single lookups taken on one day; the printing list above may not be exhaustive.</li>
+    <li><strong>Scryfall</strong> blocks direct automated requests, so oracle and flavor text came from a card-data tool, cross-checked against Scryfall pages loaded in a browser.</li>
+  </ul>
+</section>
+
+<section id="sources">
+  <h2>Sources</h2>
+  <ul class="plain measure">
+    <li><a href="https://mtg.wiki/page/Sheoldred">MTG Wiki: Sheoldred</a></li>
+    <li><a href="https://articles.starcitygames.com/magic-the-gathering/dominaria-united-story-confirms-phyrexian-invasion-return-of-sheoldred">StarCityGames: Dominaria United Story Confirms Phyrexian Invasion, Return of Sheoldred</a></li>
+    <li><a href="https://scryfall.com">Scryfall</a> (card text, flavor text, and printing history)</li>
+  </ul>
+</section>
+
+<footer>
+  <p>Fan-made reference page. Magic: The Gathering and its card images are property of Wizards of the Coast.</p>
+  <p>More in this series: <a href="../">all characters</a> &middot; <a href="../dihada/">Dihada, binder of wills</a> &middot; <a href="../edgar-markov/">Edgar Markov, first of the vampires</a> &middot; <a href="../gisa/">Gisa, ghoulcaller of Innistrad</a></p>
+</footer>
+
+</div>
+
+<script>
+(function () {
+  var els = document.querySelectorAll('.mana');
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    var text = el.textContent;
+    var parts = text.match(/\{[^}]+\}/g);
+    if (!parts) continue;
+    el.setAttribute('role', 'img');
+    el.setAttribute('aria-label', 'Mana cost ' + parts.map(function (p) { return p.slice(1, -1); }).join(' '));
+    el.textContent = '';
+    for (var j = 0; j < parts.length; j++) {
+      var k = parts[j].slice(1, -1);
+      var s = document.createElement('i');
+      s.className = 'sym s-' + (/^\d+$/.test(k) ? 'n' : k.toLowerCase());
+      s.textContent = k;
+      s.setAttribute('aria-hidden', 'true');
+      el.appendChild(s);
+    }
+  }
+})();
+</script>
+
+</body>
+</html>
