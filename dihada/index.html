@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dihada, binder of wills</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a chronicle of a manipulator. One reading column, wide breakouts for card art and tables.
+   Palette: bog-grey paper, cloak-red ink, moss rules. Type: Bodoni Moda (display), Newsreader (text), Plex Mono (costs, labels). */
+:root {
+  --bg: #EAECE6;
+  --surface: #F5F6F1;
+  --ink: #151A17;
+  --ink-2: #444C47;
+  --rule: #CBD0C7;
+  --accent: #9B1D2E;
+  --accent-soft: #EBD2D6;
+  --silver: #4F6358;
+  --win: #2F6B4A;
+  --font-display: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --font-text: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F1311;
+    --surface: #171D1A;
+    --ink: #E8ECE6;
+    --ink-2: #AAB5AD;
+    --rule: #2A332E;
+    --accent: #E5566B;
+    --accent-soft: #3A1B22;
+    --silver: #8FA89A;
+    --win: #6CC095;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F1311;
+  --surface: #171D1A;
+  --ink: #E8ECE6;
+  --ink-2: #AAB5AD;
+  --rule: #2A332E;
+  --accent: #E5566B;
+  --accent-soft: #3A1B22;
+  --silver: #8FA89A;
+  --win: #6CC095;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  padding-block: 0 4rem;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 68rem; margin-inline: auto; }
+.measure { max-width: 42rem; }
+img { height: auto; }
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+p { margin: 0 0 1em; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; font-weight: 600; line-height: 1.1; margin: 0; }
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--silver);
+}
+
+/* hero */
+.hero { overflow-x: clip; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 2.5rem; align-items: center; padding-block: 3rem 2.5rem; }
+.hero h1 { font-size: clamp(3.2rem, 9vw, 6.4rem); font-weight: 800; letter-spacing: -0.01em; margin: 0.6rem 0 1.2rem; }
+.hero h1 em { display: block; font-style: italic; font-weight: 600; color: var(--accent); font-size: 0.5em; line-height: 1.15; margin-top: 0.3em; }
+.hero .lead { font-size: 1.3rem; line-height: 1.5; color: var(--ink); max-width: 34rem; }
+.fan { position: relative; aspect-ratio: 1.3 / 1; width: 100%; max-width: 34rem; justify-self: center; }
+.fan img { position: absolute; top: 0; width: 42%; border-radius: 4.6% / 3.3%; box-shadow: 0 14px 30px -12px rgba(8, 20, 12, 0.55); }
+.fan img:nth-child(1) { left: 2%; top: 8%; transform: rotate(-6deg); }
+.fan img:nth-child(2) { left: 28%; top: 0; z-index: 2; }
+.fan img:nth-child(3) { left: 52%; top: 8%; transform: rotate(6deg); }
+
+nav.toc { display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; padding-block: 1rem; border-block: 1px solid var(--rule); font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; }
+nav.toc a { color: var(--ink-2); text-decoration: none; padding-block: 0.25rem; }
+nav.toc a:hover { color: var(--accent); }
+
+section { padding-top: 4rem; scroll-margin-top: 1rem; }
+section > h2 { font-size: clamp(2rem, 4.6vw, 3rem); margin-bottom: 1.4rem; }
+h3 { font-size: 1.5rem; margin: 2.2rem 0 0.8rem; }
+
+/* facts list */
+dl.facts { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); gap: 0; margin: 2rem 0 0; border-top: 1px solid var(--rule); }
+dl.facts dt, dl.facts dd { padding-block: 0.9rem; border-bottom: 1px solid var(--rule); margin: 0; }
+dl.facts dt { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); padding-top: 1.1rem; }
+dl.facts dd { min-width: 0; }
+
+/* timeline */
+ol.timeline { list-style: none; counter-reset: stage; margin: 2rem 0 0; padding: 0; border-left: 2px solid var(--rule); }
+ol.timeline > li { counter-increment: stage; position: relative; padding: 0 0 2rem 2.2rem; }
+ol.timeline > li::before {
+  content: counter(stage);
+  position: absolute; left: -1.05rem; top: 0;
+  width: 2rem; height: 2rem; border-radius: 50%;
+  background: var(--bg); border: 2px solid var(--accent); color: var(--accent);
+  font-family: var(--font-mono); font-size: 0.85rem; display: grid; place-items: center;
+}
+ol.timeline h3 { margin: 0 0 0.4rem; font-size: 1.35rem; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 0.8rem; }
+ol.timeline p { margin: 0 0 0.5rem; }
+.src { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.04em; color: var(--silver); }
+.src a { color: var(--silver); }
+.tag { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.15rem 0.5rem; border-radius: 3px; border: 1px solid currentColor; }
+.tag.dihada { color: var(--accent); }
+.tag.dakkon { color: var(--win); }
+ol.timeline blockquote { margin: 0.6rem 0; padding: 0.1rem 0 0.1rem 1rem; border-left: 3px solid var(--accent-soft); color: var(--ink-2); font-style: italic; }
+
+.aside { background: var(--surface); border: 1px solid var(--rule); padding: 1.2rem 1.4rem; margin-block: 1.6rem; max-width: 42rem; }
+.aside p:last-child { margin-bottom: 0; }
+.aside .label { display: block; margin-bottom: 0.4rem; }
+ul.plain { padding-left: 1.2rem; margin: 0 0 1em; }
+ul.plain li { margin-bottom: 0.7rem; padding-left: 0.2rem; }
+
+/* cards */
+.card-entry { display: grid; grid-template-columns: minmax(0, 17rem) minmax(0, 1fr); gap: 2rem; padding-block: 2rem; border-top: 1px solid var(--rule); align-items: start; }
+.card-entry.pair { grid-template-columns: minmax(0, 24rem) minmax(0, 1fr); }
+.card-entry .art { display: flex; gap: 0.8rem; }
+.card-entry img, .gallery img { width: 100%; height: auto; display: block; border-radius: 4.6% / 3.3%; box-shadow: 0 10px 24px -14px rgba(8, 20, 12, 0.6); }
+.card-entry .art img { min-width: 0; flex: 1 1 0; }
+.card-entry h3 { margin: 0.3rem 0 0.5rem; font-size: 1.8rem; }
+.card-entry .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1rem; margin-bottom: 0.9rem; font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink-2); }
+.rules { background: var(--surface); border: 1px solid var(--rule); padding: 0.9rem 1.1rem; font-size: 1.02rem; }
+.rules p { margin: 0 0 0.5em; }
+.rules p:last-child { margin-bottom: 0; }
+.rules .flavor { font-style: italic; color: var(--ink-2); }
+.rules .face { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); display: block; margin-bottom: 0.15rem; }
+.loy { font-family: var(--font-mono); font-weight: 500; color: var(--accent); }
+
+.mana { display: inline-flex; gap: 2px; align-items: center; vertical-align: middle; font-family: var(--font-mono); }
+.sym { display: inline-grid; place-items: center; width: 1.6em; height: 1.6em; border-radius: 50%; font-style: normal; font-size: 0.8em; line-height: 1; background: #CFC8D2; color: #231C27; }
+.s-w { background: #F2EBC9; color: #3A3320; }
+.s-u { background: #BBD6EE; color: #10283A; }
+.s-b { background: #3A3040; color: #EDE7EE; }
+.s-r { background: #E0704C; color: #2A0D05; }
+.s-g { background: #5BA26F; color: #0D2514; }
+
+/* gallery */
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(11.5rem, 1fr)); gap: 1.6rem 1.2rem; margin: 2rem 0; }
+.gallery figure { margin: 0; min-width: 0; }
+.gallery figcaption { margin-top: 0.6rem; font-size: 0.92rem; line-height: 1.4; color: var(--ink-2); }
+.gallery figcaption b { display: block; color: var(--ink); font-weight: 600; font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.04em; }
+
+/* tables */
+.table-scroll { overflow-x: auto; margin: 1.4rem 0; border-top: 1px solid var(--ink); }
+table { border-collapse: collapse; width: 100%; font-size: 0.98rem; }
+th, td { text-align: left; vertical-align: top; padding: 0.65rem 1rem 0.65rem 0; border-bottom: 1px solid var(--rule); }
+th { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); white-space: nowrap; }
+td.num, th.num { font-variant-numeric: tabular-nums; }
+table td:first-child { font-weight: 600; }
+
+/* bars */
+.bars { list-style: none; margin: 1.6rem 0; padding: 0; max-width: 46rem; }
+.bars li { display: grid; grid-template-columns: minmax(8rem, 12rem) minmax(0, 1fr) 3.6rem; gap: 0.9rem; align-items: center; padding-block: 0.3rem; }
+.bars .name { font-size: 1rem; }
+.bars .track { height: 0.85rem; background: var(--surface); border: 1px solid var(--rule); }
+.bars .fill { display: block; height: 100%; background: var(--accent); }
+.bars .val { font-family: var(--font-mono); font-size: 0.85rem; text-align: right; font-variant-numeric: tabular-nums; }
+
+footer { margin-top: 5rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); font-size: 0.9rem; color: var(--ink-2); max-width: 42rem; }
+
+@media (max-width: 52rem) {
+  .hero { grid-template-columns: minmax(0, 1fr); padding-block: 2rem; }
+  .card-entry, .card-entry.pair { grid-template-columns: minmax(0, 1fr); }
+  .card-entry .art { max-width: 22rem; }
+  .card-entry.pair .art { max-width: 28rem; }
+}
+@media (max-width: 34rem) {
+  body { font-size: 1.05rem; }
+  dl.facts { grid-template-columns: minmax(0, 1fr); }
+  dl.facts dt { border-bottom: 0; padding-bottom: 0; }
+  dl.facts dd { padding-top: 0.2rem; }
+  .bars li { grid-template-columns: minmax(0, 1fr) 3.4rem; }
+  .bars .track { grid-column: 1 / -1; grid-row: 2; }
+  .bars .val { grid-row: 1; grid-column: 2; }
+  ol.timeline > li { padding-left: 1.7rem; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div>
+    <span class="label"><a href="../">MTG character archive</a> &middot; Dominaria &middot; Planeswalker</span>
+    <h1>Dihada<em>binder of wills</em></h1>
+    <p class="lead">Geyadrone Dihada is an ancient demonic planeswalker who rules through corrupted champions. Two planeswalker cards show her: Geyadrone Dihada (Modern Horizons 2, 2021) and Dihada, Binder of Wills (Dominaria United Commander, 2022). They are the same character.</p>
+    <p class="label">Compiled 28 October 2026</p>
+  </div>
+  <div class="fan">
+    <img src="img/dihada-binder-dmc-1.jpg" alt="Dihada, Binder of Wills, Dominaria United Commander" width="488" height="680">
+    <img src="img/geyadrone-dihada-mh2-199.jpg" alt="Geyadrone Dihada, Modern Horizons 2" width="488" height="680">
+    <img src="img/geyadrone-dihada-mh2-367.jpg" alt="Geyadrone Dihada, Modern Horizons 2 sketch frame" width="488" height="680">
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <a href="#who">Who she is</a>
+  <a href="#story">Her story</a>
+  <a href="#cards">Cards</a>
+  <a href="#printings">Printings</a>
+  <a href="#commander">As a commander</a>
+  <a href="#open">Open questions</a>
+  <a href="#sources">Sources</a>
+</nav>
+
+<section id="who">
+  <h2>Who she is</h2>
+  <div class="measure">
+    <p>The <a href="https://mtg.wiki/page/Dihada">MTG Wiki</a> calls her an ancient demonic shapeshifter planeswalker who first appeared on Dominaria between the fall of the Thran and the Brothers&rsquo; War. She collects powerful beings and corrupts or binds them to her will. The <a href="https://www.coolstuffinc.com/a/jayannelli-05102021-the-blackblade-dihada-war">CoolStuffInc lore article</a> says she was created for the Armada comics.</p>
+  </div>
+  <dl class="facts">
+    <dt>Nature</dt>
+    <dd>A demonic planeswalker. <a href="https://magicuntapped.com/index.php/lore/who-is-geyadrone-dihada">Magic Untapped</a> describes her as having the upper body of a woman and legs that end in octopus-like tentacles.</dd>
+    <dt>Method</dt>
+    <dd>She rules through proxies. A Wizards of the Coast feature on Dominaria United legends says: &ldquo;In the past, she has sought to control the worlds she visits by corrupted proxies such as Sol&rsquo;Kanar or Dakkon Blackblade.&rdquo;</dd>
+    <dt>Her proxies</dt>
+    <dd>Dakkon Blackblade, an armorer she made into her champion, and Sol&rsquo;Kanar, a protector of the Corondor forest Khone whom the Blackblade turned into a swamp king.</dd>
+    <dt>Appears in</dt>
+    <dd>The Armada comic <em>Dakkon Blackblade</em> #1 and the <em>Battlemage</em> video game, per the CoolStuffInc article.</dd>
+    <dt>The name</dt>
+    <dd>None of the pages I read explains what &ldquo;Geyadrone&rdquo; means.</dd>
+    <dt>Status</dt>
+    <dd>Alive and active in Dominaria United, with her goals unclear (see her story below).</dd>
+  </dl>
+</section>
+
+<section id="story">
+  <h2>Her story</h2>
+  <div class="measure">
+    <p>Her best-documented story is the Blackblade&ndash;Dihada War on Corondor, which ended with Dakkon bound to her. She then left Dominaria, resurfaced in the Planeswalkers&rsquo; War, and turned up again at the Tolarian Academy during the Phyrexian incursion of Dominaria United.</p>
+  </div>
+
+  <ol class="timeline">
+    <li>
+      <h3>The commission <span class="tag dihada">Dihada</span></h3>
+      <p>Dihada visits the armorer Dakkon and commissions the most powerful sword ever made, paying with planeswalker power. She teaches him the enchantment for a blade that steals the soul of whoever it kills. He spends years sacrificing people to it, and the sources say he cooled it with a slave each time it was heated, including, in one telling, his own son. When he hands it over, she uses it on him. His planeswalker spark ignites as the blade takes his soul, and he is bound to the sword.</p>
+      <p class="src"><a href="https://magicuntapped.com/index.php/lore/who-is-geyadrone-dihada">Magic Untapped</a> &middot; <a href="https://www.coolstuffinc.com/a/jayannelli-05102021-the-blackblade-dihada-war">CoolStuffInc</a></p>
+    </li>
+    <li>
+      <h3>Sol&rsquo;Kanar and Corondor <span class="tag dihada">Dihada</span></h3>
+      <p>Dihada takes the Blackblade to Khone, a forest on the island of Corondor, and gives it to its protector. The blade corrupts him into Sol&rsquo;Kanar. She turns the forest into a salt marsh and sends him against the island&rsquo;s civilizations. He builds the Unholy Citadel from the remains of his victims.</p>
+      <p class="src"><a href="https://magicuntapped.com/index.php/lore/who-is-geyadrone-dihada">Magic Untapped</a> &middot; <a href="https://mtg.wiki/page/Dihada">MTG Wiki</a></p>
+    </li>
+    <li>
+      <h3>Carth summons Dakkon <span class="tag dakkon">Dakkon</span></h3>
+      <p>A young man named Carth tries to assassinate Dihada and is imprisoned. A mad monk tells him Dakkon&rsquo;s story and helps him escape. Carth then summons Dakkon, who is bound to his service. The two attack Dihada&rsquo;s citadel, retreat to Khone, and are ambushed there. Dakkon disarms Sol&rsquo;Kanar and Carth takes up the Blackblade.</p>
+      <p class="src"><a href="https://www.coolstuffinc.com/a/jayannelli-05102021-the-blackblade-dihada-war">CoolStuffInc: the war</a></p>
+    </li>
+    <li>
+      <h3>The elder dragons <span class="tag dihada">Dihada</span> <span class="tag dakkon">Dakkon</span></h3>
+      <p>Dihada summons two elder dragons against Dakkon. He kills Piru, and the blast opens a huge chasm. Dihada absorbs the dragon&rsquo;s power and reveals that she was the mad monk all along. She captures and binds Dakkon, promising to summon him again. Carth leaves, and Dakkon calls him &ldquo;Carth the Lion&rdquo;.</p>
+      <p class="src"><a href="https://www.coolstuffinc.com/a/jayannelli-05102021-the-blackblade-dihada-war">CoolStuffInc</a> &middot; <a href="https://mtg.wiki/page/Dihada">MTG Wiki</a> &middot; <a href="https://www.mtggoldfish.com/articles/the-lore-of-modern-horizons-2">MTGGoldfish</a></p>
+    </li>
+    <li>
+      <h3>The Planeswalkers&rsquo; War <span class="tag dihada">Dihada</span></h3>
+      <p>Dihada leaves Dominaria and comes back during the Planeswalkers&rsquo; War. Magic Untapped says the mad planeswalker Ravidel summoned her to Corondor with a device called the Mox Beacon, together with Leshrac, Tevesh Szat, Kristina of the Woods, Ash Warlord Embereck, Sandruu and Jared Carthalion, and that she survived. The CoolStuffInc article says the war comes from the <em>Battlemage</em> game, where she goes after Carth&rsquo;s descendant Jared Carthalion to reclaim Dakkon as her &ldquo;chief lieutenant&rdquo;. The game&rsquo;s lore says &ldquo;the cleverness of Carth and the power of Dakkon&rsquo;s black blade proved to be Dihada&rsquo;s undoing&rdquo;, yet the same article says her actual fate is unknown.</p>
+      <p class="src"><a href="https://magicuntapped.com/index.php/lore/who-is-geyadrone-dihada">Magic Untapped</a> &middot; <a href="https://www.coolstuffinc.com/a/jayannelli-05102021-the-blackblade-dihada-war">CoolStuffInc</a></p>
+    </li>
+    <li>
+      <h3>Dominaria United <span class="tag dihada">Dihada</span></h3>
+      <p>She reappears in the Phyrexian incursion at the Tolarian Academy at Lat-Nam. Two sources say she killed or removed the archmage in charge and took his place leading the school. The MTG Wiki adds that she took over Corondor, hoping to force a conflict with Jared Carthalion that would bring Dakkon back under her control. Whether she works with the Phyrexians or simply seized an opening is not settled.</p>
+      <p class="src"><a href="https://magicuntapped.com/index.php/lore/who-is-geyadrone-dihada">Magic Untapped</a> &middot; <a href="https://mtg.wiki/page/Dihada">MTG Wiki</a></p>
+    </li>
+  </ol>
+
+  <h3>Where the sources disagree</h3>
+  <ul class="plain measure">
+    <li><strong>Which elder dragons.</strong> The CoolStuffInc article names Chromium and Piru. The MTG Wiki says Piru and Rhuell, and MTGGoldfish says Piru and &ldquo;Chromium Rhuell&rdquo;. The MTG Wiki itself does not say whether Chromium and Rhuell are one dragon or two. Only Piru&rsquo;s death is consistent across all three.</li>
+    <li><strong>What the sword did to Dakkon.</strong> Magic Untapped says she ran him through, igniting his spark as the blade took his soul. CoolStuffInc and MTGGoldfish say she struck or used the blade on his shadow, stealing his soul that way.</li>
+    <li><strong>Her motives toward Phyrexia.</strong> The Wizards feature says she left Dominaria at the end of the Planeswalker War, a few years before the first Phyrexian invasion, and that some believe she still lives, diminished, and secretly influences Dominarian politics. The MTG Wiki has her back for the later incursion.</li>
+  </ul>
+  <p class="src measure">I read these pages through a page-summary tool, so check quotes against the originals before relying on exact wording. The CoolStuffInc article calls the comic synopsis non-canonical.</p>
+</section>
+
+<section id="cards">
+  <h2>Cards that depict her</h2>
+
+  <article class="card-entry pair">
+    <div class="art">
+      <img src="img/dihada-binder-dmc-1.jpg" alt="Dihada, Binder of Wills, regular frame" width="488" height="680">
+      <img src="img/dihada-binder-dmc-49.jpg" alt="Dihada, Binder of Wills, alternate frame" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">Dominaria United Commander &middot; 2022</span>
+      <h3>Dihada, Binder of Wills</h3>
+      <div class="meta"><span class="mana">{1}{R}{W}{B}</span><span>Legendary Planeswalker &mdash; Dihada &middot; loyalty 5 &middot; mythic</span></div>
+      <div class="rules">
+        <p><span class="loy">+2</span> Up to one target legendary creature gains vigilance, lifelink, and indestructible until your next turn.</p>
+        <p><span class="loy">&minus;3</span> Reveal the top four cards of your library. Put any number of legendary cards from among them into your hand and the rest into your graveyard. Create a Treasure token for each card put into your graveyard this way.</p>
+        <p><span class="loy">&minus;11</span> Gain control of all nonland permanents until end of turn. Untap them. They gain haste until end of turn.</p>
+        <p>Dihada, Binder of Wills can be your commander.</p>
+      </div>
+      <p class="src">Art: N&eacute;stor Ossand&oacute;n Leal. Official rulings: none.</p>
+    </div>
+  </article>
+
+  <article class="card-entry pair">
+    <div class="art">
+      <img src="img/geyadrone-dihada-mh2-199.jpg" alt="Geyadrone Dihada, regular frame" width="488" height="680">
+      <img src="img/geyadrone-dihada-mh2-367.jpg" alt="Geyadrone Dihada, sketch frame" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">Modern Horizons 2 &middot; 2021</span>
+      <h3>Geyadrone Dihada</h3>
+      <div class="meta"><span class="mana">{1}{U}{B}{R}</span><span>Legendary Planeswalker &mdash; Dihada &middot; loyalty 4 &middot; mythic</span></div>
+      <div class="rules">
+        <p>Protection from permanents with corruption counters on them</p>
+        <p><span class="loy">+1</span> Each opponent loses 2 life and you gain 2 life. Put a corruption counter on up to one other target creature or planeswalker.</p>
+        <p><span class="loy">&minus;3</span> Gain control of target creature or planeswalker until end of turn. Untap it and put a corruption counter on it. It gains haste until end of turn.</p>
+        <p><span class="loy">&minus;7</span> Gain control of each permanent with a corruption counter on it.</p>
+      </div>
+      <p class="src">Art: Ekaterina Burmak. Legal in Commander, Legacy, Vintage and Modern.</p>
+      <p>Three official rulings (18 June 2021): she can&rsquo;t be targeted, dealt damage or enchanted by permanents with corruption counters, and creatures with them can still attack her but their damage is prevented. Permanents keep their counters if she leaves, so a later Geyadrone Dihada will have protection from them too.</p>
+    </div>
+  </article>
+
+  <div class="measure">
+    <p>Dihada, Binder of Wills is the Commander-focused one: Mardu (red, white, black) and able to lead a deck. Geyadrone Dihada is Grixis (blue, black, red) and is a regular Modern Horizons 2 mythic.</p>
+  </div>
+</section>
+
+<section id="printings">
+  <h2>Printings</h2>
+  <div class="measure">
+    <p>Prices are single current lookups in USD. Dihada, Binder of Wills (Dominaria United Commander #1) costs about $14.93 non-foil and $20.55 foil. Geyadrone Dihada (Modern Horizons 2 #199) costs about $1.16 non-foil and $1.29 foil.</p>
+  </div>
+
+  <div class="gallery">
+    <figure><img src="img/dihada-binder-dmc-1.jpg" alt="Dihada, Binder of Wills, DMC 1" width="488" height="680"><figcaption><b>DMC &middot; 1</b>Dihada, Binder of Wills, regular frame</figcaption></figure>
+    <figure><img src="img/dihada-binder-dmc-49.jpg" alt="Dihada, Binder of Wills, DMC 49" width="488" height="680"><figcaption><b>DMC &middot; 49</b>Alternate frame; the collector line carries a &#9733; marker. Art by N&eacute;stor Ossand&oacute;n Leal</figcaption></figure>
+    <figure><img src="img/geyadrone-dihada-mh2-199.jpg" alt="Geyadrone Dihada, MH2 199" width="488" height="680"><figcaption><b>MH2 &middot; 199</b>Geyadrone Dihada, regular frame</figcaption></figure>
+    <figure><img src="img/geyadrone-dihada-mh2-367.jpg" alt="Geyadrone Dihada, MH2 367" width="488" height="680"><figcaption><b>MH2 &middot; 367</b>Sketch-style alternate frame</figcaption></figure>
+  </div>
+
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Card</th><th>Set</th><th class="num">No.</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td>Dihada, Binder of Wills</td><td>Dominaria United Commander</td><td class="num">1</td><td>Regular frame (2022)</td></tr>
+        <tr><td>Dihada, Binder of Wills</td><td>Dominaria United Commander</td><td class="num">49</td><td>Alternate frame, shown with a &#9733; in its collector line</td></tr>
+        <tr><td>Geyadrone Dihada</td><td>Modern Horizons 2</td><td class="num">199</td><td>Regular frame (2021)</td></tr>
+        <tr><td>Geyadrone Dihada</td><td>Modern Horizons 2</td><td class="num">367</td><td>Sketch-style alternate frame</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="measure">The card-data tool returned one entry per card, not a full printing list, so other treatments (foils, promos, oversized cards) may exist that are not listed here. I did not confirm what the DMC 49 treatment is called.</p>
+</section>
+
+<section id="commander">
+  <h2>Playing her as a commander</h2>
+  <div class="measure">
+    <p>Dihada, Binder of Wills is legal in Commander and leads 11,157 decks on EDHREC. The first theme listed is Legends (1,424 decks), followed by reanimator (569), historic (331), combo (242) and treasure (190). EDHREC counts all Commander decks, so these numbers are not specific to 1v1.</p>
+    <p>Her loyalty starts at 5, so three +2 activations take her to 11 for the &minus;11. That is my arithmetic from the card text, not something EDHREC or Wizards says.</p>
+  </div>
+  <h3>Share of Dihada decks that play each card</h3>
+  <ul class="bars">
+    <li><span class="name">Shanid, Sleepers&rsquo; Scourge</span><span class="track"><span class="fill" style="width:63.9%"></span></span><span class="val">63.9%</span></li>
+    <li><span class="name">Primevals&rsquo; Glorious Rebirth</span><span class="track"><span class="fill" style="width:62.8%"></span></span><span class="val">62.8%</span></li>
+    <li><span class="name">Swords to Plowshares</span><span class="track"><span class="fill" style="width:62.6%"></span></span><span class="val">62.6%</span></li>
+    <li><span class="name">Urza&rsquo;s Ruinous Blast</span><span class="track"><span class="fill" style="width:58.2%"></span></span><span class="val">58.2%</span></li>
+    <li><span class="name">Odric, Lunarch Marshal</span><span class="track"><span class="fill" style="width:57.5%"></span></span><span class="val">57.5%</span></li>
+    <li><span class="name">Lotho, Corrupt Shirriff</span><span class="track"><span class="fill" style="width:52.3%"></span></span><span class="val">52.3%</span></li>
+    <li><span class="name">Cadric, Soul Kindler</span><span class="track"><span class="fill" style="width:47%"></span></span><span class="val">47.0%</span></li>
+    <li><span class="name">Path to Exile</span><span class="track"><span class="fill" style="width:43.5%"></span></span><span class="val">43.5%</span></li>
+    <li><span class="name">Reanimate</span><span class="track"><span class="fill" style="width:43.5%"></span></span><span class="val">43.5%</span></li>
+    <li><span class="name">Ratadrabik of Urborg</span><span class="track"><span class="fill" style="width:43.3%"></span></span><span class="val">43.3%</span></li>
+  </ul>
+  <p class="src">Source: EDHREC data, retrieved through a card-data tool on 28 October 2026.</p>
+</section>
+
+<section id="open">
+  <h2>What could not be confirmed</h2>
+  <ul class="plain measure">
+    <li><strong>Dihada&rsquo;s Ploy</strong> (Modern Horizons 2, {1}{U}{B}, an instant with jump-start) shares her name. I found nothing confirming it depicts her or refers to her, so it is not in the card lists above.</li>
+    <li><strong>The elder dragons.</strong> Sources name them differently (see her story above).</li>
+    <li><strong>Her fate and aims.</strong> Her fate in the Planeswalkers&rsquo; War is called unknown by two sources. Whether she serves the Phyrexians in Dominaria United is not stated.</li>
+    <li><strong>The Dominaria United story.</strong> The MTG Wiki says she features in <em>The Education of Ulf</em>. I could not open that story, so the Dominaria United account above rests on the wiki and Magic Untapped.</li>
+    <li><strong>Blackblade&ndash;Dihada War page.</strong> The MTG Wiki&rsquo;s page for the war would not load here, so the war section relies on the CoolStuffInc article, Magic Untapped, the MTG Wiki page on Dihada and MTGGoldfish.</li>
+    <li><strong>Prices and printings.</strong> Single lookups, and the printing list may be incomplete.</li>
+    <li><strong>Scryfall</strong> blocked the requests, so card text comes from a card-data tool.</li>
+  </ul>
+</section>
+
+<section id="sources">
+  <h2>Sources</h2>
+  <ul class="plain measure">
+    <li><a href="https://mtg.wiki/page/Dihada">MTG Wiki: Geyadrone Dihada</a></li>
+    <li><a href="https://magicuntapped.com/index.php/lore/who-is-geyadrone-dihada">Magic Untapped: Who Is Geyadrone Dihada</a></li>
+    <li><a href="https://www.coolstuffinc.com/a/jayannelli-05102021-the-blackblade-dihada-war">CoolStuffInc: The Blackblade&ndash;Dihada War</a></li>
+    <li><a href="https://magic.wizards.com/en/news/feature/legends-youll-find-dominaria-united-2022-09-01">Wizards of the Coast: The Legends You&rsquo;ll Find in Dominaria United</a></li>
+    <li><a href="https://www.mtggoldfish.com/articles/the-lore-of-modern-horizons-2">MTGGoldfish: The Lore of Modern Horizons 2</a></li>
+  </ul>
+</section>
+
+<footer>
+  <p>Fan-made reference page. Magic: The Gathering and its card images are property of Wizards of the Coast.</p>
+  <p>More in this series: <a href="../">all characters</a> &middot; <a href="../edgar-markov/">Edgar Markov, first of the vampires</a></p>
+</footer>
+
+</div>
+
+<script>
+(function () {
+  var els = document.querySelectorAll('.mana');
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    var text = el.textContent;
+    var parts = text.match(/\{[^}]+\}/g);
+    if (!parts) continue;
+    el.setAttribute('role', 'img');
+    el.setAttribute('aria-label', 'Mana cost ' + parts.map(function (p) { return p.slice(1, -1); }).join(' '));
+    el.textContent = '';
+    for (var j = 0; j < parts.length; j++) {
+      var k = parts[j].slice(1, -1);
+      var s = document.createElement('i');
+      s.className = 'sym s-' + (/^\d+$/.test(k) ? 'n' : k.toLowerCase());
+      s.textContent = k;
+      s.setAttribute('aria-hidden', 'true');
+      el.appendChild(s);
+    }
+  }
+})();
+</script>
+
+</body>
+</html>

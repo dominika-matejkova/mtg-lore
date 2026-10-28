@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MTG character archive</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: an index card box. One reading column, a two-up card grid.
+   Palette: graphite paper, amber ink, neutral so it doesn't borrow either character's colors. Type: Bodoni Moda (display), Newsreader (text), Plex Mono (labels). */
+:root {
+  --bg: #EDECEA;
+  --surface: #F6F5F3;
+  --ink: #1A1816;
+  --ink-2: #4A4642;
+  --rule: #D2CFC9;
+  --accent: #A35A1E;
+  --accent-soft: #EEDCC4;
+  --silver: #5E5A54;
+  --font-display: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --font-text: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14120F;
+    --surface: #1C1915;
+    --ink: #ECE9E4;
+    --ink-2: #B3ADA4;
+    --rule: #332E27;
+    --accent: #E08B3C;
+    --accent-soft: #3A2A16;
+    --silver: #A49C8F;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #14120F;
+  --surface: #1C1915;
+  --ink: #ECE9E4;
+  --ink-2: #B3ADA4;
+  --rule: #332E27;
+  --accent: #E08B3C;
+  --accent-soft: #3A2A16;
+  --silver: #A49C8F;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  padding-block: 0 4rem;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 56rem; margin-inline: auto; }
+.measure { max-width: 42rem; }
+img { height: auto; }
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+p { margin: 0 0 1em; }
+h1, h2 { font-family: var(--font-display); text-wrap: balance; font-weight: 600; line-height: 1.1; margin: 0; }
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--silver);
+}
+
+header.hero { overflow-x: clip; padding-block: 4rem 2.5rem; }
+header.hero h1 { font-size: clamp(2.8rem, 8vw, 4.6rem); font-weight: 800; letter-spacing: -0.01em; margin: 0.6rem 0 1.2rem; }
+header.hero .lead { font-size: 1.3rem; line-height: 1.5; color: var(--ink); max-width: 36rem; }
+
+section { padding-top: 2.5rem; }
+
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.6rem; margin-top: 2rem; }
+.char-card { display: block; background: var(--surface); border: 1px solid var(--rule); text-decoration: none; color: var(--ink); overflow: hidden; transition: border-color 0.15s ease; }
+.char-card:hover, .char-card:focus-visible { border-color: var(--accent); }
+.char-card .art { aspect-ratio: 488 / 680; overflow: hidden; background: var(--rule); }
+.char-card .art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.char-card .meta { padding: 1.2rem 1.3rem 1.4rem; }
+.char-card h2 { font-size: 1.6rem; margin-bottom: 0.4rem; }
+.char-card p { color: var(--ink-2); font-size: 0.98rem; margin-bottom: 0; }
+.char-card .go { display: inline-block; margin-top: 0.8rem; font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+
+.note { background: var(--surface); border: 1px solid var(--rule); padding: 1.2rem 1.4rem; margin-block: 1.6rem; max-width: 42rem; }
+.note p:last-child { margin-bottom: 0; }
+
+footer { margin-top: 5rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); font-size: 0.9rem; color: var(--ink-2); max-width: 42rem; }
+
+@media (max-width: 36rem) {
+  .grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <span class="label">Fan project</span>
+  <h1>MTG character archive</h1>
+  <p class="lead">Lore and card reference pages for Magic: The Gathering characters &mdash; who they are, every card that depicts them, their printings, and how they play as a commander. One page per character, each built the same way.</p>
+</header>
+
+<section>
+  <div class="grid">
+    <a class="char-card" href="dihada/">
+      <div class="art"><img src="dihada/img/dihada-binder-dmc-1.jpg" alt="Dihada, Binder of Wills" width="488" height="680"></div>
+      <div class="meta">
+        <span class="label">Dominaria &middot; Planeswalker</span>
+        <h2>Dihada</h2>
+        <p>An ancient demonic planeswalker who rules through corrupted champions.</p>
+        <span class="go">Read &rarr;</span>
+      </div>
+    </a>
+    <a class="char-card" href="edgar-markov/">
+      <div class="art"><img src="edgar-markov/img/edgar-markov-inr-234.jpg" alt="Edgar Markov" width="488" height="680"></div>
+      <div class="meta">
+        <span class="label">Innistrad &middot; House Markov</span>
+        <h2>Edgar Markov</h2>
+        <p>The first vampire of Innistrad and founder of the Markov bloodline.</p>
+        <span class="go">Read &rarr;</span>
+      </div>
+    </a>
+  </div>
+
+  <div class="note measure">
+    <p><span class="label">A note on the numbers</span></p>
+    <p>Each page plays mostly 1v1 casual Commander, but the EDHREC stats shown are drawn from decks of every pod size, not 1v1 specifically &mdash; every page says so again where the numbers appear.</p>
+  </div>
+</section>
+
+<footer>
+  <p>Fan-made reference pages. Magic: The Gathering and its card images are property of Wizards of the Coast.</p>
+</footer>
+
+</div>
+</body>
+</html>

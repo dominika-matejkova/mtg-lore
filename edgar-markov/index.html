@@ -1,0 +1,522 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Edgar Markov</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a family chronicle. One reading column, wide breakouts for card art and tables.
+   Palette: ash paper, wine ink, moon-silver rules. Type: Bodoni Moda (wedding-invitation display), Newsreader (text), Plex Mono (costs, labels). */
+:root {
+  --bg: #EEEBF0;
+  --surface: #F8F6F9;
+  --ink: #1C1520;
+  --ink-2: #4B4352;
+  --rule: #D3CDD7;
+  --accent: #8A1630;
+  --accent-soft: #E9D3D9;
+  --silver: #5B6879;
+  --win: #2F6B4A;
+  --font-display: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --font-text: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #130E15;
+    --surface: #1C1520;
+    --ink: #EDE7EE;
+    --ink-2: #B7ADBB;
+    --rule: #34293B;
+    --accent: #E0536C;
+    --accent-soft: #3A1B25;
+    --silver: #9AA8BC;
+    --win: #6CC095;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #130E15;
+  --surface: #1C1520;
+  --ink: #EDE7EE;
+  --ink-2: #B7ADBB;
+  --rule: #34293B;
+  --accent: #E0536C;
+  --accent-soft: #3A1B25;
+  --silver: #9AA8BC;
+  --win: #6CC095;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  padding-block: 0 4rem;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 68rem; margin-inline: auto; }
+.measure { max-width: 42rem; }
+img { height: auto; }
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+p { margin: 0 0 1em; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; font-weight: 600; line-height: 1.1; margin: 0; }
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--silver);
+}
+
+/* hero */
+.hero { overflow-x: clip; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 2.5rem; align-items: center; padding-block: 3rem 2.5rem; }
+.hero h1 { font-size: clamp(3.2rem, 9vw, 6.4rem); font-weight: 800; letter-spacing: -0.01em; margin: 0.6rem 0 1.2rem; }
+.hero h1 em { display: block; font-style: italic; font-weight: 600; color: var(--accent); font-size: 0.5em; line-height: 1.15; margin-top: 0.3em; }
+.hero .lead { font-size: 1.3rem; line-height: 1.5; color: var(--ink); max-width: 34rem; }
+.fan { position: relative; aspect-ratio: 1.3 / 1; width: 100%; max-width: 34rem; justify-self: center; }
+.fan img { position: absolute; top: 0; width: 42%; border-radius: 4.6% / 3.3%; box-shadow: 0 14px 30px -12px rgba(20, 8, 24, 0.55); }
+.fan img:nth-child(1) { left: 2%; top: 8%; transform: rotate(-6deg); }
+.fan img:nth-child(2) { left: 28%; top: 0; z-index: 2; }
+.fan img:nth-child(3) { left: 52%; top: 8%; transform: rotate(6deg); }
+
+nav.toc { display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; padding-block: 1rem; border-block: 1px solid var(--rule); font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; }
+nav.toc a { color: var(--ink-2); text-decoration: none; padding-block: 0.25rem; }
+nav.toc a:hover { color: var(--accent); }
+
+section { padding-top: 4rem; scroll-margin-top: 1rem; }
+section > h2 { font-size: clamp(2rem, 4.6vw, 3rem); margin-bottom: 1.4rem; }
+h3 { font-size: 1.5rem; margin: 2.2rem 0 0.8rem; }
+
+/* facts list */
+dl.facts { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); gap: 0; margin: 2rem 0 0; border-top: 1px solid var(--rule); }
+dl.facts dt, dl.facts dd { padding-block: 0.9rem; border-bottom: 1px solid var(--rule); margin: 0; }
+dl.facts dt { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); padding-top: 1.1rem; }
+dl.facts dd { min-width: 0; }
+
+/* timeline */
+ol.timeline { list-style: none; counter-reset: stage; margin: 2rem 0 0; padding: 0; border-left: 2px solid var(--rule); }
+ol.timeline > li { counter-increment: stage; position: relative; padding: 0 0 2rem 2.2rem; }
+ol.timeline > li::before {
+  content: counter(stage);
+  position: absolute; left: -1.05rem; top: 0;
+  width: 2rem; height: 2rem; border-radius: 50%;
+  background: var(--bg); border: 2px solid var(--accent); color: var(--accent);
+  font-family: var(--font-mono); font-size: 0.85rem; display: grid; place-items: center;
+}
+ol.timeline h3 { margin: 0 0 0.4rem; font-size: 1.35rem; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 0.8rem; }
+ol.timeline p { margin: 0 0 0.5rem; }
+.src { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.04em; color: var(--silver); }
+.src a { color: var(--silver); }
+.tag { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.15rem 0.5rem; border-radius: 3px; border: 1px solid currentColor; }
+.tag.edgar { color: var(--accent); }
+.tag.sorin { color: var(--win); }
+ol.timeline blockquote { margin: 0.6rem 0; padding: 0.1rem 0 0.1rem 1rem; border-left: 3px solid var(--accent-soft); color: var(--ink-2); font-style: italic; }
+
+.aside { background: var(--surface); border: 1px solid var(--rule); padding: 1.2rem 1.4rem; margin-block: 1.6rem; max-width: 42rem; }
+.aside p:last-child { margin-bottom: 0; }
+.aside .label { display: block; margin-bottom: 0.4rem; }
+ul.plain { padding-left: 1.2rem; margin: 0 0 1em; }
+ul.plain li { margin-bottom: 0.7rem; padding-left: 0.2rem; }
+
+/* cards */
+.card-entry { display: grid; grid-template-columns: minmax(0, 17rem) minmax(0, 1fr); gap: 2rem; padding-block: 2rem; border-top: 1px solid var(--rule); align-items: start; }
+.card-entry.pair { grid-template-columns: minmax(0, 24rem) minmax(0, 1fr); }
+.card-entry .art { display: flex; gap: 0.8rem; }
+.card-entry img, .gallery img { width: 100%; height: auto; display: block; border-radius: 4.6% / 3.3%; box-shadow: 0 10px 24px -14px rgba(20, 8, 24, 0.6); }
+.card-entry .art img { min-width: 0; flex: 1 1 0; }
+.card-entry h3 { margin: 0.3rem 0 0.5rem; font-size: 1.8rem; }
+.card-entry .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1rem; margin-bottom: 0.9rem; font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink-2); }
+.rules { background: var(--surface); border: 1px solid var(--rule); padding: 0.9rem 1.1rem; font-size: 1.02rem; }
+.rules p { margin: 0 0 0.5em; }
+.rules p:last-child { margin-bottom: 0; }
+.rules .flavor { font-style: italic; color: var(--ink-2); }
+.rules .face { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); display: block; margin-bottom: 0.15rem; }
+
+.mana { display: inline-flex; gap: 2px; align-items: center; vertical-align: middle; font-family: var(--font-mono); }
+.sym { display: inline-grid; place-items: center; width: 1.6em; height: 1.6em; border-radius: 50%; font-style: normal; font-size: 0.8em; line-height: 1; background: #CFC8D2; color: #231C27; }
+.s-w { background: #F2EBC9; color: #3A3320; }
+.s-u { background: #BBD6EE; color: #10283A; }
+.s-b { background: #3A3040; color: #EDE7EE; }
+.s-r { background: #E0704C; color: #2A0D05; }
+.s-g { background: #5BA26F; color: #0D2514; }
+
+/* gallery */
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(11.5rem, 1fr)); gap: 1.6rem 1.2rem; margin: 2rem 0; }
+.gallery figure { margin: 0; min-width: 0; }
+.gallery figcaption { margin-top: 0.6rem; font-size: 0.92rem; line-height: 1.4; color: var(--ink-2); }
+.gallery figcaption b { display: block; color: var(--ink); font-weight: 600; font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.04em; }
+
+/* tables */
+.table-scroll { overflow-x: auto; margin: 1.4rem 0; border-top: 1px solid var(--ink); }
+table { border-collapse: collapse; width: 100%; font-size: 0.98rem; }
+th, td { text-align: left; vertical-align: top; padding: 0.65rem 1rem 0.65rem 0; border-bottom: 1px solid var(--rule); }
+th { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); white-space: nowrap; }
+td.num, th.num { font-variant-numeric: tabular-nums; }
+table td:first-child { font-weight: 600; }
+
+/* bars */
+.bars { list-style: none; margin: 1.6rem 0; padding: 0; max-width: 46rem; }
+.bars li { display: grid; grid-template-columns: minmax(8rem, 12rem) minmax(0, 1fr) 3.6rem; gap: 0.9rem; align-items: center; padding-block: 0.3rem; }
+.bars .name { font-size: 1rem; }
+.bars .track { height: 0.85rem; background: var(--surface); border: 1px solid var(--rule); }
+.bars .fill { display: block; height: 100%; background: var(--accent); }
+.bars .val { font-family: var(--font-mono); font-size: 0.85rem; text-align: right; font-variant-numeric: tabular-nums; }
+
+footer { margin-top: 5rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); font-size: 0.9rem; color: var(--ink-2); max-width: 42rem; }
+
+@media (max-width: 52rem) {
+  .hero { grid-template-columns: minmax(0, 1fr); padding-block: 2rem; }
+  .card-entry, .card-entry.pair { grid-template-columns: minmax(0, 1fr); }
+  .card-entry .art { max-width: 22rem; }
+  .card-entry.pair .art { max-width: 28rem; }
+}
+@media (max-width: 34rem) {
+  body { font-size: 1.05rem; }
+  dl.facts { grid-template-columns: minmax(0, 1fr); }
+  dl.facts dt { border-bottom: 0; padding-bottom: 0; }
+  dl.facts dd { padding-top: 0.2rem; }
+  .bars li { grid-template-columns: minmax(0, 1fr) 3.4rem; }
+  .bars .track { grid-column: 1 / -1; grid-row: 2; }
+  .bars .val { grid-row: 1; grid-column: 2; }
+  ol.timeline > li { padding-left: 1.7rem; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+
+<div class="wrap">
+
+<header class="hero">
+  <div>
+    <span class="label"><a href="../">MTG character archive</a> &middot; Innistrad &middot; House Markov</span>
+    <h1>Edgar Markov<em>first of the vampires</em></h1>
+    <p class="lead">Edgar Markov is the first vampire of Innistrad and founder of the Markov bloodline. Four Magic cards show him or his alternate-reality double: Edgar Markov (2017), Edgar, Charmed Groom (2021), and Edgar, Ancient Bloodlord and Edgar, Moonlit Sovereign (both 2026).</p>
+    <p class="label">Compiled 28 October 2026</p>
+  </div>
+  <div class="fan" aria-hidden="false">
+    <img src="img/edgar-markov-inr-234.jpg" alt="Edgar Markov, Innistrad Remastered" width="488" height="680">
+    <img src="img/charmed-groom-front-vow-236.jpg" alt="Edgar, Charmed Groom" width="488" height="680">
+    <img src="img/ancient-bloodlord-fra-270.jpg" alt="Edgar, Ancient Bloodlord" width="488" height="680">
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <a href="#who">Who he is</a>
+  <a href="#sorin">Conflict with Sorin</a>
+  <a href="#cards">Cards</a>
+  <a href="#printings">Printings</a>
+  <a href="#bloodline">Bloodline cards</a>
+  <a href="#commander">As a commander</a>
+  <a href="#open">Open questions</a>
+  <a href="#sources">Sources</a>
+</nav>
+
+<section id="who">
+  <h2>Who he is</h2>
+  <div class="measure">
+    <p>Edgar began as a human alchemist on Innistrad and became the progenitor of its vampires. Per the <a href="https://mtg.wiki/page/Markov">MTG Wiki</a>, a famine swept the land and the demon Shilgengar convinced him to experiment with blood. Edgar and his sons trapped the angel Marycz in his laboratory and drained her, then built a ritual from a decoction of her blood that made his subjects feed on the blood of other beings. It fed a few and, because the demand for blood also culled the population, reduced the number of hungry mouths.</p>
+  </div>
+  <dl class="facts">
+    <dt>Family</dt>
+    <dd>Sorin Markov, one of the oldest planeswalkers, is his grandson. One retelling (<a href="https://www.thegamer.com/magic-the-gathering-edgar-charmed-groom-commander-guide/">The Gamer</a>) says Edgar forced the transformation on Sorin, which triggered Sorin&rsquo;s planeswalker spark.</dd>
+    <dt>Age</dt>
+    <dd>Sources disagree: <a href="https://draftsim.com/sorin-markov-mtg/">Draftsim</a> puts Sorin&rsquo;s story at about 7,000 years ago, while <a href="https://mtgrocks.com/edgar-markov-costs-how-much-crazy-mtg-commander-spike/">MTGRocks</a> calls him 6,000 years old.</dd>
+    <dt>Early stories</dt>
+    <dd>He appears in the 2012 Dark Ascension stories &ldquo;Sorin&rsquo;s Homecoming&rdquo; and &ldquo;The Prison of Silver&rdquo;, and in &ldquo;The Lunarch&rsquo;s Journal&rdquo; (2014), according to the <a href="https://mtg.wiki/page/Edgar_Markov">MTG Wiki</a>.</dd>
+    <dt>Absence</dt>
+    <dd>He was missing from both original Innistrad blocks. The <a href="https://mtg.wiki/page/Markov">MTG Wiki</a> says he was thought to have possibly died when Nahiri&rsquo;s magic tore Markov Manor from its mountain and left it floating above Stensia.</dd>
+    <dt>Crimson Vow (2021)</dt>
+    <dd>He is alive. Olivia Voldaren stages a grand wedding to unite her house with his (<a href="https://thegamerslodge.com/blogs/magic-the-gathering/innistrad-lore-exploring-the-dark-lore-of-mtg">Gamers Lodge</a>). In the official story Sorin loses their first fight but beats Edgar in the second and spares him (see the next section). <a href="https://www.wargamer.com/magic-the-gathering/edgar-markov-vampire-fight">Wargamer</a>&rsquo;s retelling says only that a freshly fed Sorin easily beat him.</dd>
+    <dt>Reality Fracture (2026)</dt>
+    <dd>A werewolf version of Edgar appears as the alternate-reality counterpart of the vampire one (see the cards below).</dd>
+  </dl>
+</section>
+
+<section id="sorin">
+  <h2>His conflict with Sorin</h2>
+  <div class="measure">
+    <p>The conflict runs from Edgar forcing vampirism on Sorin, through Sorin building Avacyn and the Helvault against the vampires&rsquo; interests, to a fight on Edgar&rsquo;s wedding day in Crimson Vow that ends with Sorin sparing him. Edgar has not been killed, and his fate after the wedding is unresolved.</p>
+  </div>
+
+  <ol class="timeline">
+    <li>
+      <h3>The turning</h3>
+      <p>Edgar creates vampirism and forces it on his grandson. The trauma ignites Sorin&rsquo;s planeswalker spark, and he leaves Innistrad. In Sorin&rsquo;s Crimson Vow flashback, relatives insist the angel&rsquo;s blood is for his own good, Edgar declares Innistrad belongs to the Markovs, and Sorin is forced to drink.</p>
+      <blockquote>&ldquo;Drink and be eternal.&rdquo;</blockquote>
+      <p class="src"><a href="https://mtg.wiki/page/Edgar_Markov">MTG Wiki</a> &middot; <a href="https://magic.wizards.com/en/news/magic-story/episode-4-wedding-crashers-2021-11-17">Crimson Vow, episode 4</a></p>
+    </li>
+    <li>
+      <h3>The betrayal</h3>
+      <p>After centuries away, Sorin judges that vampires are pushing humanity toward extinction. Edgar dismisses his concerns, so Sorin acts alone. He creates the archangel Avacyn to guard humans and forges the Helvault, a prison, from a piece of the silver moon. Many vampires saw this as a betrayal of their race.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Sorin's_Betrayal">MTG Wiki: Sorin&rsquo;s Betrayal</a> &middot; <a href="https://mtg.wiki/page/Helvault">MTG Wiki: Helvault</a></p>
+    </li>
+    <li>
+      <h3>The long sleep</h3>
+      <p>Edgar sleeps for millennia in a crypt under Markov Manor and wakes only briefly. Sorin sometimes wakes him when he needs his counsel.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Edgar_Markov">MTG Wiki</a></p>
+    </li>
+    <li>
+      <h3>The wedding</h3>
+      <p>Olivia Voldaren steals Edgar&rsquo;s coffin, wakes him and proposes, and he agrees. Sorin tries to stop the wedding, then follows a fleeing Edgar into the sanguitorium.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Edgar_Markov">MTG Wiki</a> &middot; <a href="https://magic.wizards.com/en/news/magic-story/episode-4-wedding-crashers-2021-11-17">episode 4</a></p>
+    </li>
+    <li>
+      <h3>First fight <span class="tag edgar">Edgar wins</span></h3>
+      <p>Edgar opens the fight, then presses it.</p>
+      <blockquote>&ldquo;It didn&rsquo;t have to be this way.&rdquo; &ldquo;Do you have any idea how much I&rsquo;ve sacrificed for you?&rdquo;</blockquote>
+      <p>He breaks Sorin&rsquo;s wrist and throws him into a vat. Sorin hits back with a pipe and an iron bar. Edgar answers that Sorin never asked for the gift, &ldquo;that is what makes it a gift&rdquo;, and drops him into a great pit.</p>
+      <p class="src"><a href="https://magic.wizards.com/en/news/magic-story/episode-4-wedding-crashers-2021-11-17">episode 4</a></p>
+    </li>
+    <li>
+      <h3>Second fight <span class="tag sorin">Sorin wins</span></h3>
+      <p>Sorin drinks the blood, heals and climbs out. He finds Edgar fighting Teferi and his companions, and the two duel. Edgar falls and pleads, &ldquo;Sorin, you have to understand&rdquo;. Sorin holds a blade to his throat and does not kill him.</p>
+      <blockquote>&ldquo;Go. Get out of my sight.&rdquo;</blockquote>
+      <p class="src"><a href="https://magic.wizards.com/en/news/magic-story/episode-5-till-death-do-us-part-2021-11-24">Crimson Vow, episode 5</a></p>
+    </li>
+    <li>
+      <h3>Aftermath</h3>
+      <p>Edgar flees with Olivia when Arlinn Kord&rsquo;s wolves corner them. Tovolar catches only the tails of his coat. Asked by the pyromancer if he is all right, Sorin lies and says yes; Teferi tells him he did the right thing.</p>
+      <p class="src"><a href="https://magic.wizards.com/en/news/magic-story/episode-5-till-death-do-us-part-2021-11-24">episode 5</a></p>
+    </li>
+  </ol>
+
+  <h3>Before 2021: the two 2012 stories</h3>
+  <div class="measure">
+    <p>The two 2012 stories add backstory but no face-to-face scene between them. Both are narrated articles by Doug Beyer, now hosted on mtglore.com because Wizards removed them from its site.</p>
+    <ul class="plain">
+      <li><strong><a href="https://mtglore.com/web-articles/sorins-homecoming/">Sorin&rsquo;s Homecoming</a> (January 2012).</strong> Edgar&rsquo;s stated reason for his blood experiments was the famine, but the story says his real motive was agelessness for himself and his only grandson. The demon Shilgengar encouraged him. Edgar anointed Sorin with vampirism, and Sorin vanished as his spark ignited. Edgar &ldquo;still lives in Markov Manor to this day&rdquo; and Sorin is not welcome there. Over the centuries Sorin saw vampires hunting humans more boldly, created Avacyn, and was branded a traitor by some vampires.</li>
+      <li><strong><a href="https://mtglore.com/web-articles/the-prison-of-silver/">The Prison of Silver</a> (January 2012).</strong> A lore article rather than a scene. It repeats that Edgar inflicted vampirism on Sorin and says Sorin created Avacyn, whose campaign against vampires led Sorin&rsquo;s kin to call him a traitor. The rest follows Avacyn: she bound returning demons in the Helvault, and Griselbrand struck her down.</li>
+    </ul>
+  </div>
+  <div class="aside">
+    <span class="label">My reading</span>
+    <p>Edgar&rsquo;s Crimson Vow line &ldquo;Do you have any idea how much I&rsquo;ve sacrificed for you?&rdquo; fits the 2012 account that he wanted agelessness for Sorin too. The stories do not say this themselves.</p>
+  </div>
+
+  <h3>Two points are disputed or unclear</h3>
+  <ul class="plain measure">
+    <li><strong>Who forced the turning.</strong> The MTG Wiki says Edgar forced Sorin, while <a href="https://draftsim.com/sorin-markov-mtg/">Draftsim</a> says other nobles held him down and force-fed him the angel&rsquo;s blood. The Crimson Vow flashback shows relatives forcing him with Edgar presiding.</li>
+    <li><strong>Whether Edgar was himself.</strong> Accounts describe him as charmed by Olivia, but in the fight Sorin only suspects her influence runs deep and doubts that Edgar&rsquo;s words are entirely his own. The story does not settle it.</li>
+  </ul>
+  <p class="src measure">The two Crimson Vow episodes were read through a page-summary tool, so check the quotes against the originals before relying on exact wording.</p>
+</section>
+
+<section id="cards">
+  <h2>Cards that depict him</h2>
+
+  <article class="card-entry">
+    <div class="art"><img src="img/edgar-markov-inr-234.jpg" alt="Edgar Markov, Innistrad Remastered" width="488" height="680"></div>
+    <div>
+      <span class="label">Commander 2017 &middot; reprinted in Innistrad Remastered, 2025</span>
+      <h3>Edgar Markov</h3>
+      <div class="meta"><span class="mana">{3}{R}{W}{B}</span><span>Legendary Creature &mdash; Vampire Knight &middot; 4/4 &middot; mythic</span></div>
+      <div class="rules">
+        <p><em>Eminence</em> &mdash; Whenever you cast another Vampire spell while Edgar is in the command zone or on the battlefield, create a 1/1 black Vampire token.</p>
+        <p>First strike, haste</p>
+        <p>Whenever Edgar attacks, put a +1/+1 counter on each Vampire you control.</p>
+      </div>
+    </div>
+  </article>
+
+  <article class="card-entry pair">
+    <div class="art">
+      <img src="img/charmed-groom-front-vow-236.jpg" alt="Edgar, Charmed Groom, front face" width="488" height="680">
+      <img src="img/charmed-groom-coffin-vow-236.jpg" alt="Edgar Markov's Coffin, back face" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">Innistrad: Crimson Vow &middot; 2021</span>
+      <h3>Edgar, Charmed Groom // Edgar Markov&rsquo;s Coffin</h3>
+      <div class="meta"><span class="mana">{2}{W}{B}</span><span>Legendary Creature &mdash; Vampire Noble &middot; 4/4 &middot; rare &middot; double-faced</span></div>
+      <div class="rules">
+        <span class="face">Front</span>
+        <p>Other Vampires you control get +1/+1, and when Edgar dies he returns transformed.</p>
+        <span class="face">Back: Edgar Markov&rsquo;s Coffin, Legendary Artifact</span>
+        <p>At your upkeep, create a 1/1 white and black Vampire token with lifelink and add a bloodline counter. At three counters it transforms back into Edgar.</p>
+      </div>
+    </div>
+  </article>
+
+  <article class="card-entry">
+    <div class="art"><img src="img/ancient-bloodlord-fra-270.jpg" alt="Edgar, Ancient Bloodlord" width="488" height="680"></div>
+    <div>
+      <span class="label">Reality Fracture &middot; 2026</span>
+      <h3>Edgar, Ancient Bloodlord</h3>
+      <div class="meta"><span class="mana">{W}{B}</span><span>Legendary Creature &mdash; Vampire Noble &middot; 2/3 &middot; uncommon</span></div>
+      <div class="rules">
+        <p>Whenever another creature or planeswalker you control dies, gain 1 life.</p>
+        <p>{2}, sacrifice another creature or planeswalker: put a +1/+1 counter on Edgar, and he gains menace until end of turn.</p>
+        <p class="flavor">&ldquo;Our family was born in blood, and through blood it will endure.&rdquo;</p>
+      </div>
+    </div>
+  </article>
+
+  <article class="card-entry">
+    <div class="art"><img src="img/moonlit-sovereign-fra.jpg" alt="Edgar, Moonlit Sovereign" width="488" height="680"></div>
+    <div>
+      <span class="label">Reality Fracture &middot; 2026</span>
+      <h3>Edgar, Moonlit Sovereign</h3>
+      <div class="meta"><span class="mana">{3}{G}{G}</span><span>Legendary Creature &mdash; Werewolf Noble</span></div>
+      <div class="rules">
+        <p>The werewolf double of Edgar from Jace&rsquo;s alternate reality (Echoverse).</p>
+        <p>Flash. At your end step, if you cast no spell this turn, put two +1/+1 counters on him.</p>
+        <p>{4}{G}: put a +1/+1 counter on each creature you control that has one.</p>
+      </div>
+    </div>
+  </article>
+
+  <div class="measure">
+    <p>Edgar Markov and Edgar, Charmed Groom are the two that matter in practice: one is a Mardu (red, white, black) commander, the other a white-black Vampire lord that comes back after dying. Both are by artist Volkan Ba&gcaron;a.</p>
+  </div>
+</section>
+
+<section id="printings">
+  <h2>Printings</h2>
+  <div class="measure">
+    <p>Edgar Markov was a Commander-only card for years, and that scarcity drove his price past $100 before the 2025 reprint (<a href="https://mtgrocks.com/innistrad-remastered-spoilers-reveal-multiple-40-reprints/">MTGRocks</a>). The regular Innistrad Remastered copy now costs about $44.58 (USD, current price lookup).</p>
+  </div>
+
+  <div class="gallery">
+    <figure><img src="img/edgar-markov-c17-36.jpg" alt="Edgar Markov, Commander 2017" width="488" height="680"><figcaption><b>C17 &middot; 36</b>Commander 2017, the original</figcaption></figure>
+    <figure><img src="img/edgar-markov-inr-234.jpg" alt="Edgar Markov, Innistrad Remastered regular frame" width="488" height="680"><figcaption><b>INR &middot; 234</b>Regular frame, first proper reprint</figcaption></figure>
+    <figure><img src="img/edgar-markov-inr-328-showcase.jpg" alt="Edgar Markov, Innistrad Remastered showcase" width="488" height="680"><figcaption><b>INR &middot; 328</b>Showcase, art by Betty Jiang</figcaption></figure>
+    <figure><img src="img/edgar-markov-inr-428-retro.jpg" alt="Edgar Markov, Innistrad Remastered retro frame" width="488" height="680"><figcaption><b>INR &middot; 428</b>Retro frame</figcaption></figure>
+    <figure><img src="img/edgar-markov-inr-491-serialized.jpg" alt="Edgar Markov, Innistrad Remastered serialized" width="488" height="680"><figcaption><b>INR &middot; 491</b>Serialized, numbered out of 500, art by Jack Hughes</figcaption></figure>
+    <figure><img src="img/charmed-groom-front-vow-236.jpg" alt="Edgar, Charmed Groom, Crimson Vow regular frame" width="488" height="680"><figcaption><b>VOW &middot; 236</b>Edgar, Charmed Groom, regular frame</figcaption></figure>
+    <figure><img src="img/charmed-groom-vow-311-showcase.jpg" alt="Edgar, Charmed Groom, Crimson Vow fang frame showcase" width="488" height="680"><figcaption><b>VOW &middot; 311</b>Fang frame showcase, art by Nestor Ossandon Leal</figcaption></figure>
+  </div>
+
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Card</th><th>Set</th><th class="num">No.</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td>Edgar Markov</td><td>Commander 2017</td><td class="num">36</td><td>Original printing, in the Vampiric Bloodlust Commander deck</td></tr>
+        <tr><td>Edgar Markov</td><td>Commander 2017 Oversized</td><td class="num">36</td><td>Oversized commander card</td></tr>
+        <tr><td>Edgar Markov</td><td>Judge Gift Cards 2021</td><td class="num">3</td><td>Judge promo</td></tr>
+        <tr><td>Edgar Markov</td><td>Innistrad Remastered</td><td class="num">234</td><td>Regular frame, first proper reprint (January 2025)</td></tr>
+        <tr><td>Edgar Markov</td><td>Innistrad Remastered</td><td class="num">328</td><td>Showcase frame</td></tr>
+        <tr><td>Edgar Markov</td><td>Innistrad Remastered</td><td class="num">428</td><td>Retro frame</td></tr>
+        <tr><td>Edgar Markov</td><td>Innistrad Remastered</td><td class="num">491</td><td>Serialized, double rainbow foil</td></tr>
+        <tr><td>Edgar Markov</td><td>Treasure Chest</td><td class="num">65693</td><td>Treasure Chest product</td></tr>
+        <tr><td>Edgar Markov</td><td>Art Series: Innistrad Remastered</td><td class="num">24</td><td>Art card, not tournament legal</td></tr>
+        <tr><td>Edgar, Charmed Groom</td><td>Innistrad: Crimson Vow</td><td class="num">236</td><td>Regular frame</td></tr>
+        <tr><td>Edgar, Charmed Groom</td><td>Innistrad: Crimson Vow</td><td class="num">311</td><td>Fang frame showcase</td></tr>
+        <tr><td>Edgar, Charmed Groom</td><td>Innistrad: Double Feature</td><td class="num">503</td><td>Reprint in the Double Feature set</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="measure">Printing lists come from <a href="https://mtg.wtf/card/availability/inr/234">mtg.wtf</a>, <a href="https://echomtg.com/mtg/edgar-markov">EchoMTG</a>, <a href="https://www.mtgstocks.com/prints/128262-edgar-markov-art-card">MTGStocks</a> and <a href="https://facetofacegames.com/products/edgar-charmed-groom-edgar-markovs-coffin-311-fang-frame-showcase-innistrad-crimson-vow-non-foil">Face to Face Games</a>. There is no full official checklist behind it, so promos may be missing. Images are not available here for the Judge promo, the oversized card, the Treasure Chest version or the Double Feature printing.</p>
+</section>
+
+<section id="bloodline">
+  <h2>Cards named for his bloodline</h2>
+  <div class="measure">
+    <p>Thirteen more cards carry the Markov name. They represent his family and house, not Edgar himself, and most of them are Vampires that work with him as a commander. Costs are blank where the card search did not return one.</p>
+  </div>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Card</th><th>Set</th><th>Cost</th><th>Type</th></tr></thead>
+      <tbody>
+        <tr><td>Sorin Markov</td><td>Magic 2012</td><td><span class="mana">{3}{B}{B}{B}</span></td><td>Legendary Planeswalker, Sorin (his grandson)</td></tr>
+        <tr><td>Sorin of House Markov // Sorin, Ravenous Neonate</td><td>Modern Horizons 3</td><td></td><td>Legendary Creature, Human Noble // Legendary Planeswalker</td></tr>
+        <tr><td>Markov Patrician</td><td>Innistrad</td><td><span class="mana">{2}{B}</span></td><td>Creature, Vampire (lifelink)</td></tr>
+        <tr><td>Markov Blademaster</td><td>Dark Ascension</td><td><span class="mana">{1}{R}{R}</span></td><td>Creature, Vampire Warrior (double strike)</td></tr>
+        <tr><td>Markov Warlord</td><td>Dark Ascension</td><td><span class="mana">{5}{R}</span></td><td>Creature, Vampire Warrior (haste; two creatures can&rsquo;t block)</td></tr>
+        <tr><td>Chosen of Markov // Markov&rsquo;s Servant</td><td>Dark Ascension</td><td></td><td>Creature, Human // Creature, Vampire</td></tr>
+        <tr><td>Markov Dreadknight</td><td>Shadows over Innistrad</td><td><span class="mana">{3}{B}{B}</span></td><td>Creature, Vampire Knight (flying)</td></tr>
+        <tr><td>Markov Crusader</td><td>Eldritch Moon</td><td><span class="mana">{4}{B}</span></td><td>Creature, Vampire Knight (lifelink; haste with another Vampire)</td></tr>
+        <tr><td>Markov Purifier</td><td>Innistrad: Crimson Vow</td><td><span class="mana">{1}{W}{B}</span></td><td>Creature, Vampire Cleric (lifelink)</td></tr>
+        <tr><td>Markov Retribution</td><td>Innistrad: Crimson Vow</td><td><span class="mana">{2}{R}</span></td><td>Sorcery (a Vampire deals damage equal to its power)</td></tr>
+        <tr><td>Markov Enforcer</td><td>Crimson Vow Commander</td><td><span class="mana">{4}{R}{R}</span></td><td>Creature, Vampire Soldier</td></tr>
+        <tr><td>Markov Waltzer</td><td>Innistrad Remastered</td><td><span class="mana">{2}{R}{W}</span></td><td>Creature, Vampire (flying, haste)</td></tr>
+        <tr><td>Markov Baron</td><td>March of the Machine: The Aftermath</td><td><span class="mana">{2}{B}</span></td><td>Creature, Vampire Noble (other Vampires get +1/+1)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="commander">
+  <h2>Playing him as a commander</h2>
+  <div class="measure">
+    <p>Edgar Markov is legal in Commander and leads 52,283 decks on EDHREC, with Vampires, lifegain, tokens, aggro and aristocrats as the most common themes. Edgar, Charmed Groom is in 55.4% of those decks, one of the most-played creatures alongside him. EDHREC counts all Commander decks, so these numbers are not specific to 1v1.</p>
+    <p>The two official rulings (24 January 2025) both concern Eminence: Edgar must be in the command zone or on the battlefield both when you cast the Vampire spell and when the trigger resolves. If he leaves that zone in between, the trigger does nothing. Edgar, Charmed Groom has one ruling: a non-double-faced copy of him will not return when it dies.</p>
+  </div>
+  <h3>Share of Edgar Markov decks that play each card</h3>
+  <ul class="bars">
+    <li><span class="name">Captivating Vampire</span><span class="track"><span class="fill" style="width:82.5%"></span></span><span class="val">82.5%</span></li>
+    <li><span class="name">Blood Artist</span><span class="track"><span class="fill" style="width:82.3%"></span></span><span class="val">82.3%</span></li>
+    <li><span class="name">Cordial Vampire</span><span class="track"><span class="fill" style="width:81.8%"></span></span><span class="val">81.8%</span></li>
+    <li><span class="name">Stromkirk Captain</span><span class="track"><span class="fill" style="width:74.3%"></span></span><span class="val">74.3%</span></li>
+    <li><span class="name">Indulgent Aristocrat</span><span class="track"><span class="fill" style="width:72.9%"></span></span><span class="val">72.9%</span></li>
+    <li><span class="name">Welcoming Vampire</span><span class="track"><span class="fill" style="width:72.8%"></span></span><span class="val">72.8%</span></li>
+    <li><span class="name">Legion Lieutenant</span><span class="track"><span class="fill" style="width:69.1%"></span></span><span class="val">69.1%</span></li>
+    <li><span class="name">Bloodline Keeper</span><span class="track"><span class="fill" style="width:68.6%"></span></span><span class="val">68.6%</span></li>
+    <li><span class="name">Sanctum Seeker</span><span class="track"><span class="fill" style="width:67.8%"></span></span><span class="val">67.8%</span></li>
+    <li><span class="name">Skullclamp</span><span class="track"><span class="fill" style="width:61.5%"></span></span><span class="val">61.5%</span></li>
+  </ul>
+  <p class="src">Source: EDHREC data, retrieved through a card-data tool on 28 October 2026.</p>
+</section>
+
+<section id="open">
+  <h2>What could not be confirmed</h2>
+  <ul class="plain measure">
+    <li><strong>Edgar&rsquo;s Awakening</strong> (Innistrad Remastered, {3}{B}{B}, a sorcery that returns a creature from your graveyard to the battlefield) shares his first name. Nothing found confirms it depicts him, so it is not in the card lists above.</li>
+    <li><strong>Other Edgars</strong> are unrelated: Edgar, King of Figaro and Edgar, Master Machinist come from Final Fantasy.</li>
+    <li><strong>How his Crimson Vow storyline ends.</strong> He is alive, Olivia plans to marry him and Sorin beats him in a fight, but the final outcome is not confirmed.</li>
+    <li><strong>Dates and prices.</strong> His age differs between sources, the printing list may miss promos, and the price is a single lookup.</li>
+    <li><strong>Scryfall</strong> blocked the requests, so card text comes from a card-data tool and the retailer pages below, not from Scryfall directly.</li>
+  </ul>
+</section>
+
+<section id="sources">
+  <h2>Sources</h2>
+  <ul class="plain measure">
+    <li><a href="https://mtg.wiki/page/Edgar_Markov">MTG Wiki: Edgar Markov</a> and <a href="https://mtg.wiki/page/Markov">MTG Wiki: Markov</a>; also <a href="https://mtg.wiki/page/Sorin's_Betrayal">Sorin&rsquo;s Betrayal</a> and <a href="https://mtg.wiki/page/Helvault">Helvault</a></li>
+    <li>Crimson Vow story: <a href="https://magic.wizards.com/en/news/magic-story/episode-4-wedding-crashers-2021-11-17">episode 4</a> and <a href="https://magic.wizards.com/en/news/magic-story/episode-5-till-death-do-us-part-2021-11-24">episode 5</a></li>
+    <li>2012 stories on mtglore.com: <a href="https://mtglore.com/web-articles/sorins-homecoming/">Sorin&rsquo;s Homecoming</a> and <a href="https://mtglore.com/web-articles/the-prison-of-silver/">The Prison of Silver</a></li>
+    <li><a href="https://draftsim.com/sorin-markov-mtg/">Draftsim: Sorin Markov</a></li>
+    <li><a href="https://www.thegamer.com/magic-the-gathering-edgar-charmed-groom-commander-guide/">The Gamer: Edgar, Charmed Groom commander guide</a></li>
+    <li><a href="https://www.wargamer.com/magic-the-gathering/edgar-markov-vampire-fight">Wargamer: Edgar Markov vampire fight</a></li>
+    <li><a href="https://thegamerslodge.com/blogs/magic-the-gathering/innistrad-lore-exploring-the-dark-lore-of-mtg">Gamers Lodge: Innistrad lore</a></li>
+    <li><a href="https://mtgrocks.com/edgar-markov-costs-how-much-crazy-mtg-commander-spike/">MTGRocks: Edgar Markov price</a> and <a href="https://mtgrocks.com/innistrad-remastered-spoilers-reveal-multiple-40-reprints/">Innistrad Remastered reprints</a></li>
+    <li><a href="https://www.thornberrymedia.com/post/edgar-markov-werewolf-reality-fracture">Thornberry Media: werewolf Edgar</a></li>
+    <li><a href="https://www.cardkingdom.com/mtg/reality-fracture/edgar-ancient-bloodlord">Card Kingdom: Edgar, Ancient Bloodlord</a> and <a href="https://mtga.untapped.gg/ja/codex/sets/reality-fracture/270/edgar-ancient-bloodlord">Untapped.gg: Edgar, Ancient Bloodlord</a></li>
+    <li><a href="https://mtgazone.com/spoilers/vow/edgar-charmed-groom-edgar-markovs-coffin/">MTG Arena Zone: Edgar, Charmed Groom</a></li>
+    <li>Printings: <a href="https://mtg.wtf/card/availability/inr/234">mtg.wtf</a>, <a href="https://echomtg.com/mtg/edgar-markov">EchoMTG</a> and <a href="https://www.mtgstocks.com/prints/128262-edgar-markov-art-card">MTGStocks</a></li>
+  </ul>
+</section>
+
+<footer>
+  <p>Fan-made reference page. Magic: The Gathering and its card images are property of Wizards of the Coast.</p>
+  <p>More in this series: <a href="../">all characters</a> &middot; <a href="../dihada/">Dihada, binder of wills</a></p>
+</footer>
+
+</div>
+
+<script>
+(function () {
+  var els = document.querySelectorAll('.mana');
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    var text = el.textContent;
+    var parts = text.match(/\{[^}]+\}/g);
+    if (!parts) continue;
+    el.setAttribute('role', 'img');
+    el.setAttribute('aria-label', 'Mana cost ' + parts.map(function (p) { return p.slice(1, -1); }).join(' '));
+    el.textContent = '';
+    for (var j = 0; j < parts.length; j++) {
+      var k = parts[j].slice(1, -1);
+      var s = document.createElement('i');
+      s.className = 'sym s-' + (/^\d+$/.test(k) ? 'n' : k.toLowerCase());
+      s.textContent = k;
+      s.setAttribute('aria-hidden', 'true');
+      el.appendChild(s);
+    }
+  }
+})();
+</script>
+
+</body></html>
