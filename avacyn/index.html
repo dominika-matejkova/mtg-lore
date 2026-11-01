@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Avacyn, protector of Innistrad</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a church record. One reading column, wide breakouts for card art and tables.
+   Palette: cathedral-white paper, holy-gold ink, corruption-red for her fall. Type: Fraunces (display), Newsreader (text), Plex Mono (costs, labels). */
+:root {
+  --bg: #EDEDE6;
+  --surface: #F8F8F2;
+  --ink: #16160E;
+  --ink-2: #45453A;
+  --rule: #D6D6C6;
+  --accent: #A8891E;
+  --accent-soft: #F0E6C4;
+  --silver: #6B6B5A;
+  --win: #8A1E1E;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-text: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F0F0A;
+    --surface: #17170F;
+    --ink: #EDEDE0;
+    --ink-2: #B3B39E;
+    --rule: #2E2E1E;
+    --accent: #E0C050;
+    --accent-soft: #332C14;
+    --silver: #A3A38A;
+    --win: #E85050;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F0F0A;
+  --surface: #17170F;
+  --ink: #EDEDE0;
+  --ink-2: #B3B39E;
+  --rule: #2E2E1E;
+  --accent: #E0C050;
+  --accent-soft: #332C14;
+  --silver: #A3A38A;
+  --win: #E85050;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  padding-block: 0 4rem;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 68rem; margin-inline: auto; }
+.measure { max-width: 42rem; }
+img { height: auto; }
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+p { margin: 0 0 1em; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; font-weight: 600; line-height: 1.1; margin: 0; }
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--silver);
+}
+
+/* hero */
+.hero { overflow-x: clip; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 2.5rem; align-items: center; padding-block: 3rem 2.5rem; }
+.hero h1 { font-size: clamp(3.2rem, 9vw, 6.4rem); font-weight: 800; letter-spacing: -0.01em; margin: 0.6rem 0 1.2rem; }
+.hero h1 em { display: block; font-style: italic; font-weight: 600; color: var(--accent); font-size: 0.5em; line-height: 1.15; margin-top: 0.3em; }
+.hero .lead { font-size: 1.3rem; line-height: 1.5; color: var(--ink); max-width: 34rem; }
+.fan { position: relative; aspect-ratio: 1.3 / 1; width: 100%; max-width: 34rem; justify-self: center; }
+.fan img { position: absolute; top: 0; width: 42%; border-radius: 4.6% / 3.3%; box-shadow: 0 14px 30px -12px rgba(8, 20, 12, 0.55); }
+.fan img:nth-child(1) { left: 2%; top: 8%; transform: rotate(-6deg); }
+.fan img:nth-child(2) { left: 28%; top: 0; z-index: 2; }
+.fan img:nth-child(3) { left: 52%; top: 8%; transform: rotate(6deg); }
+
+nav.toc { display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; padding-block: 1rem; border-block: 1px solid var(--rule); font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; }
+nav.toc a { color: var(--ink-2); text-decoration: none; padding-block: 0.25rem; }
+nav.toc a:hover { color: var(--accent); }
+
+section { padding-top: 4rem; scroll-margin-top: 1rem; }
+section > h2 { font-size: clamp(2rem, 4.6vw, 3rem); margin-bottom: 1.4rem; }
+h3 { font-size: 1.5rem; margin: 2.2rem 0 0.8rem; }
+
+/* facts list */
+dl.facts { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); gap: 0; margin: 2rem 0 0; border-top: 1px solid var(--rule); }
+dl.facts dt, dl.facts dd { padding-block: 0.9rem; border-bottom: 1px solid var(--rule); margin: 0; }
+dl.facts dt { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); padding-top: 1.1rem; }
+dl.facts dd { min-width: 0; }
+
+/* timeline */
+ol.timeline { list-style: none; counter-reset: stage; margin: 2rem 0 0; padding: 0; border-left: 2px solid var(--rule); }
+ol.timeline > li { counter-increment: stage; position: relative; padding: 0 0 2rem 2.2rem; }
+ol.timeline > li::before {
+  content: counter(stage);
+  position: absolute; left: -1.05rem; top: 0;
+  width: 2rem; height: 2rem; border-radius: 50%;
+  background: var(--bg); border: 2px solid var(--accent); color: var(--accent);
+  font-family: var(--font-mono); font-size: 0.85rem; display: grid; place-items: center;
+}
+ol.timeline h3 { margin: 0 0 0.4rem; font-size: 1.35rem; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 0.8rem; }
+ol.timeline p { margin: 0 0 0.5rem; }
+.src { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.04em; color: var(--silver); }
+.src a { color: var(--silver); }
+.tag { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.15rem 0.5rem; border-radius: 3px; border: 1px solid currentColor; }
+.tag.avacyn { color: var(--accent); }
+.tag.corrupt { color: var(--win); }
+ol.timeline blockquote { margin: 0.6rem 0; padding: 0.1rem 0 0.1rem 1rem; border-left: 3px solid var(--accent-soft); color: var(--ink-2); font-style: italic; }
+
+.aside { background: var(--surface); border: 1px solid var(--rule); padding: 1.2rem 1.4rem; margin-block: 1.6rem; max-width: 42rem; }
+.aside p:last-child { margin-bottom: 0; }
+.aside .label { display: block; margin-bottom: 0.4rem; }
+ul.plain { padding-left: 1.2rem; margin: 0 0 1em; }
+ul.plain li { margin-bottom: 0.7rem; padding-left: 0.2rem; }
+
+/* cards */
+.card-entry { display: grid; grid-template-columns: minmax(0, 17rem) minmax(0, 1fr); gap: 2rem; padding-block: 2rem; border-top: 1px solid var(--rule); align-items: start; }
+.card-entry.pair { grid-template-columns: minmax(0, 24rem) minmax(0, 1fr); }
+.card-entry .art { display: flex; gap: 0.8rem; }
+.card-entry img, .gallery img { width: 100%; height: auto; display: block; border-radius: 4.6% / 3.3%; box-shadow: 0 10px 24px -14px rgba(8, 20, 12, 0.6); }
+.card-entry .art img { min-width: 0; flex: 1 1 0; }
+.card-entry h3 { margin: 0.3rem 0 0.5rem; font-size: 1.8rem; }
+.card-entry .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1rem; margin-bottom: 0.9rem; font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink-2); }
+.rules { background: var(--surface); border: 1px solid var(--rule); padding: 0.9rem 1.1rem; font-size: 1.02rem; }
+.rules p { margin: 0 0 0.5em; }
+.rules p:last-child { margin-bottom: 0; }
+.rules .flavor { font-style: italic; color: var(--ink-2); }
+.rules .face { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); display: block; margin-bottom: 0.15rem; }
+.loy { font-family: var(--font-mono); font-weight: 500; color: var(--accent); }
+
+.mana { display: inline-flex; gap: 2px; align-items: center; vertical-align: middle; font-family: var(--font-mono); }
+.sym { display: inline-grid; place-items: center; width: 1.6em; height: 1.6em; border-radius: 50%; font-style: normal; font-size: 0.8em; line-height: 1; background: #CFC8D2; color: #231C27; }
+.s-w { background: #F2EBC9; color: #3A3320; }
+.s-u { background: #BBD6EE; color: #10283A; }
+.s-b { background: #3A3040; color: #EDE7EE; }
+.s-r { background: #E0704C; color: #2A0D05; }
+.s-g { background: #5BA26F; color: #0D2514; }
+
+/* gallery */
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(11.5rem, 1fr)); gap: 1.6rem 1.2rem; margin: 2rem 0; }
+.gallery figure { margin: 0; min-width: 0; }
+.gallery figcaption { margin-top: 0.6rem; font-size: 0.92rem; line-height: 1.4; color: var(--ink-2); }
+.gallery figcaption b { display: block; color: var(--ink); font-weight: 600; font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.04em; }
+
+/* tables */
+.table-scroll { overflow-x: auto; margin: 1.4rem 0; border-top: 1px solid var(--ink); }
+table { border-collapse: collapse; width: 100%; font-size: 0.98rem; }
+th, td { text-align: left; vertical-align: top; padding: 0.65rem 1rem 0.65rem 0; border-bottom: 1px solid var(--rule); }
+th { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); white-space: nowrap; }
+td.num, th.num { font-variant-numeric: tabular-nums; }
+table td:first-child { font-weight: 600; }
+
+/* bars */
+.bars { list-style: none; margin: 1.6rem 0; padding: 0; max-width: 46rem; }
+.bars li { display: grid; grid-template-columns: minmax(8rem, 12rem) minmax(0, 1fr) 3.6rem; gap: 0.9rem; align-items: center; padding-block: 0.3rem; }
+.bars .name { font-size: 1rem; }
+.bars .track { height: 0.85rem; background: var(--surface); border: 1px solid var(--rule); }
+.bars .fill { display: block; height: 100%; background: var(--accent); }
+.bars .val { font-family: var(--font-mono); font-size: 0.85rem; text-align: right; font-variant-numeric: tabular-nums; }
+
+footer { margin-top: 5rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); font-size: 0.9rem; color: var(--ink-2); max-width: 42rem; }
+
+@media (max-width: 52rem) {
+  .hero { grid-template-columns: minmax(0, 1fr); padding-block: 2rem; }
+  .card-entry, .card-entry.pair { grid-template-columns: minmax(0, 1fr); }
+  .card-entry .art { max-width: 22rem; }
+  .card-entry.pair .art { max-width: 28rem; }
+}
+@media (max-width: 34rem) {
+  body { font-size: 1.05rem; }
+  dl.facts { grid-template-columns: minmax(0, 1fr); }
+  dl.facts dt { border-bottom: 0; padding-bottom: 0; }
+  dl.facts dd { padding-top: 0.2rem; }
+  .bars li { grid-template-columns: minmax(0, 1fr) 3.4rem; }
+  .bars .track { grid-column: 1 / -1; grid-row: 2; }
+  .bars .val { grid-row: 1; grid-column: 2; }
+  ol.timeline > li { padding-left: 1.7rem; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div>
+    <span class="label"><a href="../">MTG character archive</a> &middot; Innistrad &middot; Archangel</span>
+    <h1>Avacyn<em>protector of Innistrad</em></h1>
+    <p class="lead">Avacyn was an archangel forged by the vampire planeswalker Sorin Markov to protect Innistrad&rsquo;s humanity in his absence. She rose to become the central figure of the Church of Avacyn &mdash; then fell to corruption and was unmade by her own creator. Three cards show her: Avacyn, Guardian Angel (2014), Archangel Avacyn // Avacyn, the Purifier (2016), and Avacyn, Angel of Hope (2012).</p>
+    <p class="label">Compiled 1 November 2026</p>
+  </div>
+  <div class="fan">
+    <img src="img/archangel-avacyn-soi-5.jpg" alt="Archangel Avacyn, Shadows over Innistrad" width="488" height="680">
+    <img src="img/avacyn-angel-of-hope-inr-477.jpg" alt="Avacyn, Angel of Hope, Innistrad Remastered" width="488" height="680">
+    <img src="img/avacyn-guardian-angel-m15-3.jpg" alt="Avacyn, Guardian Angel, Magic 2015" width="488" height="680">
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <a href="#who">Who she is</a>
+  <a href="#story">Her story</a>
+  <a href="#cards">Cards</a>
+  <a href="#printings">Printings</a>
+  <a href="#commander">As a commander</a>
+  <a href="#open">Open questions</a>
+  <a href="#sources">Sources</a>
+</nav>
+
+<section id="who">
+  <h2>Who she is</h2>
+  <div class="measure">
+    <p>The <a href="https://mtg.wiki/page/Avacyn">MTG Wiki</a> describes Avacyn as &ldquo;an archangel who inhabited Innistrad&rdquo; and &ldquo;the central figure of the Church of Avacyn, who gave the humanity of that plane the faith to fight for survival.&rdquo; She was not born but made: Sorin Markov created her and invested her with the power to maintain the balance between humanity and the plane&rsquo;s darker forces.</p>
+  </div>
+  <dl class="facts">
+    <dt>Origin</dt>
+    <dd>Created on Innistrad by the vampire planeswalker Sorin Markov, who thought of her as a kind of daughter and tasked her with protecting the plane in his long absences.</dd>
+    <dt>Purpose</dt>
+    <dd>To maintain the balance between humans, vampires, werewolves, and demons &mdash; without her, the Wiki says, humanity&rsquo;s extinction at the hands of the supernatural was inevitable, which would in turn doom the vampires and werewolves that fed on them.</dd>
+    <dt>Psychology</dt>
+    <dd>Before her corruption, incredibly benevolent toward humans and most comfortable with children. She didn&rsquo;t understand smiling, but felt deep satisfaction in her work. Sigarda called her the most powerful and confident angel on Innistrad, if also the most detached &mdash; a consequence, perhaps, of her artificial nature.</dd>
+    <dt>Capacity for violence</dt>
+    <dd>Not limited to her corrupted state: a thousand years before the events on this page, she single-handedly slew the angel Liesa and her entire flight for allying with a demon lord, then forbade anyone from speaking Liesa&rsquo;s name again.</dd>
+    <dt>Status</dt>
+    <dd>Deceased. Unmade by her own creator, Sorin Markov, at the Vault of the Archangel where she was first made.</dd>
+  </dl>
+</section>
+
+<section id="story">
+  <h2>Her story</h2>
+  <div class="measure">
+    <p>Avacyn&rsquo;s arc runs from her creation through a long disappearance, a joyful return, a slow corruption she never saw coming, and a death that broke the last of Sorin&rsquo;s protections over Innistrad.</p>
+  </div>
+
+  <ol class="timeline">
+    <li>
+      <h3>Created to protect <span class="tag avacyn">Avacyn</span></h3>
+      <p>As Innistrad&rsquo;s vampires gain ground against humanity, Sorin Markov forges Avacyn and tasks her with holding back the darkness. The Church of Avacyn rises from the power he invests in her, becoming humanity&rsquo;s central source of faith and defense.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Avacyn">MTG Wiki: Avacyn</a></p>
+    </li>
+    <li>
+      <h3>Trapped in the Helvault <span class="tag avacyn">Avacyn</span></h3>
+      <p>The demon Griselbrand challenges Avacyn to combat at the Helvault, and the two battle for days before Avacyn drives him into the vault with the last of her strength. As his final act, Griselbrand impales her with his spear; the binding spell backfires, and Avacyn is imprisoned in the Helvault alongside every demon trapped within. Her disappearance shatters the balance she was built to maintain.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Avacyn">MTG Wiki: Avacyn</a></p>
+    </li>
+    <li>
+      <h3>The Sundering of the Helvault <span class="tag avacyn">Avacyn</span></h3>
+      <p>Liliana Vess, seeking to destroy Griselbrand and free herself from a demonic pact, forces Thalia to open the Helvault. Both the demons and Avacyn are released. Restored, Avacyn leads Innistrad&rsquo;s humanity into roughly a year of prosperity, and transforms a group of lycanthropes at Gatstaf Grotto into a new race, the wolfir, who pledge to guard humanity in exchange for relief from their curse &mdash; a wave of magic known as the Cursemute.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Avacyn">MTG Wiki: Avacyn</a></p>
+    </li>
+    <li>
+      <h3>The first cracks <span class="tag avacyn">Avacyn</span> <span class="tag corrupt">Corruption</span></h3>
+      <p>Rescuing a village outcast&rsquo;s son from the woods, Avacyn is struck by a strange spell &mdash; unknown to her, the backlash of Nahiri&rsquo;s cryptoliths summoning Emrakul to the plane, which is especially harmful to angels, beings of raw mana. The spell floods her mind with visions of Nahiri&rsquo;s works and a new conviction that humanity itself is corrupted. Black trim begins to creep into her irises.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Avacyn">MTG Wiki: Avacyn</a></p>
+    </li>
+    <li>
+      <h3>Full corruption <span class="tag corrupt">Corruption</span></h3>
+      <p>Avacyn&rsquo;s madness deepens: she verbally abuses a Lunarch who questions her, kills a grieving werewolf who prays to her, and threatens her own angelic sister Sigarda. By late Hunter&rsquo;s Moon she commands a flight of angels in slaughtering the same village she once protected, hearing &ldquo;soothing whispers from the Moon&rdquo; as she attacks.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Avacyn">MTG Wiki: Avacyn</a></p>
+    </li>
+    <li>
+      <h3>The Unmaking <span class="tag avacyn">Avacyn</span> <span class="tag corrupt">Corruption</span></h3>
+      <p>At Thraben Cathedral, a mad Avacyn attacks Jace Beleren and Tamiyo before Sorin arrives and reveals himself as her creator. In a moment of lucidity she recognizes him &mdash; then denounces him as the one responsible for the flaw that doomed her. They fight through the cathedral; Sorin offers to heal her, but she refuses, declaring &ldquo;I am no monster&rsquo;s instrument. I will not be altered by the likes of you.&rdquo; Rather than bind her, Sorin unravels the spell that formed her. Her last words: &ldquo;I am Avacyn. I am to protect.&rdquo; Her faithful, lacking marble, built her memorial from wood, straw, twine, and clay.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Avacyn">MTG Wiki: Avacyn</a></p>
+    </li>
+  </ol>
+
+  <p class="src measure">This timeline rests on one primary source, the MTG Wiki&rsquo;s Avacyn page, itself built from citations to the original Wizards of the Coast story chapters.</p>
+</section>
+
+<section id="cards">
+  <h2>Cards that depict her</h2>
+
+  <article class="card-entry pair">
+    <div class="art">
+      <img src="img/archangel-avacyn-soi-5.jpg" alt="Archangel Avacyn" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">Shadows over Innistrad &middot; 2016 &middot; transforming double-faced card</span>
+      <h3>Archangel Avacyn // Avacyn, the Purifier</h3>
+      <div class="meta"><span>Legendary Creature &mdash; Angel // Legendary Creature &mdash; Angel &middot; mythic</span></div>
+      <div class="rules">
+        <span class="face">Front &middot; Archangel Avacyn &middot; {3}{W}{W} &middot; 4/4</span>
+        <p>Flash</p>
+        <p>Flying, vigilance</p>
+        <p>When Archangel Avacyn enters, creatures you control gain indestructible until end of turn.</p>
+        <p>When a non-Angel creature you control dies, transform Archangel Avacyn at the beginning of the next upkeep.</p>
+      </div>
+      <div class="rules" style="margin-top:0.8rem">
+        <span class="face">Back &middot; Avacyn, the Purifier &middot; 6/5</span>
+        <p>Flying</p>
+        <p>When this creature transforms into Avacyn, the Purifier, it deals 3 damage to each other creature and each opponent.</p>
+        <p class="flavor">&ldquo;Wings that once bore hope are now stained with blood. She is our guardian no longer.&rdquo; &mdash; Grete, cathar apostate</p>
+      </div>
+      <p class="src">Art: James Ryman. Legal in Commander, Legacy, Vintage, Modern, Pioneer; not legal in Standard. The card that depicts her corruption directly &mdash; her color identity shifts from white to red on the transform.</p>
+    </div>
+  </article>
+
+  <article class="card-entry">
+    <div class="art">
+      <img src="img/avacyn-angel-of-hope-inr-477.jpg" alt="Avacyn, Angel of Hope" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">Magic 2012 &middot; 2011 &middot; shown here Innistrad Remastered, 2024</span>
+      <h3>Avacyn, Angel of Hope</h3>
+      <div class="meta"><span class="mana">{5}{W}{W}{W}</span><span>Legendary Creature &mdash; Angel &middot; 8/8 &middot; mythic</span></div>
+      <div class="rules">
+        <p>Flying, vigilance, indestructible</p>
+        <p>Other permanents you control have indestructible.</p>
+      </div>
+      <p class="src">Art: Jason Chan. Legal in Commander, Legacy, Vintage, Modern; not legal in Standard. Predates the Innistrad story block that defines the rest of her arc on this page &mdash; an earlier vision of her at the height of her power.</p>
+    </div>
+  </article>
+
+  <article class="card-entry">
+    <div class="art">
+      <img src="img/avacyn-guardian-angel-m15-3.jpg" alt="Avacyn, Guardian Angel" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">Magic 2015 &middot; 2014</span>
+      <h3>Avacyn, Guardian Angel</h3>
+      <div class="meta"><span class="mana">{2}{W}{W}{W}</span><span>Legendary Creature &mdash; Angel &middot; 5/4 &middot; rare</span></div>
+      <div class="rules">
+        <p>Flying, vigilance</p>
+        <p>{1}{W}: Prevent all damage that would be dealt to another target creature this turn by sources of the color of your choice.</p>
+        <p>{5}{W}{W}: Prevent all damage that would be dealt to target player or planeswalker this turn by sources of the color of your choice.</p>
+      </div>
+      <p class="src">Art: Winona Nelson. Legal in Commander, Legacy, Vintage, Modern; not legal in Standard. Printed during the period between the Sundering of the Helvault and her corruption, when she led Innistrad&rsquo;s humanity in a brief era of prosperity.</p>
+    </div>
+  </article>
+</section>
+
+<section id="printings">
+  <h2>Printings</h2>
+  <div class="measure">
+    <p>Prices are single current lookups in USD. Avacyn, Angel of Hope (Innistrad Remastered #477) costs about $38.51 non-foil and $39.94 foil. Archangel Avacyn // Avacyn, the Purifier (Shadows over Innistrad #5) costs about $3.04 non-foil and $9.80 foil. Avacyn, Guardian Angel (Magic 2015 #3) costs about $1.51 non-foil and $5.99 foil.</p>
+  </div>
+
+  <div class="gallery">
+    <figure><img src="img/avacyn-angel-of-hope-inr-477.jpg" alt="Avacyn, Angel of Hope, INR 477" width="488" height="680"><figcaption><b>INR &middot; 477</b>Reprint; first printed in Magic 2012 (2011). Art by Jason Chan</figcaption></figure>
+    <figure><img src="img/archangel-avacyn-soi-5.jpg" alt="Archangel Avacyn, SOI 5" width="488" height="680"><figcaption><b>SOI &middot; 5</b>Original printing. Art by James Ryman</figcaption></figure>
+    <figure><img src="img/avacyn-guardian-angel-m15-3.jpg" alt="Avacyn, Guardian Angel, M15 3" width="488" height="680"><figcaption><b>M15 &middot; 3</b>Original printing. Art by Winona Nelson</figcaption></figure>
+  </div>
+
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Card</th><th>Set</th><th class="num">No.</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td>Avacyn, Angel of Hope</td><td>Magic 2012</td><td class="num">&mdash;</td><td>First printing (2011)</td></tr>
+        <tr><td>Avacyn, Angel of Hope</td><td>Innistrad Remastered</td><td class="num">477</td><td>Reprint shown above (2024)</td></tr>
+        <tr><td>Avacyn, Guardian Angel</td><td>Magic 2015</td><td class="num">3</td><td>Original printing (2014)</td></tr>
+        <tr><td>Archangel Avacyn // Avacyn, the Purifier</td><td>Shadows over Innistrad</td><td class="num">5</td><td>Original printing (2016)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="measure">The card-data tool returns one entry per card, not a full printing list, so I cross-checked first printings and collector numbers against Scryfall through the browser (Scryfall blocks direct automated requests). Archangel Avacyn has also appeared in two Secret Lair Drops and From the Vault: Transform; those alternate-art copies aren&rsquo;t pictured above.</p>
+</section>
+
+<section id="commander">
+  <h2>Playing her as a commander</h2>
+  <div class="measure">
+    <p>Avacyn, Angel of Hope is her most played build, leading 4,373 decks on EDHREC &mdash; an angels tribal theme (282 decks) backed by land destruction (114) and lifegain (107), leaning on her blanket indestructible to protect a board while destroying the opponents&rsquo; lands and permanents. Archangel Avacyn leads a smaller 1,529 decks, more aggressive and equipment-focused (blink 71 decks, burn 71, equipment 43, voltron 35). Avacyn, Guardian Angel is a niche build at only 96 decks, mostly pillow-fort and control strategies built around her damage-prevention abilities. EDHREC counts decks of every pod size, not 1v1 specifically.</p>
+  </div>
+  <h3>Share of Avacyn, Angel of Hope decks that play each card</h3>
+  <ul class="bars">
+    <li><span class="name">Swords to Plowshares</span><span class="track"><span class="fill" style="width:71.1%"></span></span><span class="val">71.1%</span></li>
+    <li><span class="name">Starnheim Aspirant</span><span class="track"><span class="fill" style="width:47.2%"></span></span><span class="val">47.2%</span></li>
+    <li><span class="name">Cleansing Nova</span><span class="track"><span class="fill" style="width:47.6%"></span></span><span class="val">47.6%</span></li>
+    <li><span class="name">Swiftfoot Boots</span><span class="track"><span class="fill" style="width:48.3%"></span></span><span class="val">48.3%</span></li>
+    <li><span class="name">Emeria, the Sky Ruin</span><span class="track"><span class="fill" style="width:51.1%"></span></span><span class="val">51.1%</span></li>
+  </ul>
+  <p class="src">Source: EDHREC data, retrieved through a card-data tool on 1 November 2026.</p>
+</section>
+
+<section id="open">
+  <h2>What could not be confirmed</h2>
+  <ul class="plain measure">
+    <li><strong>Whether she stays dead.</strong> I found no source suggesting a return for Avacyn after the Unmaking; the MTG Wiki lists her death plainly in its infobox, so her page here treats her as deceased.</li>
+    <li><strong>The Echoverse variant.</strong> An alternate-universe Avacyn with inverted colors (black hair and wings, white clothes) appears in the 2026 Reality Fracture story; I treated this as non-canon to her main arc and left it out of the timeline above.</li>
+    <li><strong>Exact wording of the story chapters.</strong> I read the MTG Wiki through a page-reading tool rather than the original Wizards story articles it cites, so check direct quotes against the source stories before relying on exact phrasing.</li>
+    <li><strong>Prices and printings.</strong> Single lookups taken on one day; the printing list above may not be exhaustive.</li>
+    <li><strong>Scryfall</strong> blocks direct automated requests, so oracle and flavor text came from a card-data tool, cross-checked against Scryfall pages loaded in a browser.</li>
+  </ul>
+</section>
+
+<section id="sources">
+  <h2>Sources</h2>
+  <ul class="plain measure">
+    <li><a href="https://mtg.wiki/page/Avacyn">MTG Wiki: Avacyn</a></li>
+    <li><a href="https://scryfall.com">Scryfall</a> (card text, flavor text, and printing history)</li>
+  </ul>
+</section>
+
+<footer>
+  <p>Fan-made reference page. Magic: The Gathering and its card images are property of Wizards of the Coast.</p>
+  <p>More in this series: <a href="../">all characters</a> &middot; <a href="../dihada/">Dihada, binder of wills</a> &middot; <a href="../edgar-markov/">Edgar Markov, first of the vampires</a> &middot; <a href="../gisa/">Gisa, ghoulcaller of Innistrad</a> &middot; <a href="../sheoldred/">Sheoldred, the Whispering One</a> &middot; <a href="../olivia-voldaren/">Olivia Voldaren, queen of the hungry</a> &middot; <a href="../sorin/">Sorin Markov, the Mortifier</a></p>
+</footer>
+
+</div>
+
+<script>
+(function () {
+  var els = document.querySelectorAll('.mana');
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    var text = el.textContent;
+    var parts = text.match(/\{[^}]+\}/g);
+    if (!parts) continue;
+    el.setAttribute('role', 'img');
+    el.setAttribute('aria-label', 'Mana cost ' + parts.map(function (p) { return p.slice(1, -1); }).join(' '));
+    el.textContent = '';
+    for (var j = 0; j < parts.length; j++) {
+      var k = parts[j].slice(1, -1);
+      var s = document.createElement('i');
+      s.className = 'sym s-' + (/^\d+$/.test(k) ? 'n' : k.toLowerCase());
+      s.textContent = k;
+      s.setAttribute('aria-hidden', 'true');
+      el.appendChild(s);
+    }
+  }
+})();
+</script>
+
+</body>
+</html>

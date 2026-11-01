@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Olivia Voldaren, queen of the hungry</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: an estate ledger. One reading column, wide breakouts for card art and tables.
+   Palette: ember parchment, vampire-fire ink, bruise-purple for allies. Type: Fraunces (display), Newsreader (text), Plex Mono (costs, labels). */
+:root {
+  --bg: #EDE4DE;
+  --surface: #F7F0EA;
+  --ink: #1F1210;
+  --ink-2: #4D3A34;
+  --rule: #D9C7BC;
+  --accent: #B23A1E;
+  --accent-soft: #F0D2C4;
+  --silver: #8A5A3E;
+  --win: #5C2E6B;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-text: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #140B09;
+    --surface: #1E1310;
+    --ink: #F0E6E0;
+    --ink-2: #C9B0A3;
+    --rule: #3A2620;
+    --accent: #E8703F;
+    --accent-soft: #3D1D12;
+    --silver: #C68A5E;
+    --win: #B37AC9;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #140B09;
+  --surface: #1E1310;
+  --ink: #F0E6E0;
+  --ink-2: #C9B0A3;
+  --rule: #3A2620;
+  --accent: #E8703F;
+  --accent-soft: #3D1D12;
+  --silver: #C68A5E;
+  --win: #B37AC9;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  padding-block: 0 4rem;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 68rem; margin-inline: auto; }
+.measure { max-width: 42rem; }
+img { height: auto; }
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+p { margin: 0 0 1em; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; font-weight: 600; line-height: 1.1; margin: 0; }
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--silver);
+}
+
+/* hero */
+.hero { overflow-x: clip; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 2.5rem; align-items: center; padding-block: 3rem 2.5rem; }
+.hero h1 { font-size: clamp(3.2rem, 9vw, 6.4rem); font-weight: 800; letter-spacing: -0.01em; margin: 0.6rem 0 1.2rem; }
+.hero h1 em { display: block; font-style: italic; font-weight: 600; color: var(--accent); font-size: 0.5em; line-height: 1.15; margin-top: 0.3em; }
+.hero .lead { font-size: 1.3rem; line-height: 1.5; color: var(--ink); max-width: 34rem; }
+.fan { position: relative; aspect-ratio: 1.3 / 1; width: 100%; max-width: 34rem; justify-self: center; }
+.fan img { position: absolute; top: 0; width: 42%; border-radius: 4.6% / 3.3%; box-shadow: 0 14px 30px -12px rgba(8, 20, 12, 0.55); }
+.fan img:nth-child(1) { left: 2%; top: 8%; transform: rotate(-6deg); }
+.fan img:nth-child(2) { left: 28%; top: 0; z-index: 2; }
+.fan img:nth-child(3) { left: 52%; top: 8%; transform: rotate(6deg); }
+
+nav.toc { display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; padding-block: 1rem; border-block: 1px solid var(--rule); font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; }
+nav.toc a { color: var(--ink-2); text-decoration: none; padding-block: 0.25rem; }
+nav.toc a:hover { color: var(--accent); }
+
+section { padding-top: 4rem; scroll-margin-top: 1rem; }
+section > h2 { font-size: clamp(2rem, 4.6vw, 3rem); margin-bottom: 1.4rem; }
+h3 { font-size: 1.5rem; margin: 2.2rem 0 0.8rem; }
+
+/* facts list */
+dl.facts { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); gap: 0; margin: 2rem 0 0; border-top: 1px solid var(--rule); }
+dl.facts dt, dl.facts dd { padding-block: 0.9rem; border-bottom: 1px solid var(--rule); margin: 0; }
+dl.facts dt { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); padding-top: 1.1rem; }
+dl.facts dd { min-width: 0; }
+
+/* timeline */
+ol.timeline { list-style: none; counter-reset: stage; margin: 2rem 0 0; padding: 0; border-left: 2px solid var(--rule); }
+ol.timeline > li { counter-increment: stage; position: relative; padding: 0 0 2rem 2.2rem; }
+ol.timeline > li::before {
+  content: counter(stage);
+  position: absolute; left: -1.05rem; top: 0;
+  width: 2rem; height: 2rem; border-radius: 50%;
+  background: var(--bg); border: 2px solid var(--accent); color: var(--accent);
+  font-family: var(--font-mono); font-size: 0.85rem; display: grid; place-items: center;
+}
+ol.timeline h3 { margin: 0 0 0.4rem; font-size: 1.35rem; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 0.8rem; }
+ol.timeline p { margin: 0 0 0.5rem; }
+.src { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.04em; color: var(--silver); }
+.src a { color: var(--silver); }
+.tag { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.15rem 0.5rem; border-radius: 3px; border: 1px solid currentColor; }
+.tag.olivia { color: var(--accent); }
+.tag.ally { color: var(--win); }
+ol.timeline blockquote { margin: 0.6rem 0; padding: 0.1rem 0 0.1rem 1rem; border-left: 3px solid var(--accent-soft); color: var(--ink-2); font-style: italic; }
+
+.aside { background: var(--surface); border: 1px solid var(--rule); padding: 1.2rem 1.4rem; margin-block: 1.6rem; max-width: 42rem; }
+.aside p:last-child { margin-bottom: 0; }
+.aside .label { display: block; margin-bottom: 0.4rem; }
+ul.plain { padding-left: 1.2rem; margin: 0 0 1em; }
+ul.plain li { margin-bottom: 0.7rem; padding-left: 0.2rem; }
+
+/* cards */
+.card-entry { display: grid; grid-template-columns: minmax(0, 17rem) minmax(0, 1fr); gap: 2rem; padding-block: 2rem; border-top: 1px solid var(--rule); align-items: start; }
+.card-entry.pair { grid-template-columns: minmax(0, 24rem) minmax(0, 1fr); }
+.card-entry .art { display: flex; gap: 0.8rem; }
+.card-entry img, .gallery img { width: 100%; height: auto; display: block; border-radius: 4.6% / 3.3%; box-shadow: 0 10px 24px -14px rgba(8, 20, 12, 0.6); }
+.card-entry .art img { min-width: 0; flex: 1 1 0; }
+.card-entry h3 { margin: 0.3rem 0 0.5rem; font-size: 1.8rem; }
+.card-entry .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1rem; margin-bottom: 0.9rem; font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink-2); }
+.rules { background: var(--surface); border: 1px solid var(--rule); padding: 0.9rem 1.1rem; font-size: 1.02rem; }
+.rules p { margin: 0 0 0.5em; }
+.rules p:last-child { margin-bottom: 0; }
+.rules .flavor { font-style: italic; color: var(--ink-2); }
+.rules .face { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); display: block; margin-bottom: 0.15rem; }
+.loy { font-family: var(--font-mono); font-weight: 500; color: var(--accent); }
+
+.mana { display: inline-flex; gap: 2px; align-items: center; vertical-align: middle; font-family: var(--font-mono); }
+.sym { display: inline-grid; place-items: center; width: 1.6em; height: 1.6em; border-radius: 50%; font-style: normal; font-size: 0.8em; line-height: 1; background: #CFC8D2; color: #231C27; }
+.s-w { background: #F2EBC9; color: #3A3320; }
+.s-u { background: #BBD6EE; color: #10283A; }
+.s-b { background: #3A3040; color: #EDE7EE; }
+.s-r { background: #E0704C; color: #2A0D05; }
+.s-g { background: #5BA26F; color: #0D2514; }
+
+/* gallery */
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(11.5rem, 1fr)); gap: 1.6rem 1.2rem; margin: 2rem 0; }
+.gallery figure { margin: 0; min-width: 0; }
+.gallery figcaption { margin-top: 0.6rem; font-size: 0.92rem; line-height: 1.4; color: var(--ink-2); }
+.gallery figcaption b { display: block; color: var(--ink); font-weight: 600; font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.04em; }
+
+/* tables */
+.table-scroll { overflow-x: auto; margin: 1.4rem 0; border-top: 1px solid var(--ink); }
+table { border-collapse: collapse; width: 100%; font-size: 0.98rem; }
+th, td { text-align: left; vertical-align: top; padding: 0.65rem 1rem 0.65rem 0; border-bottom: 1px solid var(--rule); }
+th { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); white-space: nowrap; }
+td.num, th.num { font-variant-numeric: tabular-nums; }
+table td:first-child { font-weight: 600; }
+
+/* bars */
+.bars { list-style: none; margin: 1.6rem 0; padding: 0; max-width: 46rem; }
+.bars li { display: grid; grid-template-columns: minmax(8rem, 12rem) minmax(0, 1fr) 3.6rem; gap: 0.9rem; align-items: center; padding-block: 0.3rem; }
+.bars .name { font-size: 1rem; }
+.bars .track { height: 0.85rem; background: var(--surface); border: 1px solid var(--rule); }
+.bars .fill { display: block; height: 100%; background: var(--accent); }
+.bars .val { font-family: var(--font-mono); font-size: 0.85rem; text-align: right; font-variant-numeric: tabular-nums; }
+
+footer { margin-top: 5rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); font-size: 0.9rem; color: var(--ink-2); max-width: 42rem; }
+
+@media (max-width: 52rem) {
+  .hero { grid-template-columns: minmax(0, 1fr); padding-block: 2rem; }
+  .card-entry, .card-entry.pair { grid-template-columns: minmax(0, 1fr); }
+  .card-entry .art { max-width: 22rem; }
+  .card-entry.pair .art { max-width: 28rem; }
+}
+@media (max-width: 34rem) {
+  body { font-size: 1.05rem; }
+  dl.facts { grid-template-columns: minmax(0, 1fr); }
+  dl.facts dt { border-bottom: 0; padding-bottom: 0; }
+  dl.facts dd { padding-top: 0.2rem; }
+  .bars li { grid-template-columns: minmax(0, 1fr) 3.4rem; }
+  .bars .track { grid-column: 1 / -1; grid-row: 2; }
+  .bars .val { grid-row: 1; grid-column: 2; }
+  ol.timeline > li { padding-left: 1.7rem; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div>
+    <span class="label"><a href="../">MTG character archive</a> &middot; Innistrad &middot; Vampire Noble</span>
+    <h1>Olivia Voldaren<em>queen of the hungry</em></h1>
+    <p class="lead">Olivia Voldaren is the eccentric, immortal progenitor of the Voldaren vampire bloodline on Innistrad. Four cards show her under her own name, spanning 2011 to 2024: Olivia Voldaren, Olivia, Mobilized for War, Olivia, Crimson Bride, and Olivia, Opulent Outlaw.</p>
+    <p class="label">Compiled 1 November 2026</p>
+  </div>
+  <div class="fan">
+    <img src="img/olivia-crimson-bride-vow-245.jpg" alt="Olivia, Crimson Bride, Innistrad: Crimson Vow" width="488" height="680">
+    <img src="img/olivia-opulent-outlaw-otc-2.jpg" alt="Olivia, Opulent Outlaw, Outlaws of Thunder Junction Commander" width="488" height="680">
+    <img src="img/olivia-voldaren-inr-246.jpg" alt="Olivia Voldaren, Innistrad Remastered" width="488" height="680">
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <a href="#who">Who she is</a>
+  <a href="#story">Her story</a>
+  <a href="#cards">Cards</a>
+  <a href="#printings">Printings</a>
+  <a href="#commander">As a commander</a>
+  <a href="#open">Open questions</a>
+  <a href="#sources">Sources</a>
+</nav>
+
+<section id="who">
+  <h2>Who she is</h2>
+  <div class="measure">
+    <p>The <a href="https://mtg.wiki/page/Olivia_Voldaren">MTG Wiki</a> calls her &ldquo;a vampire native from Innistrad and the progenitor of the Voldaren bloodline.&rdquo; In life she was described as beautiful, strange, hermetic, and antisocial, preferring remote manor homes built for her with her seemingly boundless wealth. As a vampire she is a famous eccentric and bon vivant: the elite of vampire society know Olivia throws the best parties, and nobles happily travel to her seasonal balls.</p>
+  </div>
+  <dl class="facts">
+    <dt>Nature</dt>
+    <dd>Formerly human, now one of Innistrad&rsquo;s oldest vampires &mdash; alive and active since before &minus;2440 AR, a member of the Time of Legends.</dd>
+    <dt>Origin</dt>
+    <dd>Around &minus;2421 AR she took part in Shilgengar&rsquo;s Ritual, drinking the blood of the angel Marycz that Edgar Markov had drained, which turned her into an immortal vampire.</dd>
+    <dt>Bloodline</dt>
+    <dd>Progenitor of House Voldaren. Relatives include Florian and Relio Voldaren. Voldaren vampires tend to live apart from others, in distant manors at the borderlands of Innistrad&rsquo;s provinces.</dd>
+    <dt>Method</dt>
+    <dd>She is able to fly, keeps a keen interest in watching the faithful lose their faith before death, and turns other creatures into vampires with her own blood.</dd>
+    <dt>Status</dt>
+    <dd>As of the Outlaws of Thunder Junction story (2024), she has left Innistrad for Thunder Junction, ruling a new crew of outlaws as she did her vampires at home.</dd>
+  </dl>
+</section>
+
+<section id="story">
+  <h2>Her story</h2>
+  <div class="measure">
+    <p>Olivia&rsquo;s major appearances run through the second half of the Innistrad story: an alliance of convenience with Sorin Markov that cost him his angel, a theft at the Harvesttide festival, an attempted takeover of Innistrad&rsquo;s vampires through marriage to Edgar Markov, and a fresh start on Thunder Junction.</p>
+  </div>
+
+  <ol class="timeline">
+    <li>
+      <h3>A price for Sorin <span class="tag olivia">Olivia</span> <span class="tag ally">Sorin</span></h3>
+      <p>Resident planeswalker Sorin Markov seeks Olivia&rsquo;s help in his quarrel with the lithomancer Nahiri. Olivia agrees &mdash; on the condition that Sorin kill his beloved angel Avacyn, whose madness is tearing Innistrad apart. Once Sorin fulfills the wish, the two assemble a vampire army and go to war against Nahiri.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Olivia_Voldaren">MTG Wiki: Olivia Voldaren</a></p>
+    </li>
+    <li>
+      <h3>Self-proclaimed lord of Innistrad <span class="tag olivia">Olivia</span> <span class="tag ally">Sorin</span></h3>
+      <p>During the war, Olivia leads her vampire host against Nahiri&rsquo;s cultists and intervenes when Nahiri confronts Sorin directly, telling her she can&rsquo;t allow the revenge even though Sorin deserves it. Nahiri summons Eldrazi to occupy Olivia&rsquo;s vampires while she duels Sorin alone, defeats him, and encases him in stone. Olivia proclaims herself the new lord of Innistrad and takes Sorin&rsquo;s sword, the Parasite Blade, for herself.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Olivia_Voldaren">MTG Wiki: Olivia Voldaren</a></p>
+    </li>
+    <li>
+      <h3>The Battle of Thraben <span class="tag olivia">Olivia</span></h3>
+      <p>Leaving Sorin for dead, Olivia and her army head to Thraben, where the plane&rsquo;s defenders are making their last stand against the Eldrazi. She and the cathar Thalia agree a temporary truce to purge the city of monsters, and during the battle Olivia kills Seeta, leader of the Sinpurged, in front of Thalia.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Olivia_Voldaren">MTG Wiki: Olivia Voldaren</a></p>
+    </li>
+    <li>
+      <h3>The Harvesttide theft <span class="tag olivia">Olivia</span></h3>
+      <p>Aware of Arlinn Kord&rsquo;s plan to end the Eternal Night at the Harvesttide festival, Olivia chooses not to interfere &mdash; she&rsquo;d rather let others do her work for her. As the ritual nears completion she sweeps down, holds Katilda hostage, and demands the Moonsilver Key. When Arlinn hands it over, Olivia hurls Katilda to the ground anyway, injuring both her and Arlinn, and leaves with the key.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Olivia_Voldaren">MTG Wiki: Olivia Voldaren</a></p>
+    </li>
+    <li>
+      <h3>The wedding <span class="tag olivia">Olivia</span> <span class="tag ally">Edgar</span> <span class="tag ally">Sorin</span></h3>
+      <p>Olivia plans to marry Edgar Markov to bind House Markov to her and seize control of Innistrad&rsquo;s vampire families, using Sigarda&rsquo;s blood and the Moonsilver Key&rsquo;s power to control the plane&rsquo;s angels. She captures Sigarda, then uses her own blood to wake Edgar from his coffin-sleep, charming him into agreeing to marry her. During the ceremony Sorin attacks her; at the same moment Katilda&rsquo;s spirit frees Sigarda from captivity, and the furious angel shatters the estate&rsquo;s stained glass, hurting or killing many guests. Olivia and Edgar are not seriously hurt.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Olivia_Voldaren">MTG Wiki: Olivia Voldaren</a></p>
+    </li>
+    <li>
+      <h3>The Gatewatch&rsquo;s raid <span class="tag olivia">Olivia</span> <span class="tag ally">Edgar</span></h3>
+      <p>Sigarda&rsquo;s outburst lowers the wards on Voldaren Manor, letting the Gatewatch raid the estate. Kaya breaks Olivia&rsquo;s hold on her train of geists, forcing her to flee with Arlinn Kord in pursuit. Cornered, Olivia impales Arlinn&rsquo;s hand after Arlinn loses control of her werewolf form, then escapes with the Moonsilver Key still in hand. Edgar later finds her and pleads with her to end their plans; discovered by Arlinn and the werewolf pack, Olivia drops the Key in defeat and flees with Edgar through a broken window.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Olivia_Voldaren">MTG Wiki: Olivia Voldaren</a></p>
+    </li>
+    <li>
+      <h3>A fresh start on Thunder Junction <span class="tag olivia">Olivia</span></h3>
+      <p>After discovering the Omenpaths, Olivia settles on Thunder Junction to clear her mind following the ruined wedding and failed takeover, while plotting her next move. She finds a population of frustrated outlaws who listen when she speaks, and once again becomes a queen of hungry, deadly subjects.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Olivia_Voldaren">MTG Wiki: Olivia Voldaren</a></p>
+    </li>
+  </ol>
+
+  <p class="src measure">This timeline rests on one primary source, the MTG Wiki&rsquo;s Olivia Voldaren page, itself built from citations to the original Wizards of the Coast story chapters.</p>
+</section>
+
+<section id="cards">
+  <h2>Cards that depict her</h2>
+
+  <article class="card-entry">
+    <div class="art">
+      <img src="img/olivia-voldaren-inr-246.jpg" alt="Olivia Voldaren" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">First printed Innistrad &middot; 2011 &middot; shown here Innistrad Remastered, 2024</span>
+      <h3>Olivia Voldaren</h3>
+      <div class="meta"><span class="mana">{2}{B}{R}</span><span>Legendary Creature &mdash; Vampire &middot; 3/3 &middot; mythic</span></div>
+      <div class="rules">
+        <p>Flying</p>
+        <p>{1}{R}: Olivia Voldaren deals 1 damage to another target creature. That creature becomes a Vampire in addition to its other types. Put a +1/+1 counter on Olivia Voldaren.</p>
+        <p>{3}{B}{B}: Gain control of target Vampire for as long as you control Olivia Voldaren.</p>
+      </div>
+      <p class="src">Art: Eric Deschamps. Legal in Commander, Legacy, Vintage, Modern; not legal in Standard. Her debut card, voted the most popular rare in Wizards&rsquo; internal Innistrad design ranking poll.</p>
+    </div>
+  </article>
+
+  <article class="card-entry">
+    <div class="art">
+      <img src="img/olivia-mobilized-soi-248.jpg" alt="Olivia, Mobilized for War" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">Shadows over Innistrad &middot; 2016</span>
+      <h3>Olivia, Mobilized for War</h3>
+      <div class="meta"><span class="mana">{1}{B}{R}</span><span>Legendary Creature &mdash; Vampire Knight &middot; 3/3 &middot; mythic</span></div>
+      <div class="rules">
+        <p>Flying</p>
+        <p>Whenever another creature you control enters, you may discard a card. If you do, put a +1/+1 counter on that creature, it gains haste until end of turn, and it becomes a Vampire in addition to its other types.</p>
+      </div>
+      <p class="src">Art: Eric Deschamps. Legal in Commander, Legacy, Vintage, Modern; not legal in Standard.</p>
+    </div>
+  </article>
+
+  <article class="card-entry">
+    <div class="art">
+      <img src="img/olivia-crimson-bride-vow-245.jpg" alt="Olivia, Crimson Bride" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">Innistrad: Crimson Vow &middot; 2021</span>
+      <h3>Olivia, Crimson Bride</h3>
+      <div class="meta"><span class="mana">{4}{B}{R}</span><span>Legendary Creature &mdash; Vampire Noble &middot; 3/4 &middot; mythic</span></div>
+      <div class="rules">
+        <p>Flying, haste</p>
+        <p>Whenever Olivia attacks, return target creature card from your graveyard to the battlefield tapped and attacking. It gains &ldquo;When you don&rsquo;t control a legendary Vampire, exile this creature.&rdquo;</p>
+      </div>
+      <p class="src">Art: Anna Steinbauer. Legal in Commander, Legacy, Vintage, Modern; not legal in Standard. &ldquo;The veil of her wedding dress is made from the souls of her victims,&rdquo; per the MTG Wiki gallery caption.</p>
+    </div>
+  </article>
+
+  <article class="card-entry">
+    <div class="art">
+      <img src="img/olivia-opulent-outlaw-otc-2.jpg" alt="Olivia, Opulent Outlaw" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">Outlaws of Thunder Junction Commander &middot; 2024</span>
+      <h3>Olivia, Opulent Outlaw</h3>
+      <div class="meta"><span class="mana">{1}{R}{W}{B}</span><span>Legendary Creature &mdash; Vampire Assassin &middot; 3/3 &middot; mythic</span></div>
+      <div class="rules">
+        <p>Flying, lifelink</p>
+        <p>Whenever one or more outlaws you control deal combat damage to a player, create a Treasure token. (Assassins, Mercenaries, Pirates, Rogues, and Warlocks are outlaws.)</p>
+        <p>{3}, Sacrifice two Treasures: Put two +1/+1 counters on each creature you control. Activate only as a sorcery.</p>
+      </div>
+      <p class="src">Art: Anna Steinbauer. Legal in Commander, Legacy, Vintage; not legal in Modern or Standard. Her Thunder Junction incarnation, picking up a third color.</p>
+    </div>
+  </article>
+</section>
+
+<section id="printings">
+  <h2>Printings</h2>
+  <div class="measure">
+    <p>Prices are single current lookups in USD. Olivia Voldaren (Innistrad Remastered #246) costs about $4.48 non-foil and $4.91 foil. Olivia, Mobilized for War (Shadows over Innistrad #248) costs about $0.63 non-foil and $4.40 foil. Olivia, Crimson Bride (Innistrad: Crimson Vow #245) costs about $6.85 non-foil and $8.10 foil. Olivia, Opulent Outlaw (Outlaws of Thunder Junction Commander #2) costs about $6.02 non-foil and $6.56 foil.</p>
+  </div>
+
+  <div class="gallery">
+    <figure><img src="img/olivia-voldaren-inr-246.jpg" alt="Olivia Voldaren, INR 246" width="488" height="680"><figcaption><b>INR &middot; 246</b>Reprint; first printed in Innistrad (2011). Art by Eric Deschamps</figcaption></figure>
+    <figure><img src="img/olivia-mobilized-soi-248.jpg" alt="Olivia, Mobilized for War, SOI 248" width="488" height="680"><figcaption><b>SOI &middot; 248</b>Original printing. Art by Eric Deschamps</figcaption></figure>
+    <figure><img src="img/olivia-crimson-bride-vow-245.jpg" alt="Olivia, Crimson Bride, VOW 245" width="488" height="680"><figcaption><b>VOW &middot; 245</b>Original printing. Art by Anna Steinbauer</figcaption></figure>
+    <figure><img src="img/olivia-opulent-outlaw-otc-2.jpg" alt="Olivia, Opulent Outlaw, OTC 2" width="488" height="680"><figcaption><b>OTC &middot; 2</b>Original printing. Art by Anna Steinbauer</figcaption></figure>
+  </div>
+
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Card</th><th>Set</th><th class="num">No.</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td>Olivia Voldaren</td><td>Innistrad</td><td class="num">&mdash;</td><td>First printing (2011)</td></tr>
+        <tr><td>Olivia Voldaren</td><td>Innistrad Remastered</td><td class="num">246</td><td>Reprint shown above (2024)</td></tr>
+        <tr><td>Olivia, Mobilized for War</td><td>Shadows over Innistrad</td><td class="num">248</td><td>Original printing (2016)</td></tr>
+        <tr><td>Olivia, Crimson Bride</td><td>Innistrad: Crimson Vow</td><td class="num">245</td><td>Original printing (2021)</td></tr>
+        <tr><td>Olivia, Opulent Outlaw</td><td>Outlaws of Thunder Junction Commander</td><td class="num">2</td><td>Original printing (2024)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="measure">The card-data tool returns one entry per card, not a full printing list, so I cross-checked first printings and collector numbers against Scryfall through the browser (Scryfall blocks direct automated requests). Other treatments &mdash; showcase frames, foils, promos, the playtest &ldquo;Count Dracula&rdquo; name &mdash; may exist beyond what&rsquo;s listed here.</p>
+</section>
+
+<section id="commander">
+  <h2>Playing her as a commander</h2>
+  <div class="measure">
+    <p>Olivia, Opulent Outlaw is her most played build, leading 5,806 decks on EDHREC &mdash; built around treasure (657 decks), +1/+1 counters (233), the outlaws mechanic she shares with the rest of Thunder Junction (219), and go-wide tokens (215). Her original self, Olivia Voldaren, leads 2,911 decks, mostly a vampires tribal theme (240 decks) with a theft subtheme (81) built around her ability to steal other Vampires. Olivia, Crimson Bride leads a near-identical 2,910 decks, heavy in reanimator (270) and vampires (236). Olivia, Mobilized for War is the smallest build at 1,100 decks, favoring reanimator (108) and discard/madness (107 and 64). EDHREC counts decks of every pod size, not 1v1 specifically.</p>
+  </div>
+  <h3>Share of Olivia, Opulent Outlaw decks that play each card</h3>
+  <ul class="bars">
+    <li><span class="name">Vihaan, Goldwaker</span><span class="track"><span class="fill" style="width:86.7%"></span></span><span class="val">86.7%</span></li>
+    <li><span class="name">Morbid Opportunist</span><span class="track"><span class="fill" style="width:60.5%"></span></span><span class="val">60.5%</span></li>
+    <li><span class="name">Requisition Raid</span><span class="track"><span class="fill" style="width:60.8%"></span></span><span class="val">60.8%</span></li>
+    <li><span class="name">Shoot the Sheriff</span><span class="track"><span class="fill" style="width:58%"></span></span><span class="val">58.0%</span></li>
+    <li><span class="name">Idol of Oblivion</span><span class="track"><span class="fill" style="width:50.8%"></span></span><span class="val">50.8%</span></li>
+  </ul>
+  <p class="src">Source: EDHREC data, retrieved through a card-data tool on 1 November 2026.</p>
+</section>
+
+<section id="open">
+  <h2>What could not be confirmed</h2>
+  <ul class="plain measure">
+    <li><strong>Where her story goes next.</strong> The MTG Wiki leaves her settled on Thunder Junction as of 2024, ruling a new crew of outlaws; I found no later chapter.</li>
+    <li><strong>The fate of the Moonsilver Key.</strong> She drops it during the Gatewatch&rsquo;s raid and it&rsquo;s later retrieved by Arlinn Kord and the Gatewatch, per the wiki, but I found no account of what became of it after that.</li>
+    <li><strong>Associated-but-not-depicting cards.</strong> The wiki lists several cards named for her (Olivia&rsquo;s Attendants, Olivia&rsquo;s Bloodsworn, Olivia&rsquo;s Dragoon, Bride&rsquo;s Gown, Voldaren Estate) as &ldquo;associated&rdquo; rather than &ldquo;represented in&rdquo; &mdash; I treated that distinction as meaning they don&rsquo;t depict her directly, so they&rsquo;re not given full entries above.</li>
+    <li><strong>Exact wording of the story chapters.</strong> I read the MTG Wiki through a page-reading tool rather than the original Wizards story articles it cites, so check direct quotes against the source stories before relying on exact phrasing.</li>
+    <li><strong>Prices and printings.</strong> Single lookups taken on one day; the printing list above may not be exhaustive.</li>
+    <li><strong>Scryfall</strong> blocks direct automated requests, so oracle and flavor text came from a card-data tool, cross-checked against Scryfall pages loaded in a browser.</li>
+  </ul>
+</section>
+
+<section id="sources">
+  <h2>Sources</h2>
+  <ul class="plain measure">
+    <li><a href="https://mtg.wiki/page/Olivia_Voldaren">MTG Wiki: Olivia Voldaren</a></li>
+    <li><a href="https://scryfall.com">Scryfall</a> (card text, flavor text, and printing history)</li>
+  </ul>
+</section>
+
+<footer>
+  <p>Fan-made reference page. Magic: The Gathering and its card images are property of Wizards of the Coast.</p>
+  <p>More in this series: <a href="../">all characters</a> &middot; <a href="../dihada/">Dihada, binder of wills</a> &middot; <a href="../edgar-markov/">Edgar Markov, first of the vampires</a> &middot; <a href="../gisa/">Gisa, ghoulcaller of Innistrad</a> &middot; <a href="../sheoldred/">Sheoldred, the Whispering One</a> &middot; <a href="../sorin/">Sorin Markov, the Mortifier</a> &middot; <a href="../avacyn/">Avacyn, protector of Innistrad</a></p>
+</footer>
+
+</div>
+
+<script>
+(function () {
+  var els = document.querySelectorAll('.mana');
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    var text = el.textContent;
+    var parts = text.match(/\{[^}]+\}/g);
+    if (!parts) continue;
+    el.setAttribute('role', 'img');
+    el.setAttribute('aria-label', 'Mana cost ' + parts.map(function (p) { return p.slice(1, -1); }).join(' '));
+    el.textContent = '';
+    for (var j = 0; j < parts.length; j++) {
+      var k = parts[j].slice(1, -1);
+      var s = document.createElement('i');
+      s.className = 'sym s-' + (/^\d+$/.test(k) ? 'n' : k.toLowerCase());
+      s.textContent = k;
+      s.setAttribute('aria-hidden', 'true');
+      el.appendChild(s);
+    }
+  }
+})();
+</script>
+
+</body>
+</html>

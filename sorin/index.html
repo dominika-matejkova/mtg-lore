@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sorin Markov, the Mortifier</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a planeswalker's dossier. One reading column, wide breakouts for card art and tables.
+   Palette: bone-ivory paper, antique-gold ink, blood-red for the cast around him. Type: Fraunces (display), Newsreader (text), Plex Mono (costs, labels). */
+:root {
+  --bg: #EAE6DD;
+  --surface: #F5F2EA;
+  --ink: #15130E;
+  --ink-2: #46423A;
+  --rule: #D4CDBC;
+  --accent: #8A6A1E;
+  --accent-soft: #EDE0BE;
+  --silver: #5E5A4E;
+  --win: #5A1E2A;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-text: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #100F0A;
+    --surface: #18160F;
+    --ink: #EDE8DA;
+    --ink-2: #B3AC98;
+    --rule: #2E2A1E;
+    --accent: #D8B04A;
+    --accent-soft: #332A14;
+    --silver: #A39C84;
+    --win: #D86B7A;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #100F0A;
+  --surface: #18160F;
+  --ink: #EDE8DA;
+  --ink-2: #B3AC98;
+  --rule: #2E2A1E;
+  --accent: #D8B04A;
+  --accent-soft: #332A14;
+  --silver: #A39C84;
+  --win: #D86B7A;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  padding-block: 0 4rem;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 68rem; margin-inline: auto; }
+.measure { max-width: 42rem; }
+img { height: auto; }
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+p { margin: 0 0 1em; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; font-weight: 600; line-height: 1.1; margin: 0; }
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--silver);
+}
+
+/* hero */
+.hero { overflow-x: clip; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 2.5rem; align-items: center; padding-block: 3rem 2.5rem; }
+.hero h1 { font-size: clamp(3.2rem, 9vw, 6.4rem); font-weight: 800; letter-spacing: -0.01em; margin: 0.6rem 0 1.2rem; }
+.hero h1 em { display: block; font-style: italic; font-weight: 600; color: var(--accent); font-size: 0.5em; line-height: 1.15; margin-top: 0.3em; }
+.hero .lead { font-size: 1.3rem; line-height: 1.5; color: var(--ink); max-width: 34rem; }
+.fan { position: relative; aspect-ratio: 1.3 / 1; width: 100%; max-width: 34rem; justify-self: center; }
+.fan img { position: absolute; top: 0; width: 42%; border-radius: 4.6% / 3.3%; box-shadow: 0 14px 30px -12px rgba(8, 20, 12, 0.55); }
+.fan img:nth-child(1) { left: 2%; top: 8%; transform: rotate(-6deg); }
+.fan img:nth-child(2) { left: 28%; top: 0; z-index: 2; }
+.fan img:nth-child(3) { left: 52%; top: 8%; transform: rotate(6deg); }
+
+nav.toc { display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; padding-block: 1rem; border-block: 1px solid var(--rule); font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; }
+nav.toc a { color: var(--ink-2); text-decoration: none; padding-block: 0.25rem; }
+nav.toc a:hover { color: var(--accent); }
+
+section { padding-top: 4rem; scroll-margin-top: 1rem; }
+section > h2 { font-size: clamp(2rem, 4.6vw, 3rem); margin-bottom: 1.4rem; }
+h3 { font-size: 1.5rem; margin: 2.2rem 0 0.8rem; }
+
+/* facts list */
+dl.facts { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); gap: 0; margin: 2rem 0 0; border-top: 1px solid var(--rule); }
+dl.facts dt, dl.facts dd { padding-block: 0.9rem; border-bottom: 1px solid var(--rule); margin: 0; }
+dl.facts dt { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); padding-top: 1.1rem; }
+dl.facts dd { min-width: 0; }
+
+/* timeline */
+ol.timeline { list-style: none; counter-reset: stage; margin: 2rem 0 0; padding: 0; border-left: 2px solid var(--rule); }
+ol.timeline > li { counter-increment: stage; position: relative; padding: 0 0 2rem 2.2rem; }
+ol.timeline > li::before {
+  content: counter(stage);
+  position: absolute; left: -1.05rem; top: 0;
+  width: 2rem; height: 2rem; border-radius: 50%;
+  background: var(--bg); border: 2px solid var(--accent); color: var(--accent);
+  font-family: var(--font-mono); font-size: 0.85rem; display: grid; place-items: center;
+}
+ol.timeline h3 { margin: 0 0 0.4rem; font-size: 1.35rem; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 0.8rem; }
+ol.timeline p { margin: 0 0 0.5rem; }
+.src { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.04em; color: var(--silver); }
+.src a { color: var(--silver); }
+.tag { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.15rem 0.5rem; border-radius: 3px; border: 1px solid currentColor; }
+.tag.sorin { color: var(--accent); }
+.tag.ally { color: var(--win); }
+ol.timeline blockquote { margin: 0.6rem 0; padding: 0.1rem 0 0.1rem 1rem; border-left: 3px solid var(--accent-soft); color: var(--ink-2); font-style: italic; }
+
+.aside { background: var(--surface); border: 1px solid var(--rule); padding: 1.2rem 1.4rem; margin-block: 1.6rem; max-width: 42rem; }
+.aside p:last-child { margin-bottom: 0; }
+.aside .label { display: block; margin-bottom: 0.4rem; }
+ul.plain { padding-left: 1.2rem; margin: 0 0 1em; }
+ul.plain li { margin-bottom: 0.7rem; padding-left: 0.2rem; }
+
+/* cards */
+.card-entry { display: grid; grid-template-columns: minmax(0, 17rem) minmax(0, 1fr); gap: 2rem; padding-block: 2rem; border-top: 1px solid var(--rule); align-items: start; }
+.card-entry.pair { grid-template-columns: minmax(0, 24rem) minmax(0, 1fr); }
+.card-entry .art { display: flex; gap: 0.8rem; }
+.card-entry img, .gallery img { width: 100%; height: auto; display: block; border-radius: 4.6% / 3.3%; box-shadow: 0 10px 24px -14px rgba(8, 20, 12, 0.6); }
+.card-entry .art img { min-width: 0; flex: 1 1 0; }
+.card-entry h3 { margin: 0.3rem 0 0.5rem; font-size: 1.8rem; }
+.card-entry .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1rem; margin-bottom: 0.9rem; font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink-2); }
+.rules { background: var(--surface); border: 1px solid var(--rule); padding: 0.9rem 1.1rem; font-size: 1.02rem; }
+.rules p { margin: 0 0 0.5em; }
+.rules p:last-child { margin-bottom: 0; }
+.rules .flavor { font-style: italic; color: var(--ink-2); }
+.rules .face { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); display: block; margin-bottom: 0.15rem; }
+.loy { font-family: var(--font-mono); font-weight: 500; color: var(--accent); }
+
+.mana { display: inline-flex; gap: 2px; align-items: center; vertical-align: middle; font-family: var(--font-mono); }
+.sym { display: inline-grid; place-items: center; width: 1.6em; height: 1.6em; border-radius: 50%; font-style: normal; font-size: 0.8em; line-height: 1; background: #CFC8D2; color: #231C27; }
+.s-w { background: #F2EBC9; color: #3A3320; }
+.s-u { background: #BBD6EE; color: #10283A; }
+.s-b { background: #3A3040; color: #EDE7EE; }
+.s-r { background: #E0704C; color: #2A0D05; }
+.s-g { background: #5BA26F; color: #0D2514; }
+
+/* gallery */
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(11.5rem, 1fr)); gap: 1.6rem 1.2rem; margin: 2rem 0; }
+.gallery figure { margin: 0; min-width: 0; }
+.gallery figcaption { margin-top: 0.6rem; font-size: 0.92rem; line-height: 1.4; color: var(--ink-2); }
+.gallery figcaption b { display: block; color: var(--ink); font-weight: 600; font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.04em; }
+
+/* tables */
+.table-scroll { overflow-x: auto; margin: 1.4rem 0; border-top: 1px solid var(--ink); }
+table { border-collapse: collapse; width: 100%; font-size: 0.98rem; }
+th, td { text-align: left; vertical-align: top; padding: 0.65rem 1rem 0.65rem 0; border-bottom: 1px solid var(--rule); }
+th { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); white-space: nowrap; }
+td.num, th.num { font-variant-numeric: tabular-nums; }
+table td:first-child { font-weight: 600; }
+
+/* bars */
+.bars { list-style: none; margin: 1.6rem 0; padding: 0; max-width: 46rem; }
+.bars li { display: grid; grid-template-columns: minmax(8rem, 12rem) minmax(0, 1fr) 3.6rem; gap: 0.9rem; align-items: center; padding-block: 0.3rem; }
+.bars .name { font-size: 1rem; }
+.bars .track { height: 0.85rem; background: var(--surface); border: 1px solid var(--rule); }
+.bars .fill { display: block; height: 100%; background: var(--accent); }
+.bars .val { font-family: var(--font-mono); font-size: 0.85rem; text-align: right; font-variant-numeric: tabular-nums; }
+
+footer { margin-top: 5rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); font-size: 0.9rem; color: var(--ink-2); max-width: 42rem; }
+
+@media (max-width: 52rem) {
+  .hero { grid-template-columns: minmax(0, 1fr); padding-block: 2rem; }
+  .card-entry, .card-entry.pair { grid-template-columns: minmax(0, 1fr); }
+  .card-entry .art { max-width: 22rem; }
+  .card-entry.pair .art { max-width: 28rem; }
+}
+@media (max-width: 34rem) {
+  body { font-size: 1.05rem; }
+  dl.facts { grid-template-columns: minmax(0, 1fr); }
+  dl.facts dt { border-bottom: 0; padding-bottom: 0; }
+  dl.facts dd { padding-top: 0.2rem; }
+  .bars li { grid-template-columns: minmax(0, 1fr) 3.4rem; }
+  .bars .track { grid-column: 1 / -1; grid-row: 2; }
+  .bars .val { grid-row: 1; grid-column: 2; }
+  ol.timeline > li { padding-left: 1.7rem; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div>
+    <span class="label"><a href="../">MTG character archive</a> &middot; Innistrad &middot; Vampire Planeswalker</span>
+    <h1>Sorin Markov<em>the Mortifier</em></h1>
+    <p class="lead">Sorin Markov is a vampire planeswalker and master of sangromancy, one of the oldest living planeswalkers at over 7,000 years old. Eight cards and one transforming creature show him under his own name, spanning 2011 to 2024, from his debut as a self-interested wanderer to the creator and eventual destroyer of the angel Avacyn.</p>
+    <p class="label">Compiled 1 November 2026</p>
+  </div>
+  <div class="fan">
+    <img src="img/sorin-of-house-markov-mh3-245.jpg" alt="Sorin of House Markov, Modern Horizons 3" width="488" height="680">
+    <img src="img/sorin-the-mirthless-vow-131.jpg" alt="Sorin the Mirthless, Innistrad: Crimson Vow" width="488" height="680">
+    <img src="img/sorin-markov-m12-109.jpg" alt="Sorin Markov, Magic 2012" width="488" height="680">
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <a href="#who">Who he is</a>
+  <a href="#story">His story</a>
+  <a href="#cards">Cards</a>
+  <a href="#printings">Printings</a>
+  <a href="#commander">As a commander</a>
+  <a href="#open">Open questions</a>
+  <a href="#sources">Sources</a>
+</nav>
+
+<section id="who">
+  <h2>Who he is</h2>
+  <div class="measure">
+    <p>The <a href="https://mtg.wiki/page/Sorin_Markov">MTG Wiki</a> describes Sorin as a 6&rsquo;2&rdquo;-tall, pale-skinned vampire with white hair and eyes with black sclera and gold irises. He is a master of sangromancy &mdash; blood magic capable of draining lifeforce, reducing creatures to ash, cursing enemies, possessing minds, and shaping blood into weapons. He is naturally capable of short flight and moves in near-total silence.</p>
+  </div>
+  <dl class="facts">
+    <dt>Age</dt>
+    <dd>Born c. &minus;2455 AR in Stensia, Innistrad &mdash; more than 7,000 years old at the time of the Siege of Thraben, and one of only a few surviving pre-Mending planeswalkers.</dd>
+    <dt>Family</dt>
+    <dd>Grandson of Edgar Markov. He regards his creation, the archangel Avacyn, as a kind of daughter, and has sired many vampires of his own.</dd>
+    <dt>Temperament</dt>
+    <dd>A bon vivant who has dedicated his long existence to following his whims, giving him a detachment and easy confidence that other ancient planeswalkers like Ugin and Nicol Bolas lack.</dd>
+    <dt>Signature weapon</dt>
+    <dd>The Parasite Blade, a two-handed sword enchanted to feed off the mana of any creature it cuts, capable of reducing even large creatures to ash. Olivia Voldaren took it from him after Nahiri defeated him.</dd>
+    <dt>Status</dt>
+    <dd>Alive. As of the March of the Machine era, he works alongside Arlinn Kord to prepare Innistrad&rsquo;s defenses against the Phyrexian multiverse invasion.</dd>
+  </dl>
+</section>
+
+<section id="story">
+  <h2>His story</h2>
+  <div class="measure">
+    <p>Sorin&rsquo;s is the longest story of any character in this archive &mdash; millennia spent protecting Innistrad from a distance, the creation and eventual destruction of his own angel, and a centuries-long feud with the lithomancer Nahiri that nearly cost him everything. This timeline covers the major beats; several side episodes (his dealings with Dack Fayden, the two conflicting Tarkir timelines, non-canon Boom! comics material) are compressed or omitted for length.</p>
+  </div>
+
+  <ol class="timeline">
+    <li>
+      <h3>A forced ascension <span class="tag sorin">Sorin</span></h3>
+      <p>At 16, Sorin is held down by his own family and forced to drink the blood of the archangel Marycz as part of Shilgengar&rsquo;s Ritual &mdash; the same dark blood magic his grandfather Edgar Markov used to found the Innistrad vampires. The trauma of the transformation ignites Sorin&rsquo;s planeswalker spark.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Sorin_Markov">MTG Wiki: Sorin Markov</a></p>
+    </li>
+    <li>
+      <h3>Binding the Eldrazi <span class="tag sorin">Sorin</span> <span class="tag ally">Nahiri</span></h3>
+      <p>About a thousand years after his ascension, Sorin allies with the Kor lithomancer Nahiri and the spirit dragon Ugin to trap the world-devouring Eldrazi on the plane of Zendikar, using a hedron matrix to force the titans into physical, imprisonable form. The three planeswalkers agree to return together if the prison is ever disturbed, then go their separate ways.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Sorin_Markov">MTG Wiki: Sorin Markov</a></p>
+    </li>
+    <li>
+      <h3>Creating Avacyn <span class="tag sorin">Sorin</span></h3>
+      <p>Watching from afar as Innistrad&rsquo;s vampires gain ground against humanity, Sorin forges an angel to hold back the darkness in his absence. He names her Avacyn and tasks her with protecting the plane; through her, the Church of Avacyn is born, and most vampires brand Sorin a traitor to his race for it.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Sorin_Markov">MTG Wiki: Sorin Markov</a></p>
+    </li>
+    <li>
+      <h3>Imprisoning Nahiri <span class="tag sorin">Sorin</span> <span class="tag ally">Nahiri</span></h3>
+      <p>Nahiri&rsquo;s call for help against stirring Eldrazi on Zendikar is absorbed by the Helvault, Sorin&rsquo;s prison vault, and never reaches him. When she confronts him over the oversight, Sorin shows no remorse and dismisses her; Nahiri threatens him physically, Avacyn intervenes, and Sorin ultimately banishes Nahiri into the Helvault &mdash; the betrayal that defines the rest of their relationship.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Sorin_Markov">MTG Wiki: Sorin Markov</a></p>
+    </li>
+    <li>
+      <h3>Betrayed on Zendikar <span class="tag sorin">Sorin</span></h3>
+      <p>Millennia later, called back to Zendikar as the Eldrazi stir again, Sorin allies with the elf planeswalker Nissa Revane to reach the Eye of Ugin. At the last moment Nissa shatters the hedron containing the Eldrazi instead of reinforcing it, releasing the titans. Furious, Sorin washes his hands of her and the entire plane.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Sorin_Markov">MTG Wiki: Sorin Markov</a></p>
+    </li>
+    <li>
+      <h3>Markov Manor in ruins <span class="tag sorin">Sorin</span> <span class="tag ally">Nahiri</span> <span class="tag ally">Olivia</span></h3>
+      <p>Sorin returns to Innistrad to find Markov Manor twisted into impossible shapes, its inhabitants embedded in the masonry &mdash; Nahiri&rsquo;s declaration of vengeance. Shunned by most of his own kind, he seeks out the powerful vampire Olivia Voldaren to help rally the bloodline against the threat.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Sorin_Markov">MTG Wiki: Sorin Markov</a></p>
+    </li>
+    <li>
+      <h3>Unmaking Avacyn <span class="tag sorin">Sorin</span> <span class="tag ally">Avacyn</span></h3>
+      <p>To secure Olivia&rsquo;s help, Sorin agrees to destroy his own corrupted creation. He finds Avacyn &mdash; driven mad by Nahiri&rsquo;s cryptoliths and the arrival of Emrakul &mdash; attacking Jace Beleren and Tamiyo, and tries to reason with her, offering to cleanse her mind. Avacyn refuses, blaming Sorin for making her flawed enough to be turned against the innocent. They fight through Thraben Cathedral; Sorin overpowers her and, with anguished regret, unmakes the angel he once called his daughter, one thousand years after her creation.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Sorin_Markov">MTG Wiki: Sorin Markov</a></p>
+    </li>
+    <li>
+      <h3>War against Nahiri <span class="tag sorin">Sorin</span> <span class="tag ally">Nahiri</span> <span class="tag ally">Olivia</span></h3>
+      <p>Realizing too late that Avacyn&rsquo;s destruction was exactly what Nahiri wanted &mdash; it summons Emrakul to the plane &mdash; Sorin and Olivia assemble a vampire army against her. Nahiri defeats him in single combat at Markov Manor and encases him in stone, leaving him helpless to stop Emrakul&rsquo;s devastation. Olivia claims the ruined plane as her own and takes his sword.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Sorin_Markov">MTG Wiki: Sorin Markov</a></p>
+    </li>
+    <li>
+      <h3>War of the Spark <span class="tag sorin">Sorin</span> <span class="tag ally">Nahiri</span></h3>
+      <p>Free of his stone prison, Sorin is drawn to Ravnica and finds Nahiri there too &mdash; even the multiversal threat of Nicol Bolas can&rsquo;t stop their feud, and the two duel in single combat amid the battle. They eventually call a truce to fight Bolas&rsquo;s Eternals alongside the Gatewatch, though their rivalry is assumed to resume once the war ends.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Sorin_Markov">MTG Wiki: Sorin Markov</a></p>
+    </li>
+    <li>
+      <h3>Grief at Markov Manor <span class="tag sorin">Sorin</span></h3>
+      <p>Back on Innistrad, Sorin sequesters himself in his ruined ancestral home, mourning Avacyn and lamenting that every safeguard he built has fallen. When Arlinn Kord and the Gatewatch intrude seeking the Moonsilver Key, his grief turns to fury at the mention of his lost creation, and he attacks them; the angel Sigarda intervenes to buy the others time to escape.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Sorin_Markov">MTG Wiki: Sorin Markov</a></p>
+    </li>
+    <li>
+      <h3>Crashing the wedding <span class="tag sorin">Sorin</span> <span class="tag ally">Edgar</span></h3>
+      <p>When Olivia Voldaren charms his grandfather Edgar into agreeing to marry her, Sorin fights his way alone through the Voldaren estate&rsquo;s guards to stop it, only to be dragged away in holy chains. After the ceremony is shattered by a freed Sigarda, Sorin confronts Edgar directly; the two come to blows, and in the depths of a blood pit Sorin draws on his family&rsquo;s own sangromancy to heal and overpower his grandfather. Rather than killing him, Sorin shows mercy and orders him to leave.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Sorin_Markov">MTG Wiki: Sorin Markov</a></p>
+    </li>
+  </ol>
+
+  <p class="src measure">This timeline rests on one primary source, the MTG Wiki&rsquo;s Sorin Markov page, itself built from citations to the original Wizards of the Coast story chapters.</p>
+</section>
+
+<section id="cards">
+  <h2>Cards that depict him</h2>
+
+  <article class="card-entry">
+    <div class="art">
+      <img src="img/sorin-markov-m12-109.jpg" alt="Sorin Markov" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">Magic 2012 &middot; 2011</span>
+      <h3>Sorin Markov</h3>
+      <div class="meta"><span class="mana">{3}{B}{B}{B}</span><span>Legendary Planeswalker &mdash; Sorin &middot; loyalty 4 &middot; mythic</span></div>
+      <div class="rules">
+        <p><span class="loy">+2</span> Sorin Markov deals 2 damage to any target and you gain 2 life.</p>
+        <p><span class="loy">&minus;3</span> Target opponent&rsquo;s life total becomes 10.</p>
+        <p><span class="loy">&minus;7</span> You control target player during that player&rsquo;s next turn.</p>
+      </div>
+      <p class="src">Art: Michael Komarck. His debut planeswalker card. Legal in Commander, Legacy, Vintage, Modern; not legal in Standard.</p>
+    </div>
+  </article>
+
+  <article class="card-entry">
+    <div class="art">
+      <img src="img/sorin-solemn-visitor-ktk-202.jpg" alt="Sorin, Solemn Visitor" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">Khans of Tarkir &middot; 2014</span>
+      <h3>Sorin, Solemn Visitor</h3>
+      <div class="meta"><span class="mana">{2}{W}{B}</span><span>Legendary Planeswalker &mdash; Sorin &middot; loyalty 4 &middot; mythic</span></div>
+      <div class="rules">
+        <p><span class="loy">+1</span> Until your next turn, creatures you control get +1/+0 and gain lifelink.</p>
+        <p><span class="loy">&minus;2</span> Create a 2/2 black Vampire creature token with flying.</p>
+        <p><span class="loy">&minus;6</span> You get an emblem with &ldquo;At the beginning of each opponent&rsquo;s upkeep, that player sacrifices a creature of their choice.&rdquo;</p>
+      </div>
+      <p class="src">Art: Cynthia Sheppard. Legal in Commander, Legacy, Vintage, Modern; not legal in Standard.</p>
+    </div>
+  </article>
+
+  <article class="card-entry">
+    <div class="art">
+      <img src="img/sorin-grim-nemesis-soi-251.jpg" alt="Sorin, Grim Nemesis" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">Shadows over Innistrad &middot; 2016</span>
+      <h3>Sorin, Grim Nemesis</h3>
+      <div class="meta"><span class="mana">{4}{W}{B}</span><span>Legendary Planeswalker &mdash; Sorin &middot; loyalty 6 &middot; mythic</span></div>
+      <div class="rules">
+        <p><span class="loy">+1</span> Reveal the top card of your library and put that card into your hand. Each opponent loses life equal to its mana value.</p>
+        <p><span class="loy">&minus;X</span> Sorin deals X damage to target creature or planeswalker and you gain X life.</p>
+        <p><span class="loy">&minus;9</span> Create a number of 1/1 black Vampire Knight creature tokens with lifelink equal to the highest life total among all players.</p>
+      </div>
+      <p class="src">Art: Eric Deschamps. Legal in Commander, Legacy, Vintage, Modern; not legal in Standard. Printed during his hunt for his missing angel and search for answers at Markov Manor.</p>
+    </div>
+  </article>
+
+  <article class="card-entry">
+    <div class="art">
+      <img src="img/sorin-vengeful-bloodlord-war-217.jpg" alt="Sorin, Vengeful Bloodlord" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">War of the Spark &middot; 2019</span>
+      <h3>Sorin, Vengeful Bloodlord</h3>
+      <div class="meta"><span class="mana">{2}{W}{B}</span><span>Legendary Planeswalker &mdash; Sorin &middot; loyalty 4 &middot; rare</span></div>
+      <div class="rules">
+        <p>During your turn, creatures and planeswalkers you control have lifelink.</p>
+        <p><span class="loy">+2</span> Sorin deals 1 damage to target player or planeswalker.</p>
+        <p><span class="loy">&minus;X</span> Return target creature card with mana value X from your graveyard to the battlefield. That creature is a Vampire in addition to its other types.</p>
+      </div>
+      <p class="src">Art: Tommy Arnold. Legal in Commander, Legacy, Vintage, Modern; not legal in Standard. Printed for his duel with Nahiri and alliance against Bolas on Ravnica.</p>
+    </div>
+  </article>
+
+  <article class="card-entry">
+    <div class="art">
+      <img src="img/sorin-imperious-bloodlord-inr-133.jpg" alt="Sorin, Imperious Bloodlord" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">War of the Spark &middot; 2019 &middot; shown here Innistrad Remastered, 2024</span>
+      <h3>Sorin, Imperious Bloodlord</h3>
+      <div class="meta"><span class="mana">{2}{B}</span><span>Legendary Planeswalker &mdash; Sorin &middot; loyalty 4 &middot; mythic</span></div>
+      <div class="rules">
+        <p><span class="loy">+1</span> Target creature you control gains deathtouch and lifelink until end of turn. If it&rsquo;s a Vampire, put a +1/+1 counter on it.</p>
+        <p><span class="loy">+1</span> You may sacrifice a Vampire. When you do, Sorin deals 3 damage to any target and you gain 3 life.</p>
+        <p><span class="loy">&minus;3</span> You may put a Vampire creature card from your hand onto the battlefield.</p>
+      </div>
+      <p class="src">Art: Chase Stone. Legal in Commander, Legacy, Vintage, Modern; not legal in Standard.</p>
+    </div>
+  </article>
+
+  <article class="card-entry">
+    <div class="art">
+      <img src="img/sorin-the-mirthless-vow-131.jpg" alt="Sorin the Mirthless" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">Innistrad: Crimson Vow &middot; 2021</span>
+      <h3>Sorin the Mirthless</h3>
+      <div class="meta"><span class="mana">{2}{B}{B}</span><span>Legendary Planeswalker &mdash; Sorin &middot; loyalty 4 &middot; mythic</span></div>
+      <div class="rules">
+        <p><span class="loy">+1</span> Look at the top card of your library. You may reveal that card and put it into your hand. If you do, you lose life equal to its mana value.</p>
+        <p><span class="loy">&minus;2</span> Create a 2/3 black Vampire creature token with flying and lifelink.</p>
+        <p><span class="loy">&minus;7</span> Sorin deals 13 damage to any target. You gain 13 life.</p>
+      </div>
+      <p class="src">Art: Martina Fa&#269;kov&aacute;. Legal in Commander, Legacy, Vintage, Modern; not legal in Standard. Printed for his confrontation with Edgar at the Voldaren wedding.</p>
+    </div>
+  </article>
+
+  <article class="card-entry">
+    <div class="art">
+      <img src="img/sorin-lord-of-innistrad-lcc-289.jpg" alt="Sorin, Lord of Innistrad" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">Duel Decks: Elspeth vs. Kiora &middot; 2015 &middot; shown here The Lost Caverns of Ixalan Commander, 2023</span>
+      <h3>Sorin, Lord of Innistrad</h3>
+      <div class="meta"><span class="mana">{2}{W}{B}</span><span>Legendary Planeswalker &mdash; Sorin &middot; loyalty 3 &middot; mythic</span></div>
+      <div class="rules">
+        <p><span class="loy">+1</span> Create a 1/1 black Vampire creature token with lifelink.</p>
+        <p><span class="loy">&minus;2</span> You get an emblem with &ldquo;Creatures you control get +1/+0.&rdquo;</p>
+        <p><span class="loy">&minus;6</span> Destroy up to three target creatures and/or other planeswalkers. Return each card put into a graveyard this way to the battlefield under your control.</p>
+      </div>
+      <p class="src">Art: Michael Komarck. Legal in Commander, Legacy, Vintage, Modern; not legal in Standard.</p>
+    </div>
+  </article>
+
+  <article class="card-entry pair">
+    <div class="art">
+      <img src="img/sorin-of-house-markov-mh3-245.jpg" alt="Sorin of House Markov" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">Modern Horizons 3 &middot; 2024 &middot; transforming double-faced card</span>
+      <h3>Sorin of House Markov // Sorin, Ravenous Neonate</h3>
+      <div class="meta"><span>Legendary Creature &mdash; Human Noble // Legendary Planeswalker &mdash; Sorin &middot; mythic</span></div>
+      <div class="rules">
+        <span class="face">Front &middot; Sorin of House Markov &middot; {1}{B} &middot; 1/4</span>
+        <p>Lifelink</p>
+        <p>Extort (Whenever you cast a spell, you may pay {W/B}. If you do, each opponent loses 1 life and you gain that much life.)</p>
+        <p>At the beginning of each of your postcombat main phases, if you gained 3 or more life this turn, exile Sorin, then return him to the battlefield transformed under his owner&rsquo;s control.</p>
+      </div>
+      <div class="rules" style="margin-top:0.8rem">
+        <span class="face">Back &middot; Sorin, Ravenous Neonate &middot; loyalty 3</span>
+        <p>Extort (as above.)</p>
+        <p><span class="loy">+2</span> Create a Food token.</p>
+        <p><span class="loy">&minus;1</span> Sorin deals damage equal to the amount of life you gained this turn to any target.</p>
+        <p><span class="loy">&minus;6</span> Gain control of target creature. It becomes a Vampire in addition to its other types. Put a lifelink counter on it if you control a white permanent other than that creature or Sorin.</p>
+      </div>
+      <p class="src">Art: Matt Stewart. Legal in Commander, Legacy, Vintage, Modern. The only Sorin card that starts as a creature, which is what lets him lead a Commander deck on his own.</p>
+    </div>
+  </article>
+</section>
+
+<section id="printings">
+  <h2>Printings</h2>
+  <div class="measure">
+    <p>Prices are single current lookups in USD. Sorin Markov (Magic 2012 #109) costs about $9.34 non-foil and $39.23 foil. Sorin, Solemn Visitor (Khans of Tarkir #202) costs about $2.67 non-foil and $8.79 foil. Sorin, Grim Nemesis (Shadows over Innistrad #251) costs about $4.43 non-foil and $10.51 foil. Sorin, Vengeful Bloodlord (War of the Spark #217) costs about $3.91 non-foil and $2.65 foil. Sorin, Imperious Bloodlord (Innistrad Remastered #133) costs about $5.69 non-foil and $6.30 foil. Sorin the Mirthless (Innistrad: Crimson Vow #131) costs about $2.34 non-foil and $2.56 foil. Sorin, Lord of Innistrad (The Lost Caverns of Ixalan Commander #289) costs about $0.64 non-foil. Sorin of House Markov (Modern Horizons 3 #245) costs about $4.45 non-foil and $5.08 foil.</p>
+  </div>
+
+  <div class="gallery">
+    <figure><img src="img/sorin-markov-m12-109.jpg" alt="Sorin Markov, M12 109" width="488" height="680"><figcaption><b>M12 &middot; 109</b>Original printing. Art by Michael Komarck</figcaption></figure>
+    <figure><img src="img/sorin-solemn-visitor-ktk-202.jpg" alt="Sorin, Solemn Visitor, KTK 202" width="488" height="680"><figcaption><b>KTK &middot; 202</b>Original printing. Art by Cynthia Sheppard</figcaption></figure>
+    <figure><img src="img/sorin-grim-nemesis-soi-251.jpg" alt="Sorin, Grim Nemesis, SOI 251" width="488" height="680"><figcaption><b>SOI &middot; 251</b>Original printing. Art by Eric Deschamps</figcaption></figure>
+    <figure><img src="img/sorin-vengeful-bloodlord-war-217.jpg" alt="Sorin, Vengeful Bloodlord, WAR 217" width="488" height="680"><figcaption><b>WAR &middot; 217</b>Original printing. Art by Tommy Arnold</figcaption></figure>
+    <figure><img src="img/sorin-imperious-bloodlord-inr-133.jpg" alt="Sorin, Imperious Bloodlord, INR 133" width="488" height="680"><figcaption><b>INR &middot; 133</b>Reprint; first printed in War of the Spark (2019). Art by Chase Stone</figcaption></figure>
+    <figure><img src="img/sorin-the-mirthless-vow-131.jpg" alt="Sorin the Mirthless, VOW 131" width="488" height="680"><figcaption><b>VOW &middot; 131</b>Original printing. Art by Martina Fa&#269;kov&aacute;</figcaption></figure>
+    <figure><img src="img/sorin-lord-of-innistrad-lcc-289.jpg" alt="Sorin, Lord of Innistrad, LCC 289" width="488" height="680"><figcaption><b>LCC &middot; 289</b>Reprint; first printed in Duel Decks: Elspeth vs. Kiora (2015). Art by Michael Komarck</figcaption></figure>
+    <figure><img src="img/sorin-of-house-markov-mh3-245.jpg" alt="Sorin of House Markov, MH3 245" width="488" height="680"><figcaption><b>MH3 &middot; 245</b>Original printing. Art by Matt Stewart</figcaption></figure>
+  </div>
+
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Card</th><th>Set</th><th class="num">No.</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td>Sorin Markov</td><td>Magic 2012</td><td class="num">109</td><td>Original printing (2011)</td></tr>
+        <tr><td>Sorin, Solemn Visitor</td><td>Khans of Tarkir</td><td class="num">202</td><td>Original printing (2014)</td></tr>
+        <tr><td>Sorin, Lord of Innistrad</td><td>Duel Decks: Elspeth vs. Kiora</td><td class="num">&mdash;</td><td>First printing (2015)</td></tr>
+        <tr><td>Sorin, Lord of Innistrad</td><td>The Lost Caverns of Ixalan Commander</td><td class="num">289</td><td>Reprint shown above (2023)</td></tr>
+        <tr><td>Sorin, Grim Nemesis</td><td>Shadows over Innistrad</td><td class="num">251</td><td>Original printing (2016)</td></tr>
+        <tr><td>Sorin, Vengeful Bloodlord</td><td>War of the Spark</td><td class="num">217</td><td>Original printing (2019)</td></tr>
+        <tr><td>Sorin, Imperious Bloodlord</td><td>War of the Spark</td><td class="num">&mdash;</td><td>First printing (2019)</td></tr>
+        <tr><td>Sorin, Imperious Bloodlord</td><td>Innistrad Remastered</td><td class="num">133</td><td>Reprint shown above (2024)</td></tr>
+        <tr><td>Sorin the Mirthless</td><td>Innistrad: Crimson Vow</td><td class="num">131</td><td>Original printing (2021)</td></tr>
+        <tr><td>Sorin of House Markov // Sorin, Ravenous Neonate</td><td>Modern Horizons 3</td><td class="num">245</td><td>Original printing (2024)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="measure">The card-data tool returns one entry per card, not a full printing list, so I cross-checked first printings and collector numbers against Scryfall through the browser (Scryfall blocks direct automated requests). Other treatments &mdash; showcase frames, foils, promos, the what-if Secret Lair &ldquo;bat&rdquo; card &mdash; may exist beyond what&rsquo;s listed here.</p>
+</section>
+
+<section id="commander">
+  <h2>Playing him as a commander</h2>
+  <div class="measure">
+    <p><strong>Only Sorin of House Markov can lead a Commander deck on his own.</strong> None of his seven solo planeswalker cards carry &ldquo;can be your commander&rdquo; text, so they&rsquo;re Commander-legal to play inside a deck but can&rsquo;t serve as the commander itself outside the Oathbreaker format &mdash; Sorin of House Markov starts as a legendary creature and transforms into a planeswalker, which is what makes him eligible. He leads 6,686 decks on EDHREC, built around lifegain (1,198 decks), lifedrain (183), vampires (167), and the Lurrus companion restriction (151). Sorin, Vengeful Bloodlord is by far the most-played Sorin planeswalker inside those decks, appearing in 43.9% of them. EDHREC counts decks of every pod size, not 1v1 specifically.</p>
+  </div>
+  <h3>Share of Sorin of House Markov decks that play each card</h3>
+  <ul class="bars">
+    <li><span class="name">Swords to Plowshares</span><span class="track"><span class="fill" style="width:71.9%"></span></span><span class="val">71.9%</span></li>
+    <li><span class="name">Vito, Thorn of the Dusk Rose</span><span class="track"><span class="fill" style="width:68.6%"></span></span><span class="val">68.6%</span></li>
+    <li><span class="name">Exsanguinate</span><span class="track"><span class="fill" style="width:61.7%"></span></span><span class="val">61.7%</span></li>
+    <li><span class="name">Soul Warden</span><span class="track"><span class="fill" style="width:59.4%"></span></span><span class="val">59.4%</span></li>
+    <li><span class="name">Sanguine Bond</span><span class="track"><span class="fill" style="width:59%"></span></span><span class="val">59.0%</span></li>
+  </ul>
+  <p class="src">Source: EDHREC data, retrieved through a card-data tool on 1 November 2026.</p>
+</section>
+
+<section id="open">
+  <h2>What could not be confirmed</h2>
+  <ul class="plain measure">
+    <li><strong>The two Tarkir timelines.</strong> The MTG Wiki describes an &ldquo;original timeline&rdquo; where Sorin finds Ugin already dead, and a &ldquo;current timeline&rdquo; where Sorin&rsquo;s visit (Sorin&rsquo;s Restoration) awakens Ugin from a hedron cocoon. I did not attempt to reconcile how these two accounts relate; the timeline above follows the current-timeline version only.</li>
+    <li><strong>Non-canon material.</strong> The wiki&rsquo;s &ldquo;Boom! comics&rdquo; section and the Echoverse (an alternate-universe variant where Sorin is a werewolf) are explicitly separate from his main continuity and are omitted from the timeline above.</li>
+    <li><strong>His current activity against New Phyrexia.</strong> The wiki says only that he and Arlinn Kord &ldquo;worked together to prepare Innistrad&rsquo;s defenses&rdquo; and informed Geralf Cecani and Ludevic of the threat &mdash; I found no further detail on what came of it.</li>
+    <li><strong>Exact wording of the story chapters.</strong> I read the MTG Wiki through a page-reading tool rather than the original Wizards story articles it cites, so check direct quotes against the source stories before relying on exact phrasing.</li>
+    <li><strong>Prices and printings.</strong> Single lookups taken on one day; the printing list above may not be exhaustive.</li>
+    <li><strong>Scryfall</strong> blocks direct automated requests, so oracle and flavor text came from a card-data tool, cross-checked against Scryfall pages loaded in a browser.</li>
+  </ul>
+</section>
+
+<section id="sources">
+  <h2>Sources</h2>
+  <ul class="plain measure">
+    <li><a href="https://mtg.wiki/page/Sorin_Markov">MTG Wiki: Sorin Markov</a></li>
+    <li><a href="https://scryfall.com">Scryfall</a> (card text, flavor text, and printing history)</li>
+  </ul>
+</section>
+
+<footer>
+  <p>Fan-made reference page. Magic: The Gathering and its card images are property of Wizards of the Coast.</p>
+  <p>More in this series: <a href="../">all characters</a> &middot; <a href="../dihada/">Dihada, binder of wills</a> &middot; <a href="../edgar-markov/">Edgar Markov, first of the vampires</a> &middot; <a href="../gisa/">Gisa, ghoulcaller of Innistrad</a> &middot; <a href="../sheoldred/">Sheoldred, the Whispering One</a> &middot; <a href="../olivia-voldaren/">Olivia Voldaren, queen of the hungry</a> &middot; <a href="../avacyn/">Avacyn, protector of Innistrad</a></p>
+</footer>
+
+</div>
+
+<script>
+(function () {
+  var els = document.querySelectorAll('.mana');
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    var text = el.textContent;
+    var parts = text.match(/\{[^}]+\}/g);
+    if (!parts) continue;
+    el.setAttribute('role', 'img');
+    el.setAttribute('aria-label', 'Mana cost ' + parts.map(function (p) { return p.slice(1, -1); }).join(' '));
+    el.textContent = '';
+    for (var j = 0; j < parts.length; j++) {
+      var k = parts[j].slice(1, -1);
+      var s = document.createElement('i');
+      s.className = 'sym s-' + (/^\d+$/.test(k) ? 'n' : k.toLowerCase());
+      s.textContent = k;
+      s.setAttribute('aria-hidden', 'true');
+      el.appendChild(s);
+    }
+  }
+})();
+</script>
+
+</body>
+</html>
