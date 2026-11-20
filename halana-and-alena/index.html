@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Halana &amp; Alena, Kessig Rangers</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a rangers' field log. One reading column, wide breakouts for card art and tables.
+   Palette: parchment-green paper, forest-green ink for Halana, ember-red for Alena. Type: Fraunces (display), Newsreader (text), Plex Mono (costs, labels). */
+:root {
+  --bg: #ECEADF;
+  --surface: #F5F3E9;
+  --ink: #15180F;
+  --ink-2: #434A38;
+  --rule: #D0CDBA;
+  --accent: #3F6B3F;
+  --accent-soft: #D9E6D2;
+  --silver: #5A5E4E;
+  --win: #A1341E;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-text: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #10130C;
+    --surface: #171B10;
+    --ink: #E7E8DC;
+    --ink-2: #AEB29C;
+    --rule: #2A2F1F;
+    --accent: #6FA85E;
+    --accent-soft: #1E2A17;
+    --silver: #8E9480;
+    --win: #D96A4E;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #10130C;
+  --surface: #171B10;
+  --ink: #E7E8DC;
+  --ink-2: #AEB29C;
+  --rule: #2A2F1F;
+  --accent: #6FA85E;
+  --accent-soft: #1E2A17;
+  --silver: #8E9480;
+  --win: #D96A4E;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  padding-block: 0 4rem;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 68rem; margin-inline: auto; }
+.measure { max-width: 42rem; }
+img { height: auto; }
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+p { margin: 0 0 1em; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; font-weight: 600; line-height: 1.1; margin: 0; }
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--silver);
+}
+
+/* hero */
+.hero { overflow-x: clip; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 2.5rem; align-items: center; padding-block: 3rem 2.5rem; }
+.hero h1 { font-size: clamp(2.6rem, 7.6vw, 5.2rem); font-weight: 800; letter-spacing: -0.01em; margin: 0.6rem 0 1.2rem; }
+.hero h1 em { display: block; font-style: italic; font-weight: 600; color: var(--accent); font-size: 0.42em; line-height: 1.15; margin-top: 0.3em; }
+.hero .lead { font-size: 1.3rem; line-height: 1.5; color: var(--ink); max-width: 34rem; }
+.fan { position: relative; aspect-ratio: 1.3 / 1; width: 100%; max-width: 34rem; justify-self: center; }
+.fan img { position: absolute; top: 0; width: 42%; border-radius: 4.6% / 3.3%; box-shadow: 0 14px 30px -12px rgba(8, 20, 12, 0.55); }
+.fan img:nth-child(1) { left: 2%; top: 8%; transform: rotate(-6deg); }
+.fan img:nth-child(2) { left: 28%; top: 0; z-index: 2; }
+.fan img:nth-child(3) { left: 52%; top: 8%; transform: rotate(6deg); }
+
+nav.toc { display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; padding-block: 1rem; border-block: 1px solid var(--rule); font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; }
+nav.toc a { color: var(--ink-2); text-decoration: none; padding-block: 0.25rem; }
+nav.toc a:hover { color: var(--accent); }
+
+section { padding-top: 4rem; scroll-margin-top: 1rem; }
+section > h2 { font-size: clamp(2rem, 4.6vw, 3rem); margin-bottom: 1.4rem; }
+h3 { font-size: 1.5rem; margin: 2.2rem 0 0.8rem; }
+
+/* facts list */
+dl.facts { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); gap: 0; margin: 2rem 0 0; border-top: 1px solid var(--rule); }
+dl.facts dt, dl.facts dd { padding-block: 0.9rem; border-bottom: 1px solid var(--rule); margin: 0; }
+dl.facts dt { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); padding-top: 1.1rem; }
+dl.facts dd { min-width: 0; }
+
+/* timeline */
+ol.timeline { list-style: none; counter-reset: stage; margin: 2rem 0 0; padding: 0; border-left: 2px solid var(--rule); }
+ol.timeline > li { counter-increment: stage; position: relative; padding: 0 0 2rem 2.2rem; }
+ol.timeline > li::before {
+  content: counter(stage);
+  position: absolute; left: -1.05rem; top: 0;
+  width: 2rem; height: 2rem; border-radius: 50%;
+  background: var(--bg); border: 2px solid var(--accent); color: var(--accent);
+  font-family: var(--font-mono); font-size: 0.85rem; display: grid; place-items: center;
+}
+ol.timeline h3 { margin: 0 0 0.4rem; font-size: 1.35rem; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 0.8rem; }
+ol.timeline p { margin: 0 0 0.5rem; }
+.src { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.04em; color: var(--silver); }
+.src a { color: var(--silver); }
+.tag { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.15rem 0.5rem; border-radius: 3px; border: 1px solid currentColor; }
+.tag.halana { color: var(--accent); }
+.tag.alena { color: var(--win); }
+
+.aside { background: var(--surface); border: 1px solid var(--rule); padding: 1.2rem 1.4rem; margin-block: 1.6rem; max-width: 42rem; }
+.aside p:last-child { margin-bottom: 0; }
+.aside .label { display: block; margin-bottom: 0.4rem; }
+ul.plain { padding-left: 1.2rem; margin: 0 0 1em; }
+ul.plain li { margin-bottom: 0.7rem; padding-left: 0.2rem; }
+
+/* cards */
+.card-entry { display: grid; grid-template-columns: minmax(0, 17rem) minmax(0, 1fr); gap: 2rem; padding-block: 2rem; border-top: 1px solid var(--rule); align-items: start; }
+.card-entry img, .gallery img { width: 100%; height: auto; display: block; border-radius: 4.6% / 3.3%; box-shadow: 0 10px 24px -14px rgba(8, 20, 12, 0.6); }
+.card-entry h3 { margin: 0.3rem 0 0.5rem; font-size: 1.8rem; }
+.card-entry .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1rem; margin-bottom: 0.9rem; font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink-2); }
+.rules { background: var(--surface); border: 1px solid var(--rule); padding: 0.9rem 1.1rem; font-size: 1.02rem; }
+.rules p { margin: 0 0 0.5em; }
+.rules p:last-child { margin-bottom: 0; }
+
+.mana { display: inline-flex; gap: 2px; align-items: center; vertical-align: middle; font-family: var(--font-mono); }
+.sym { display: inline-grid; place-items: center; width: 1.6em; height: 1.6em; border-radius: 50%; font-style: normal; font-size: 0.8em; line-height: 1; background: #CFC8D2; color: #231C27; }
+.s-w { background: #F2EBC9; color: #3A3320; }
+.s-u { background: #BBD6EE; color: #10283A; }
+.s-b { background: #3A3040; color: #EDE7EE; }
+.s-r { background: #E0704C; color: #2A0D05; }
+.s-g { background: #5BA26F; color: #0D2514; }
+
+/* gallery */
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(11.5rem, 1fr)); gap: 1.6rem 1.2rem; margin: 2rem 0; }
+.gallery figure { margin: 0; min-width: 0; }
+.gallery figcaption { margin-top: 0.6rem; font-size: 0.92rem; line-height: 1.4; color: var(--ink-2); }
+.gallery figcaption b { display: block; color: var(--ink); font-weight: 600; font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.04em; }
+
+/* tables */
+.table-scroll { overflow-x: auto; margin: 1.4rem 0; border-top: 1px solid var(--ink); }
+table { border-collapse: collapse; width: 100%; font-size: 0.98rem; }
+th, td { text-align: left; vertical-align: top; padding: 0.65rem 1rem 0.65rem 0; border-bottom: 1px solid var(--rule); }
+th { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); white-space: nowrap; }
+td.num, th.num { font-variant-numeric: tabular-nums; }
+table td:first-child { font-weight: 600; }
+
+/* bars */
+.bars { list-style: none; margin: 1.6rem 0; padding: 0; max-width: 46rem; }
+.bars li { display: grid; grid-template-columns: minmax(8rem, 12rem) minmax(0, 1fr) 3.6rem; gap: 0.9rem; align-items: center; padding-block: 0.3rem; }
+.bars .name { font-size: 1rem; }
+.bars .track { height: 0.85rem; background: var(--surface); border: 1px solid var(--rule); }
+.bars .fill { display: block; height: 100%; background: var(--accent); }
+.bars .val { font-family: var(--font-mono); font-size: 0.85rem; text-align: right; font-variant-numeric: tabular-nums; }
+
+footer { margin-top: 5rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); font-size: 0.9rem; color: var(--ink-2); max-width: 42rem; }
+
+@media (max-width: 52rem) {
+  .hero { grid-template-columns: minmax(0, 1fr); padding-block: 2rem; }
+  .card-entry { grid-template-columns: minmax(0, 1fr); }
+  .card-entry .art { max-width: 22rem; }
+}
+@media (max-width: 34rem) {
+  body { font-size: 1.05rem; }
+  dl.facts { grid-template-columns: minmax(0, 1fr); }
+  dl.facts dt { border-bottom: 0; padding-bottom: 0; }
+  dl.facts dd { padding-top: 0.2rem; }
+  .bars li { grid-template-columns: minmax(0, 1fr) 3.4rem; }
+  .bars .track { grid-column: 1 / -1; grid-row: 2; }
+  .bars .val { grid-row: 1; grid-column: 2; }
+  ol.timeline > li { padding-left: 1.7rem; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div>
+    <span class="label"><a href="../">MTG character archive</a> &middot; Innistrad &middot; Kessig Rangers</span>
+    <h1>Halana &amp; Alena<em>rangers of the Ulvenwald</em></h1>
+    <p class="lead">Halana and Alena are a pair of human rangers from Kessig province on Innistrad &mdash; partners in both work and life who hunt werewolves and protect travelers through the Ulvenwald forest. Three cards depict them: one for each of them solo, and one merged card showing them fighting as a single unit.</p>
+    <p class="label">Compiled 20 November 2026</p>
+  </div>
+  <div class="fan">
+    <img src="img/halana-kessig-ranger-cmr-231.jpg" alt="Halana, Kessig Ranger" width="488" height="680">
+    <img src="img/halana-and-alena-partners-fdn-659.jpg" alt="Halana and Alena, Partners" width="488" height="680">
+    <img src="img/alena-kessig-trapper-cmr-160.jpg" alt="Alena, Kessig Trapper" width="488" height="680">
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <a href="#who">Who they are</a>
+  <a href="#story">Their story</a>
+  <a href="#cards">Cards</a>
+  <a href="#printings">Printings</a>
+  <a href="#commander">As commanders</a>
+  <a href="#open">Open questions</a>
+  <a href="#sources">Sources</a>
+</nav>
+
+<section id="who">
+  <h2>Who they are</h2>
+  <div class="measure">
+    <p>The <a href="https://mtg.wiki/page/Halana">MTG Wiki</a> describes Halana (&ldquo;Hal&rdquo;) and Alena as trackers, hunters, and protectors who live in the depths of the dark Ulvenwald forest on Innistrad, guiding travelers safely to the nearby town of Gatstaf. The wiki explicitly calls them partners &ldquo;in both work and life,&rdquo; and lists them under its LGBT characters category &mdash; they&rsquo;re a couple.</p>
+  </div>
+  <dl class="facts">
+    <dt>Origin</dt>
+    <dd>Kessig province, Innistrad &mdash; the same wooded region as Arlinn Kord and much of the werewolf storyline.</dd>
+    <dt>Halana&rsquo;s role</dt>
+    <dd>An archer and ranger, skilled with reach and precision strikes from a distance.</dd>
+    <dt>Alena&rsquo;s role</dt>
+    <dd>A trapper and scout, described as highly skilled at tracking by senses alone &mdash; particularly good at hunting werewolves.</dd>
+    <dt>Specialty</dt>
+    <dd>Defending travelers through the Ulvenwald from werewolves, vampires, and the possessed.</dd>
+    <dt>Status</dt>
+    <dd>Active as of Innistrad: Crimson Vow (2021), the most recent story appearance found for either of them.</dd>
+  </dl>
+</section>
+
+<section id="story">
+  <h2>Their story</h2>
+  <div class="measure">
+    <p>Compared to the other characters in this archive, Halana and Alena are minor, flavor-level figures &mdash; the MTG Wiki documents only two story appearances for them, both supporting-cast roles in larger Innistrad crises rather than their own dedicated arc. I'm stating that plainly rather than padding it out: what follows is everything the wiki records.</p>
+  </div>
+
+  <ol class="timeline">
+    <li>
+      <h3>Hunting Emrakul&rsquo;s cultists <span class="tag halana">Halana</span> <span class="tag alena">Alena</span></h3>
+      <p>When Emrakul&rsquo;s presence on Innistrad spreads cult worship and bizarre bodily corruption near the Ulvenwald, Halana and Alena track the cultists' activity and confront them directly. Facing a threat bigger than their usual quarry, the two rangers set aside their long feud with the local werewolves and join forces with the lycanthropes to fight the corrupted cultists and, eventually, Emrakul's influence itself.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Halana">MTG Wiki: Halana</a> &middot; <a href="https://mtg.wiki/page/Alena">MTG Wiki: Alena</a> (citing &ldquo;Under the Silver Moon,&rdquo; 2016, and &ldquo;Emrakul Rises,&rdquo; 2016)</p>
+    </li>
+    <li>
+      <h3>Back to war with the werewolves <span class="tag halana">Halana</span> <span class="tag alena">Alena</span></h3>
+      <p>By the time of Innistrad: Crimson Vow, with Emrakul's threat resolved and the plane plunged into the Eternal Night, the truce between the rangers and the werewolves has broken down. The wiki notes only that their battles against the lycanthropes &ldquo;have resumed&rdquo; &mdash; no further detail on specific events is given.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Halana">MTG Wiki: Halana</a> &middot; <a href="https://mtg.wiki/page/Alena">MTG Wiki: Alena</a> (citing &ldquo;The Legends of Innistrad: Crimson Vow,&rdquo; 2021)</p>
+    </li>
+  </ol>
+
+  <p class="src measure">Both MTG Wiki pages (Halana, Alena) tell this same brief history nearly word for word, built from citations to Wizards of the Coast's own story articles; I read the wiki pages rather than the original articles themselves.</p>
+</section>
+
+<section id="cards">
+  <h2>Cards that depict them</h2>
+
+  <article class="card-entry">
+    <div class="art">
+      <img src="img/halana-kessig-ranger-cmr-231.jpg" alt="Halana, Kessig Ranger" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">Commander Legends &middot; 2020</span>
+      <h3>Halana, Kessig Ranger</h3>
+      <div class="meta"><span class="mana">{3}{G}</span><span>Legendary Creature &mdash; Human Archer Ranger &middot; 3/4 &middot; uncommon</span></div>
+      <div class="rules">
+        <p>Reach</p>
+        <p>Whenever another creature you control enters, you may pay {2}. When you do, that creature deals damage equal to its power to target creature.</p>
+        <p>Partner <span style="font-weight:400">(You can have two commanders if both have partner.)</span></p>
+      </div>
+      <p class="src">Art: Zoltan Boros. Legal in Commander, Legacy, Vintage; not legal in Modern or Standard.</p>
+    </div>
+  </article>
+
+  <article class="card-entry">
+    <div class="art">
+      <img src="img/alena-kessig-trapper-cmr-160.jpg" alt="Alena, Kessig Trapper" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">Commander Legends &middot; 2020</span>
+      <h3>Alena, Kessig Trapper</h3>
+      <div class="meta"><span class="mana">{4}{R}</span><span>Legendary Creature &mdash; Human Scout &middot; 4/3 &middot; uncommon</span></div>
+      <div class="rules">
+        <p>First strike</p>
+        <p>{T}: Add an amount of {R} equal to the greatest power among creatures you control that entered this turn.</p>
+        <p>Partner <span style="font-weight:400">(You can have two commanders if both have partner.)</span></p>
+      </div>
+      <p class="src">Art: Zoltan Boros. Legal in Commander, Legacy, Vintage; not legal in Modern or Standard.</p>
+    </div>
+  </article>
+
+  <article class="card-entry">
+    <div class="art">
+      <img src="img/halana-and-alena-partners-fdn-659.jpg" alt="Halana and Alena, Partners" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">Foundations &middot; 2024</span>
+      <h3>Halana and Alena, Partners</h3>
+      <div class="meta"><span class="mana">{2}{R}{G}</span><span>Legendary Creature &mdash; Human Ranger &middot; 2/3 &middot; rare</span></div>
+      <div class="rules">
+        <p>Reach</p>
+        <p>First strike</p>
+        <p>At the beginning of combat on your turn, put X +1/+1 counters on another target creature you control, where X is Halana and Alena&rsquo;s power. That creature gains haste until end of turn.</p>
+      </div>
+      <p class="src">Art: Jason Rainville. Legal in Commander, Legacy, Vintage, Modern, and Standard &mdash; the only card of the three still Standard-legal. A single merged card showing them fighting as one unit, rather than the two-card Partner pairing above.</p>
+    </div>
+  </article>
+</section>
+
+<section id="printings">
+  <h2>Printings</h2>
+  <div class="measure">
+    <p>Prices are single current lookups in USD. Halana, Kessig Ranger (Commander Legends #231) costs about $0.34 non-foil and $0.45 foil. Alena, Kessig Trapper (Commander Legends #160) costs about $0.32 non-foil and $0.42 foil. Halana and Alena, Partners (Foundations #659) costs about $0.37 non-foil; no separate foil price was returned by the lookup. All three remain their only printings &mdash; none has been reprinted elsewhere so far.</p>
+  </div>
+
+  <div class="gallery">
+    <figure><img src="img/halana-kessig-ranger-cmr-231.jpg" alt="Halana, Kessig Ranger, CMR 231" width="488" height="680"><figcaption><b>CMR &middot; 231</b>Original and only printing. Art by Zoltan Boros</figcaption></figure>
+    <figure><img src="img/alena-kessig-trapper-cmr-160.jpg" alt="Alena, Kessig Trapper, CMR 160" width="488" height="680"><figcaption><b>CMR &middot; 160</b>Original and only printing. Art by Zoltan Boros</figcaption></figure>
+    <figure><img src="img/halana-and-alena-partners-fdn-659.jpg" alt="Halana and Alena, Partners, FDN 659" width="488" height="680"><figcaption><b>FDN &middot; 659</b>Original and only printing. Art by Jason Rainville</figcaption></figure>
+  </div>
+
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Card</th><th>Set</th><th class="num">No.</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td>Halana, Kessig Ranger</td><td>Commander Legends</td><td class="num">231</td><td>Original and only printing (2020)</td></tr>
+        <tr><td>Alena, Kessig Trapper</td><td>Commander Legends</td><td class="num">160</td><td>Original and only printing (2020)</td></tr>
+        <tr><td>Halana and Alena, Partners</td><td>Foundations</td><td class="num">659</td><td>Original and only printing (2024)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="measure">The card-data tool returns one entry per card, not a full printing list, so I cross-checked against Scryfall through the browser (Scryfall blocks direct automated requests). No showcase, foil-only, or promo treatments turned up for any of the three.</p>
+</section>
+
+<section id="commander">
+  <h2>Playing them as commanders</h2>
+  <div class="measure">
+    <p><strong>All three cards here can lead a Commander deck</strong> &mdash; but by two different rules, which is worth untangling. Halana, Kessig Ranger and Alena, Kessig Trapper are each legendary creatures with the keyword ability <strong>Partner</strong>: that lets a player use both of them together as two separate commanders in one deck, instead of the usual single commander. Halana and Alena, Partners is a plain legendary creature with no Partner text at all &mdash; but it doesn&rsquo;t need any. Any legendary creature can be your sole commander by default; special &ldquo;can be your commander&rdquo; text (as seen on some planeswalkers elsewhere in this archive) is only needed for card types that aren&rsquo;t normally commander-eligible, like planeswalkers. A legendary creature needs nothing extra.</p>
+    <p>On EDHREC, the merged Foundations card leads 4,549 decks, almost all built around +1/+1 counters (653 of those decks tag that theme specifically) and aggressive, hasty creature strategies. The Halana/Alena Partner pairing is tracked separately and far more niche, appearing as a commander pairing in only 16 decks on EDHREC. EDHREC's numbers cover decks of every pod size, not 1v1 specifically.</p>
+  </div>
+  <h3>Share of Halana and Alena, Partners decks that play each card</h3>
+  <ul class="bars">
+    <li><span class="name">Garruk's Uprising</span><span class="track"><span class="fill" style="width:57%"></span></span><span class="val">57.0%</span></li>
+    <li><span class="name">Forgotten Ancient</span><span class="track"><span class="fill" style="width:56.5%"></span></span><span class="val">56.5%</span></li>
+    <li><span class="name">Inspiring Call</span><span class="track"><span class="fill" style="width:55.4%"></span></span><span class="val">55.4%</span></li>
+    <li><span class="name">Kami of Whispered Hopes</span><span class="track"><span class="fill" style="width:54%"></span></span><span class="val">54.0%</span></li>
+    <li><span class="name">Llanowar Elves</span><span class="track"><span class="fill" style="width:52.1%"></span></span><span class="val">52.1%</span></li>
+  </ul>
+  <p class="src">Source: EDHREC data, retrieved through a card-data tool on 20 November 2026.</p>
+</section>
+
+<section id="open">
+  <h2>What could not be confirmed</h2>
+  <ul class="plain measure">
+    <li><strong>Depth of their story.</strong> Unlike the other characters in this archive, Halana and Alena have no dedicated story chapter &mdash; only two brief mentions inside larger Emrakul- and Eternal Night-era stories. I did not pad this out; if a fuller account exists, I didn't find it in the MTG Wiki or the sources it cites.</li>
+    <li><strong>The Foundations merge card's story status.</strong> The MTG Wiki has no page at all for &ldquo;Halana and Alena, Partners&rdquo; (it returns a 404, &ldquo;no text in this page&rdquo;), so I can't confirm whether the merged card reflects an actual in-story event or is purely a mechanical flavor choice by Foundations' designers.</li>
+    <li><strong>Exact wording of the story chapters.</strong> I read the MTG Wiki through a page-reading tool rather than the original Wizards story articles it cites, so check direct quotes against the source stories before relying on exact phrasing.</li>
+    <li><strong>Prices and printings.</strong> Single lookups taken on one day.</li>
+    <li><strong>Scryfall</strong> blocks direct automated requests, so oracle text came from a card-data tool, cross-checked against Scryfall pages loaded in a browser.</li>
+  </ul>
+</section>
+
+<section id="sources">
+  <h2>Sources</h2>
+  <ul class="plain measure">
+    <li><a href="https://mtg.wiki/page/Halana">MTG Wiki: Halana</a></li>
+    <li><a href="https://mtg.wiki/page/Alena">MTG Wiki: Alena</a></li>
+    <li><a href="https://scryfall.com">Scryfall</a> (card text and printing history)</li>
+  </ul>
+</section>
+
+<footer>
+  <p>Fan-made reference page. Magic: The Gathering and its card images are property of Wizards of the Coast.</p>
+  <p>More in this series: <a href="../">all characters</a> &middot; <a href="../dihada/">Dihada, binder of wills</a> &middot; <a href="../edgar-markov/">Edgar Markov, first of the vampires</a> &middot; <a href="../gisa/">Gisa, ghoulcaller of Innistrad</a> &middot; <a href="../sheoldred/">Sheoldred, the Whispering One</a> &middot; <a href="../olivia-voldaren/">Olivia Voldaren, queen of the hungry</a> &middot; <a href="../sorin/">Sorin Markov, the Mortifier</a> &middot; <a href="../avacyn/">Avacyn, protector of Innistrad</a> &middot; <a href="../liliana-vess/">Liliana Vess, necromancer of the Gatewatch</a></p>
+</footer>
+
+</div>
+
+<script>
+(function () {
+  var els = document.querySelectorAll('.mana');
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    var text = el.textContent;
+    var parts = text.match(/\{[^}]+\}/g);
+    if (!parts) continue;
+    el.setAttribute('role', 'img');
+    el.setAttribute('aria-label', 'Mana cost ' + parts.map(function (p) { return p.slice(1, -1); }).join(' '));
+    el.textContent = '';
+    for (var j = 0; j < parts.length; j++) {
+      var k = parts[j].slice(1, -1);
+      var s = document.createElement('i');
+      s.className = 'sym s-' + (/^\d+$/.test(k) ? 'n' : k.toLowerCase());
+      s.textContent = k;
+      s.setAttribute('aria-hidden', 'true');
+      el.appendChild(s);
+    }
+  }
+})();
+</script>
+
+</body>
+</html>

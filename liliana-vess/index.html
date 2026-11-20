@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Liliana Vess, the Necromancer</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a planeswalker's dossier. One reading column, wide breakouts for card art and tables.
+   Palette: pale lavender-bone paper, deep violet ink matching her tattoos, amber for the men who shaped her. Type: Fraunces (display), Newsreader (text), Plex Mono (costs, labels). */
+:root {
+  --bg: #EDE6ED;
+  --surface: #F7F2F7;
+  --ink: #1C1420;
+  --ink-2: #4A3F4C;
+  --rule: #D6C9D6;
+  --accent: #7A2E8C;
+  --accent-soft: #EBD9EE;
+  --silver: #5E5464;
+  --win: #8C5A1E;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-text: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #140F16;
+    --surface: #1C1620;
+    --ink: #ECE4EE;
+    --ink-2: #B2A6B6;
+    --rule: #332A38;
+    --accent: #C77FE0;
+    --accent-soft: #3A2440;
+    --silver: #A89AAE;
+    --win: #D8A64A;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #140F16;
+  --surface: #1C1620;
+  --ink: #ECE4EE;
+  --ink-2: #B2A6B6;
+  --rule: #332A38;
+  --accent: #C77FE0;
+  --accent-soft: #3A2440;
+  --silver: #A89AAE;
+  --win: #D8A64A;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  padding-block: 0 4rem;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 68rem; margin-inline: auto; }
+.measure { max-width: 42rem; }
+img { height: auto; }
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+p { margin: 0 0 1em; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; font-weight: 600; line-height: 1.1; margin: 0; }
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--silver);
+}
+
+/* hero */
+.hero { overflow-x: clip; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 2.5rem; align-items: center; padding-block: 3rem 2.5rem; }
+.hero h1 { font-size: clamp(3.2rem, 9vw, 6.4rem); font-weight: 800; letter-spacing: -0.01em; margin: 0.6rem 0 1.2rem; }
+.hero h1 em { display: block; font-style: italic; font-weight: 600; color: var(--accent); font-size: 0.5em; line-height: 1.15; margin-top: 0.3em; }
+.hero .lead { font-size: 1.3rem; line-height: 1.5; color: var(--ink); max-width: 34rem; }
+.fan { position: relative; aspect-ratio: 1.3 / 1; width: 100%; max-width: 34rem; justify-self: center; }
+.fan img { position: absolute; top: 0; width: 42%; border-radius: 4.6% / 3.3%; box-shadow: 0 14px 30px -12px rgba(20, 8, 24, 0.55); }
+.fan img:nth-child(1) { left: 2%; top: 8%; transform: rotate(-6deg); }
+.fan img:nth-child(2) { left: 28%; top: 0; z-index: 2; }
+.fan img:nth-child(3) { left: 52%; top: 8%; transform: rotate(6deg); }
+
+nav.toc { display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; padding-block: 1rem; border-block: 1px solid var(--rule); font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; }
+nav.toc a { color: var(--ink-2); text-decoration: none; padding-block: 0.25rem; }
+nav.toc a:hover { color: var(--accent); }
+
+section { padding-top: 4rem; scroll-margin-top: 1rem; }
+section > h2 { font-size: clamp(2rem, 4.6vw, 3rem); margin-bottom: 1.4rem; }
+h3 { font-size: 1.5rem; margin: 2.2rem 0 0.8rem; }
+
+/* facts list */
+dl.facts { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); gap: 0; margin: 2rem 0 0; border-top: 1px solid var(--rule); }
+dl.facts dt, dl.facts dd { padding-block: 0.9rem; border-bottom: 1px solid var(--rule); margin: 0; }
+dl.facts dt { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); padding-top: 1.1rem; }
+dl.facts dd { min-width: 0; }
+
+/* timeline */
+ol.timeline { list-style: none; counter-reset: stage; margin: 2rem 0 0; padding: 0; border-left: 2px solid var(--rule); }
+ol.timeline > li { counter-increment: stage; position: relative; padding: 0 0 2rem 2.2rem; }
+ol.timeline > li::before {
+  content: counter(stage);
+  position: absolute; left: -1.05rem; top: 0;
+  width: 2rem; height: 2rem; border-radius: 50%;
+  background: var(--bg); border: 2px solid var(--accent); color: var(--accent);
+  font-family: var(--font-mono); font-size: 0.85rem; display: grid; place-items: center;
+}
+ol.timeline h3 { margin: 0 0 0.4rem; font-size: 1.35rem; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 0.8rem; }
+ol.timeline p { margin: 0 0 0.5rem; }
+.src { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.04em; color: var(--silver); }
+.src a { color: var(--silver); }
+.tag { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.15rem 0.5rem; border-radius: 3px; border: 1px solid currentColor; }
+.tag.lili { color: var(--accent); }
+.tag.ally { color: var(--win); }
+ol.timeline blockquote { margin: 0.6rem 0; padding: 0.1rem 0 0.1rem 1rem; border-left: 3px solid var(--accent-soft); color: var(--ink-2); font-style: italic; }
+
+.aside { background: var(--surface); border: 1px solid var(--rule); padding: 1.2rem 1.4rem; margin-block: 1.6rem; max-width: 42rem; }
+.aside p:last-child { margin-bottom: 0; }
+.aside .label { display: block; margin-bottom: 0.4rem; }
+ul.plain { padding-left: 1.2rem; margin: 0 0 1em; }
+ul.plain li { margin-bottom: 0.7rem; padding-left: 0.2rem; }
+
+/* cards */
+.card-entry { display: grid; grid-template-columns: minmax(0, 17rem) minmax(0, 1fr); gap: 2rem; padding-block: 2rem; border-top: 1px solid var(--rule); align-items: start; }
+.card-entry.pair { grid-template-columns: minmax(0, 24rem) minmax(0, 1fr); }
+.card-entry .art { display: flex; gap: 0.8rem; }
+.card-entry img, .gallery img { width: 100%; height: auto; display: block; border-radius: 4.6% / 3.3%; box-shadow: 0 10px 24px -14px rgba(20, 8, 24, 0.6); }
+.card-entry .art img { min-width: 0; flex: 1 1 0; }
+.card-entry h3 { margin: 0.3rem 0 0.5rem; font-size: 1.8rem; }
+.card-entry .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1rem; margin-bottom: 0.9rem; font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink-2); }
+.rules { background: var(--surface); border: 1px solid var(--rule); padding: 0.9rem 1.1rem; font-size: 1.02rem; }
+.rules p { margin: 0 0 0.5em; }
+.rules p:last-child { margin-bottom: 0; }
+.rules .flavor { font-style: italic; color: var(--ink-2); }
+.rules .face { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); display: block; margin-bottom: 0.15rem; }
+.loy { font-family: var(--font-mono); font-weight: 500; color: var(--accent); }
+
+.mana { display: inline-flex; gap: 2px; align-items: center; vertical-align: middle; font-family: var(--font-mono); }
+.sym { display: inline-grid; place-items: center; width: 1.6em; height: 1.6em; border-radius: 50%; font-style: normal; font-size: 0.8em; line-height: 1; background: #CFC8D2; color: #231C27; }
+.s-w { background: #F2EBC9; color: #3A3320; }
+.s-u { background: #BBD6EE; color: #10283A; }
+.s-b { background: #3A3040; color: #EDE7EE; }
+.s-r { background: #E0704C; color: #2A0D05; }
+.s-g { background: #5BA26F; color: #0D2514; }
+
+/* gallery */
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(11.5rem, 1fr)); gap: 1.6rem 1.2rem; margin: 2rem 0; }
+.gallery figure { margin: 0; min-width: 0; }
+.gallery figcaption { margin-top: 0.6rem; font-size: 0.92rem; line-height: 1.4; color: var(--ink-2); }
+.gallery figcaption b { display: block; color: var(--ink); font-weight: 600; font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.04em; }
+
+/* tables */
+.table-scroll { overflow-x: auto; margin: 1.4rem 0; border-top: 1px solid var(--ink); }
+table { border-collapse: collapse; width: 100%; font-size: 0.98rem; }
+th, td { text-align: left; vertical-align: top; padding: 0.65rem 1rem 0.65rem 0; border-bottom: 1px solid var(--rule); }
+th { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); white-space: nowrap; }
+td.num, th.num { font-variant-numeric: tabular-nums; }
+table td:first-child { font-weight: 600; }
+
+/* bars */
+.bars { list-style: none; margin: 1.6rem 0; padding: 0; max-width: 46rem; }
+.bars li { display: grid; grid-template-columns: minmax(8rem, 12rem) minmax(0, 1fr) 3.6rem; gap: 0.9rem; align-items: center; padding-block: 0.3rem; }
+.bars .name { font-size: 1rem; }
+.bars .track { height: 0.85rem; background: var(--surface); border: 1px solid var(--rule); }
+.bars .fill { display: block; height: 100%; background: var(--accent); }
+.bars .val { font-family: var(--font-mono); font-size: 0.85rem; text-align: right; font-variant-numeric: tabular-nums; }
+
+footer { margin-top: 5rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); font-size: 0.9rem; color: var(--ink-2); max-width: 42rem; }
+
+@media (max-width: 52rem) {
+  .hero { grid-template-columns: minmax(0, 1fr); padding-block: 2rem; }
+  .card-entry, .card-entry.pair { grid-template-columns: minmax(0, 1fr); }
+  .card-entry .art { max-width: 22rem; }
+  .card-entry.pair .art { max-width: 28rem; }
+}
+@media (max-width: 34rem) {
+  body { font-size: 1.05rem; }
+  dl.facts { grid-template-columns: minmax(0, 1fr); }
+  dl.facts dt { border-bottom: 0; padding-bottom: 0; }
+  dl.facts dd { padding-top: 0.2rem; }
+  .bars li { grid-template-columns: minmax(0, 1fr) 3.4rem; }
+  .bars .track { grid-column: 1 / -1; grid-row: 2; }
+  .bars .val { grid-row: 1; grid-column: 2; }
+  ol.timeline > li { padding-left: 1.7rem; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div>
+    <span class="label"><a href="../">MTG character archive</a> &middot; Dominaria &amp; Innistrad &middot; Necromancer</span>
+    <h1>Liliana Vess<em>the Necromancer</em></h1>
+    <p class="lead">Liliana Vess is a human former planeswalker, master necromancer, and one of the five original planeswalker cards ever printed. Eight cards show her across nearly two decades of story, from a desperate attempt to save her brother&rsquo;s life through a demonic pact that cost her decades of servitude, to a late-life redemption as a professor who finally stopped running from her past.</p>
+    <p class="label">Compiled 20 November 2026</p>
+  </div>
+  <div class="fan">
+    <img src="img/liliana-of-the-veil-inr-475.jpg" alt="Liliana of the Veil, Innistrad Remastered" width="488" height="680">
+    <img src="img/liliana-dreadhorde-general-fdn-176.jpg" alt="Liliana, Dreadhorde General, Foundations" width="488" height="680">
+    <img src="img/liliana-the-last-hope-soi.jpg" alt="Liliana, the Last Hope, Shadows over Innistrad" width="488" height="680">
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <a href="#who">Who she is</a>
+  <a href="#story">Her story</a>
+  <a href="#cards">Cards</a>
+  <a href="#printings">Printings</a>
+  <a href="#commander">As a commander</a>
+  <a href="#open">Open questions</a>
+  <a href="#sources">Sources</a>
+</nav>
+
+<section id="who">
+  <h2>Who she is</h2>
+  <div class="measure">
+    <p>The <a href="https://mtg.wiki/page/Liliana_Vess">MTG Wiki</a> describes Liliana as a tall woman with black hair, violet eyes, and purple tattoos that trace a demonic contract across her skin &mdash; lines that glow when she casts powerful spells and bleed when she draws on the Chain Veil. She commands black mana to reanimate the dead, corrupt the living, and unlock power from death itself, and though she looks to be in her late twenties, she is actually over two centuries old.</p>
+  </div>
+  <dl class="facts">
+    <dt>Age</dt>
+    <dd>Born before 4357 AR in Benalia, Caligo Forest, Dominaria &mdash; roughly 205 years old as of her most recent appearances, having lost her planeswalker spark in the Great Desparking during the Phyrexian invasion of Arcavios.</dd>
+    <dt>Family</dt>
+    <dd>Her brother Josu Vess was fatally cursed by Liliana&rsquo;s own botched cure and later raised as a lich by the Cabal; she was forced to destroy him herself on Dominaria.</dd>
+    <dt>Temperament</dt>
+    <dd>Charismatic, witty, and profoundly cynical &mdash; she viewed most people as stepping stones to power for most of her life, though her time with the Gatewatch and her guilt over Gideon Jura&rsquo;s death pushed her toward genuine (if reluctant) loyalty.</dd>
+    <dt>Signature relic</dt>
+    <dd>The Chain Veil, an artifact of the ancient Onakke civilization that amplifies her necromancy at the cost of her body and sanity; she carried it for years before finally giving it up on Fiora.</dd>
+    <dt>Status</dt>
+    <dd>Alive, de-sparked, and teaching necromancy as Professor Liliana Vess at Strixhaven University on Arcavios.</dd>
+  </dl>
+</section>
+
+<section id="story">
+  <h2>Her story</h2>
+  <div class="measure">
+    <p>Liliana&rsquo;s is one of the longest-running character arcs in Magic &mdash; a healer turned necromancer, bound by a demonic pact she spent decades trying to escape, who ultimately betrayed a god-dragon to save the friends she always claimed not to need. This timeline covers the major beats; side material like the alternate-reality &ldquo;Echoverse&rdquo; version of her and the ambiguous, hard-to-reconcile Test of Metal novel appearance are omitted for length and flagged below.</p>
+  </div>
+
+  <ol class="timeline">
+    <li>
+      <h3>A curse and a spark <span class="tag lili">Liliana</span></h3>
+      <p>Raised under her general father&rsquo;s thumb in Benalia and trained as a healer in the Forward Order, Liliana secretly studies necromancy, believing it will sharpen her healing craft. When her brother Josu is struck by a magical illness, a mysterious stranger (later revealed as the Raven Man) tricks her into using a corrupted cure. It saves Josu&rsquo;s body but drives him insane; forced to kill the monster he becomes, Liliana&rsquo;s grief and horror ignite her planeswalker spark.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Liliana_Vess">MTG Wiki: Liliana Vess</a></p>
+    </li>
+    <li>
+      <h3>Crushed by Sorin Markov <span class="tag lili">Liliana</span> <span class="tag ally">Sorin</span></h3>
+      <p>Landing on Innistrad, Liliana studies under vampires and liches to perfect her necromancy, refusing to join them in true death. She encounters the plane&rsquo;s vampire lord, Sorin Markov, who defeats her easily, calls her too weak to be a threat, and warns her to be a civil guest or die.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Liliana_Vess">MTG Wiki: Liliana Vess</a></p>
+    </li>
+    <li>
+      <h3>Bound to four demons <span class="tag lili">Liliana</span> <span class="tag ally">Bolas</span></h3>
+      <p>Weakened after the Mending, Liliana is approached by a vastly more powerful Nicol Bolas, who brokers a pact between her and four demons &mdash; Kothophed, Griselbrand, Razaketh, and Belzenlok &mdash; restoring her youth and a fraction of her power in exchange for servitude, the debts etched into her skin as glowing tattoos.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Liliana_Vess">MTG Wiki: Liliana Vess</a></p>
+    </li>
+    <li>
+      <h3>Betraying Jace on Ravnica <span class="tag lili">Liliana</span> <span class="tag ally">Jace</span></h3>
+      <p>On Ravnica, Liliana seduces the mind mage Jace Beleren, staying at his side through an identity crisis &mdash; but her loyalty is secretly directed by Bolas, and she maneuvers Jace into a fight against Tezzeret that collapses the Infinite Consortium. She considers running away with Jace more than once, but her fear of her demons always wins out.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Liliana_Vess">MTG Wiki: Liliana Vess</a></p>
+    </li>
+    <li>
+      <h3>Claiming the Chain Veil <span class="tag lili">Liliana</span></h3>
+      <p>Sent by Kothophed to retrieve the Onakke Chain Veil on Shandalar, Liliana kills Garruk Wildspeaker&rsquo;s quarry along the way, unknowingly earning the planeswalker&rsquo;s lasting hatred. Once she holds the Veil, she turns its power on Kothophed himself rather than surrender it, but the artifact&rsquo;s whispering spirits begin to make her its vessel as much as its wielder.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Liliana_Vess">MTG Wiki: Liliana Vess</a></p>
+    </li>
+    <li>
+      <h3>The Sundering of the Helvault <span class="tag lili">Liliana</span> <span class="tag ally">Thalia</span></h3>
+      <p>Hunting her demon master Griselbrand on Innistrad, Liliana arrives at the Siege of Thraben, resurrects a dead church official to learn Griselbrand&rsquo;s prison is the Helvault, then forces the choice onto the Cathar Thalia &mdash; destroy the vault or lose her soldiers. Thalia saves her men; the Helvault shatters, freeing both Griselbrand and the archangel Avacyn. Liliana uses the Veil to kill Griselbrand for good.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Liliana_Vess">MTG Wiki: Liliana Vess</a></p>
+    </li>
+    <li>
+      <h3>Joining the Gatewatch <span class="tag lili">Liliana</span> <span class="tag ally">Gatewatch</span></h3>
+      <p>When Emrakul arrives on Innistrad, Liliana raises a zombie army against the Eldrazi Horrors, drawing more deeply on the Chain Veil than ever before and nearly dying in the process. Seeing the value of allies against her own enemies, she joins the Gatewatch after Emrakul is sealed away &mdash; intending to direct them toward her own ends.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Liliana_Vess">MTG Wiki: Liliana Vess</a></p>
+    </li>
+    <li>
+      <h3>Devoured on Amonkhet <span class="tag lili">Liliana</span> <span class="tag ally">Jace</span></h3>
+      <p>Swallowed whole by a wurm on arrival at Amonkhet, Liliana decomposes it from the inside with the Chain Veil. She later tears apart her demon master Razaketh with an army of risen Luxa creatures, settling one more of her four debts &mdash; but the Gatewatch is routed by Bolas soon after, and she flees, knowing she now owes the dragon her life.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Liliana_Vess">MTG Wiki: Liliana Vess</a></p>
+    </li>
+    <li>
+      <h3>Destroying her own brother <span class="tag lili">Liliana</span> <span class="tag ally">Gideon</span></h3>
+      <p>Returning to her ruined homeland of Vess on Dominaria, Liliana discovers that her brother Josu has been raised as a lich by the Cabal&rsquo;s cultists and used as bait to keep her from fighting their master, Belzenlok. With only Gideon Jura standing by her, she destroys the lich herself; dying, Josu curses her for bringing their house to ruin. She and Gideon then help kill Belzenlok before Nicol Bolas reveals the demons&rsquo; pact has defaulted to him.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Liliana_Vess">MTG Wiki: Liliana Vess</a></p>
+    </li>
+    <li>
+      <h3>Dreadhorde general, then defector <span class="tag lili">Liliana</span> <span class="tag ally">Gideon</span></h3>
+      <p>Installed by Bolas as general of his undead Dreadhorde on Ravnica, Liliana quietly minimizes the carnage she&rsquo;s forced to inflict, then turns all of Bolas&rsquo;s Eternals against him outright, breaking her contract. The broken pact begins aging her to death on the spot &mdash; until Gideon transfers the curse onto himself, sacrificing his life so she can survive and help finish off the Elder Dragon.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Liliana_Vess">MTG Wiki: Liliana Vess</a></p>
+    </li>
+    <li>
+      <h3>Hunted, and giving up the Veil <span class="tag lili">Liliana</span> <span class="tag ally">Kaya</span></h3>
+      <p>Blamed by Ravnica&rsquo;s guilds for the war&rsquo;s casualties, Liliana flees and is hunted by the planeswalker Kaya. Cornered by an imposter wearing her own name and face on Dominaria, she agrees to let Kaya kill her in exchange for freeing her people &mdash; survives through a twist involving a bound djinn &mdash; and finally, after much hesitation, drops the Chain Veil for good. She adopts the alias Ana Iora and disappears from the Multiverse&rsquo;s view.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Liliana_Vess">MTG Wiki: Liliana Vess</a></p>
+    </li>
+    <li>
+      <h3>Professor Onyx, and a lost spark <span class="tag lili">Liliana</span></h3>
+      <p>Settling on Arcavios as &ldquo;Professor Serafina Onyx,&rdquo; Liliana teaches necromancy at Strixhaven, fights off an Oriq uprising and later the Phyrexian invasion of the plane, and loses her ability to planeswalk entirely in the Great Desparking. She eventually drops the alias, reclaims her true name, and keeps teaching &mdash; trying, for the first time, to be someone worth trusting.</p>
+      <p class="src"><a href="https://mtg.wiki/page/Liliana_Vess">MTG Wiki: Liliana Vess</a></p>
+    </li>
+  </ol>
+
+  <p class="src measure">This timeline rests on one primary source, the MTG Wiki&rsquo;s Liliana Vess page, itself built from citations to the original Wizards of the Coast story chapters. I read the wiki through a page-reading tool rather than those original chapters directly &mdash; check exact quotes against the source stories before relying on precise phrasing.</p>
+</section>
+
+<section id="cards">
+  <h2>Cards that depict her</h2>
+
+  <article class="card-entry">
+    <div class="art">
+      <img src="img/liliana-vess-lrw-116.jpg" alt="Liliana Vess" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">Lorwyn &middot; 2007</span>
+      <h3>Liliana Vess</h3>
+      <div class="meta"><span class="mana">{3}{B}{B}</span><span>Legendary Planeswalker &mdash; Liliana &middot; loyalty 5</span></div>
+      <div class="rules">
+        <p><span class="loy">+1</span> Target player discards a card.</p>
+        <p><span class="loy">&minus;2</span> Search your library for a card, then shuffle and put that card on top.</p>
+        <p><span class="loy">&minus;8</span> Put all creature cards from all graveyards onto the battlefield under your control.</p>
+      </div>
+      <p class="src">Art: Aleksi Briclot. Her debut card &mdash; one of only five planeswalker cards ever printed in Lorwyn, the set that introduced the card type. Originally rare; the mythic rarity tier didn&rsquo;t exist until 2008, a year later. Legal in Commander, Legacy, Vintage, Modern; not legal in Standard.</p>
+    </div>
+  </article>
+
+  <article class="card-entry">
+    <div class="art">
+      <img src="img/liliana-of-the-veil-inr-475.jpg" alt="Liliana of the Veil" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">Innistrad &middot; 2011 &middot; shown here Innistrad Remastered, 2024</span>
+      <h3>Liliana of the Veil</h3>
+      <div class="meta"><span class="mana">{1}{B}{B}</span><span>Legendary Planeswalker &mdash; Liliana &middot; loyalty 3 &middot; mythic</span></div>
+      <div class="rules">
+        <p><span class="loy">+1</span> Each player discards a card.</p>
+        <p><span class="loy">&minus;2</span> Target player sacrifices a creature.</p>
+        <p><span class="loy">&minus;6</span> Separate all permanents target player controls into two piles. That player sacrifices all permanents in the pile of their choice.</p>
+      </div>
+      <p class="src">Art: Steve Argyle. Legal in Commander, Legacy, Vintage, Modern; not legal in Standard. Printed for her first trip to Innistrad, hunting Griselbrand toward the Helvault.</p>
+    </div>
+  </article>
+
+  <article class="card-entry">
+    <div class="art">
+      <img src="img/liliana-dark-realms-m14-102.jpg" alt="Liliana of the Dark Realms" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">Magic 2014 &middot; 2013</span>
+      <h3>Liliana of the Dark Realms</h3>
+      <div class="meta"><span class="mana">{2}{B}{B}</span><span>Legendary Planeswalker &mdash; Liliana &middot; loyalty 3 &middot; mythic</span></div>
+      <div class="rules">
+        <p><span class="loy">+1</span> Search your library for a Swamp card, reveal it, put it into your hand, then shuffle.</p>
+        <p><span class="loy">&minus;3</span> Target creature gets +X/+X or -X/-X until end of turn, where X is the number of Swamps you control.</p>
+        <p><span class="loy">&minus;6</span> You get an emblem with &ldquo;Swamps you control have &lsquo;{T}: Add {B}{B}{B}{B}.&rsquo;&rdquo;</p>
+      </div>
+      <p class="src">Art: D. Alexander Gregory. Legal in Commander, Legacy, Vintage, Modern; not legal in Standard. A core-set original printing without a specific story tie, from her years chasing the Chain Veil&rsquo;s secrets across Shandalar and beyond.</p>
+    </div>
+  </article>
+
+  <article class="card-entry pair">
+    <div class="art">
+      <img src="img/liliana-heretical-healer-cc2-1.jpg" alt="Liliana, Heretical Healer" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">Magic Origins &middot; 2015 &middot; shown here Commander Collection: Black, 2022 &middot; transforming double-faced card</span>
+      <h3>Liliana, Heretical Healer // Liliana, Defiant Necromancer</h3>
+      <div class="meta"><span>Legendary Creature &mdash; Human Cleric // Legendary Planeswalker &mdash; Liliana &middot; mythic</span></div>
+      <div class="rules">
+        <span class="face">Front &middot; Liliana, Heretical Healer &middot; {1}{B}{B} &middot; 2/3</span>
+        <p>Lifelink</p>
+        <p>Whenever another nontoken creature you control dies, exile Liliana, Heretical Healer, then return her to the battlefield transformed under her owner&rsquo;s control. If you do, create a 2/2 black Zombie creature token.</p>
+      </div>
+      <div class="rules" style="margin-top:0.8rem">
+        <span class="face">Back &middot; Liliana, Defiant Necromancer &middot; loyalty 3</span>
+        <p><span class="loy">+2</span> Each player discards a card.</p>
+        <p><span class="loy">&minus;X</span> Return target nonlegendary creature card with mana value X from your graveyard to the battlefield.</p>
+        <p><span class="loy">&minus;8</span> You get an emblem with &ldquo;Whenever a creature dies, return it to the battlefield under your control at the beginning of the next end step.&rdquo;</p>
+      </div>
+      <p class="src">Art: Bastien L. Deharme. Legal in Commander, Legacy, Vintage, Modern. One of five Origins cards built around a planeswalker&rsquo;s spark igniting &mdash; though for Liliana, whose spark had already ignited decades earlier, it&rsquo;s best read as flavor rather than a literal second origin. The only Liliana card that starts as a creature, which is what lets her lead a Commander deck on her own.</p>
+    </div>
+  </article>
+
+  <article class="card-entry">
+    <div class="art">
+      <img src="img/liliana-the-last-hope-soi.jpg" alt="Liliana, the Last Hope" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">Shadows over Innistrad &middot; 2016 &middot; shown here Double Masters 2022</span>
+      <h3>Liliana, the Last Hope</h3>
+      <div class="meta"><span class="mana">{1}{B}{B}</span><span>Legendary Planeswalker &mdash; Liliana &middot; loyalty 3 &middot; mythic</span></div>
+      <div class="rules">
+        <p><span class="loy">+1</span> Up to one target creature gets -2/-1 until your next turn.</p>
+        <p><span class="loy">&minus;2</span> Mill two cards, then you may return a creature card from your graveyard to your hand.</p>
+        <p><span class="loy">&minus;7</span> You get an emblem with &ldquo;At the beginning of your end step, create X 2/2 black Zombie creature tokens, where X is two plus the number of Zombies you control.&rdquo;</p>
+      </div>
+      <p class="src">Art: Jaime Jones. Legal in Commander, Legacy, Vintage, Modern; not legal in Standard. Printed for her return to a werewolf- and Eldrazi-plagued Innistrad, raising the zombie army that helps seal Emrakul away.</p>
+    </div>
+  </article>
+
+  <article class="card-entry">
+    <div class="art">
+      <img src="img/liliana-deaths-majesty-j25-458.jpg" alt="Liliana, Death's Majesty" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">Amonkhet &middot; 2017 &middot; shown here Foundations Jumpstart, 2025</span>
+      <h3>Liliana, Death&rsquo;s Majesty</h3>
+      <div class="meta"><span class="mana">{3}{B}{B}</span><span>Legendary Planeswalker &mdash; Liliana &middot; loyalty 5 &middot; mythic</span></div>
+      <div class="rules">
+        <p><span class="loy">+1</span> Create a 2/2 black Zombie creature token. Mill two cards.</p>
+        <p><span class="loy">&minus;3</span> Return target creature card from your graveyard to the battlefield. That creature is a black Zombie in addition to its other colors and types.</p>
+        <p><span class="loy">&minus;7</span> Destroy all non-Zombie creatures.</p>
+      </div>
+      <p class="src">Art: Chris Rallis. Legal in Commander, Legacy, Vintage, Modern; not legal in Standard. Printed for her time on Amonkhet, where she is devoured by and then decomposes a wurm from within, and later destroys the demon Razaketh.</p>
+    </div>
+  </article>
+
+  <article class="card-entry">
+    <div class="art">
+      <img src="img/liliana-dreadhorde-general-fdn-176.jpg" alt="Liliana, Dreadhorde General" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">War of the Spark &middot; 2019 &middot; shown here Foundations, 2025</span>
+      <h3>Liliana, Dreadhorde General</h3>
+      <div class="meta"><span class="mana">{4}{B}{B}</span><span>Legendary Planeswalker &mdash; Liliana &middot; loyalty 6 &middot; mythic</span></div>
+      <div class="rules">
+        <p>Whenever a creature you control dies, draw a card.</p>
+        <p><span class="loy">+1</span> Create a 2/2 black Zombie creature token.</p>
+        <p><span class="loy">&minus;4</span> Each player sacrifices two creatures of their choice.</p>
+        <p><span class="loy">&minus;9</span> Each opponent chooses a permanent they control of each permanent type and sacrifices the rest.</p>
+      </div>
+      <p class="src">Art: Chris Rallis. Legal in Commander, Legacy, Vintage, Modern, and Standard. Printed for her forced role as general of Nicol Bolas&rsquo;s undead Dreadhorde on Ravnica &mdash; the role she ultimately turns against him.</p>
+    </div>
+  </article>
+
+  <article class="card-entry">
+    <div class="art">
+      <img src="img/liliana-waker-of-the-dead-m21-108.jpg" alt="Liliana, Waker of the Dead" width="488" height="680">
+    </div>
+    <div>
+      <span class="label">Core Set 2021 &middot; 2020</span>
+      <h3>Liliana, Waker of the Dead</h3>
+      <div class="meta"><span class="mana">{2}{B}{B}</span><span>Legendary Planeswalker &mdash; Liliana &middot; loyalty 4 &middot; mythic</span></div>
+      <div class="rules">
+        <p><span class="loy">+1</span> Each player discards a card. Each opponent who can&rsquo;t loses 3 life.</p>
+        <p><span class="loy">&minus;3</span> Target creature gets -X/-X until end of turn, where X is the number of cards in your graveyard.</p>
+        <p><span class="loy">&minus;7</span> You get an emblem with &ldquo;At the beginning of combat on your turn, put target creature card from a graveyard onto the battlefield under your control. It gains haste.&rdquo;</p>
+      </div>
+      <p class="src">Art: Anna Steinbauer. Legal in Commander, Legacy, Vintage, Modern; not legal in Standard. A core-set original printing without a specific story tie, from her post-war years grieving Gideon and growing into the necromancer she becomes at Strixhaven.</p>
+    </div>
+  </article>
+</section>
+
+<section id="printings">
+  <h2>Printings</h2>
+  <div class="measure">
+    <p>Prices are single current lookups in USD. Liliana Vess (Magic 2015 #103, same card as the Lorwyn original shown above) costs about $8.69 non-foil and $24.42 foil. Liliana of the Veil (Innistrad Remastered #475) costs about $8.01 non-foil and $13.70 foil. Liliana of the Dark Realms (Magic 2014 #102) costs about $9.66 non-foil and $25.54 foil. Liliana, Heretical Healer (Commander Collection: Black #1) costs about $7.17 non-foil and $9.90 foil. Liliana, the Last Hope (Double Masters 2022 #81) costs about $5.80 non-foil and $6.54 foil. Liliana, Death&rsquo;s Majesty (Foundations Jumpstart #458) costs about $0.65 non-foil. Liliana, Dreadhorde General (Foundations #176) costs about $12.89 non-foil and $11.99 foil. Liliana, Waker of the Dead (Core Set 2021 #108) costs about $2.89 non-foil and $2.84 foil.</p>
+  </div>
+
+  <div class="gallery">
+    <figure><img src="img/liliana-vess-lrw-116.jpg" alt="Liliana Vess, LRW" width="488" height="680"><figcaption><b>LRW</b>Original printing (2007). Art by Aleksi Briclot</figcaption></figure>
+    <figure><img src="img/liliana-of-the-veil-inr-475.jpg" alt="Liliana of the Veil, INR 475" width="488" height="680"><figcaption><b>INR &middot; 475</b>Reprint; first printed in Innistrad (2011). Art by Steve Argyle</figcaption></figure>
+    <figure><img src="img/liliana-dark-realms-m14-102.jpg" alt="Liliana of the Dark Realms, M14 102" width="488" height="680"><figcaption><b>M14 &middot; 102</b>Original printing. Art by D. Alexander Gregory</figcaption></figure>
+    <figure><img src="img/liliana-heretical-healer-cc2-1.jpg" alt="Liliana, Heretical Healer, CC2 1" width="488" height="680"><figcaption><b>CC2 &middot; 1</b>Reprint; first printed in Magic Origins (2015). Art by Bastien L. Deharme</figcaption></figure>
+    <figure><img src="img/liliana-the-last-hope-soi.jpg" alt="Liliana, the Last Hope, SOI" width="488" height="680"><figcaption><b>2X2 &middot; 81</b>Reprint shown above; first printed in Shadows over Innistrad (2016). Art by Jaime Jones</figcaption></figure>
+    <figure><img src="img/liliana-deaths-majesty-j25-458.jpg" alt="Liliana, Death's Majesty, J25 458" width="488" height="680"><figcaption><b>J25 &middot; 458</b>Reprint; first printed in Amonkhet (2017). Art by Chris Rallis</figcaption></figure>
+    <figure><img src="img/liliana-dreadhorde-general-fdn-176.jpg" alt="Liliana, Dreadhorde General, FDN 176" width="488" height="680"><figcaption><b>FDN &middot; 176</b>Reprint; first printed in War of the Spark (2019). Art by Chris Rallis</figcaption></figure>
+    <figure><img src="img/liliana-waker-of-the-dead-m21-108.jpg" alt="Liliana, Waker of the Dead, M21 108" width="488" height="680"><figcaption><b>M21 &middot; 108</b>Original printing. Art by Anna Steinbauer</figcaption></figure>
+  </div>
+
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Card</th><th>Set</th><th class="num">No.</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td>Liliana Vess</td><td>Lorwyn</td><td class="num">&mdash;</td><td>Original printing (2007)</td></tr>
+        <tr><td>Liliana Vess</td><td>Magic 2015</td><td class="num">103</td><td>Reprint shown above (2014)</td></tr>
+        <tr><td>Liliana of the Veil</td><td>Innistrad</td><td class="num">&mdash;</td><td>Original printing (2011)</td></tr>
+        <tr><td>Liliana of the Veil</td><td>Innistrad Remastered</td><td class="num">475</td><td>Reprint shown above (2024)</td></tr>
+        <tr><td>Liliana of the Dark Realms</td><td>Magic 2014</td><td class="num">102</td><td>Original printing (2013)</td></tr>
+        <tr><td>Liliana, Heretical Healer // Defiant Necromancer</td><td>Magic Origins</td><td class="num">&mdash;</td><td>Original printing (2015)</td></tr>
+        <tr><td>Liliana, Heretical Healer // Defiant Necromancer</td><td>Commander Collection: Black</td><td class="num">1</td><td>Reprint shown above (2022)</td></tr>
+        <tr><td>Liliana, the Last Hope</td><td>Shadows over Innistrad</td><td class="num">&mdash;</td><td>Original printing (2016)</td></tr>
+        <tr><td>Liliana, the Last Hope</td><td>Double Masters 2022</td><td class="num">81</td><td>Reprint shown above (2022)</td></tr>
+        <tr><td>Liliana, Death&rsquo;s Majesty</td><td>Amonkhet</td><td class="num">&mdash;</td><td>Original printing (2017)</td></tr>
+        <tr><td>Liliana, Death&rsquo;s Majesty</td><td>Foundations Jumpstart</td><td class="num">458</td><td>Reprint shown above (2025)</td></tr>
+        <tr><td>Liliana, Dreadhorde General</td><td>War of the Spark</td><td class="num">&mdash;</td><td>Original printing (2019)</td></tr>
+        <tr><td>Liliana, Dreadhorde General</td><td>Foundations</td><td class="num">176</td><td>Reprint shown above (2025)</td></tr>
+        <tr><td>Liliana, Waker of the Dead</td><td>Core Set 2021</td><td class="num">108</td><td>Original printing (2020)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="measure">The card-data tool returns one entry per card, not a full printing list, so original-set rows without a collector number weren&rsquo;t individually verified against a specific card number; I cross-checked set and year through Scryfall pages loaded in the browser (Scryfall blocks direct automated requests). Liliana has thirteen total planeswalker cards by the MTG Wiki&rsquo;s count &mdash; this page covers the ones that mark clear story beats or are her most-played printings, not every one.</p>
+</section>
+
+<section id="commander">
+  <h2>Playing her as a commander</h2>
+  <div class="measure">
+    <p><strong>Only Liliana, Heretical Healer can lead a Commander deck on her own.</strong> None of her seven solo planeswalker cards carry &ldquo;can be your commander&rdquo; text, so they&rsquo;re Commander-legal to play inside a deck but can&rsquo;t serve as the commander itself outside the Oathbreaker format &mdash; Heretical Healer starts as a legendary creature and transforms into a planeswalker, which is what makes her eligible, the same situation found on Sorin Markov&rsquo;s page in this archive. She leads 5,579 decks on EDHREC, built around reanimator strategies (331 decks), zombies (319), discard (241), and planeswalkers as a subtheme (215). Liliana, Dreadhorde General is by far the most-played Liliana planeswalker inside those decks, appearing in 76.4% of them. EDHREC counts decks of every pod size, not 1v1 specifically.</p>
+  </div>
+  <h3>Share of Liliana, Heretical Healer decks that play each card</h3>
+  <ul class="bars">
+    <li><span class="name">Liliana, Dreadhorde General</span><span class="track"><span class="fill" style="width:76.4%"></span></span><span class="val">76.4%</span></li>
+    <li><span class="name">Gray Merchant of Asphodel</span><span class="track"><span class="fill" style="width:71.7%"></span></span><span class="val">71.7%</span></li>
+    <li><span class="name">Liliana, Death&rsquo;s Majesty</span><span class="track"><span class="fill" style="width:71.3%"></span></span><span class="val">71.3%</span></li>
+    <li><span class="name">Liliana of the Dark Realms</span><span class="track"><span class="fill" style="width:69.2%"></span></span><span class="val">69.2%</span></li>
+    <li><span class="name">Liliana of the Veil</span><span class="track"><span class="fill" style="width:61.2%"></span></span><span class="val">61.2%</span></li>
+  </ul>
+  <p class="src">Source: EDHREC data, retrieved through a card-data tool on 20 November 2026.</p>
+</section>
+
+<section id="open">
+  <h2>What could not be confirmed</h2>
+  <ul class="plain measure">
+    <li><strong>Non-canon and ambiguous material.</strong> The Echoverse &mdash; an alternate-reality version of Liliana who never gained a planeswalker spark and worked as &ldquo;Professor Opal&rdquo; &mdash; and her ambiguous appearance in the 2010 novel Test of Metal (which the wiki itself flags as difficult to reconcile with established canon) are omitted from the timeline above.</li>
+    <li><strong>Thirteen total planeswalker cards exist for her</strong> by the wiki&rsquo;s count; this page selects eight that mark clear story beats or are her most-played printings, not an exhaustive catalog. Liliana, Untouched by Death, Professor Onyx, Liliana, Death Mage, and others are not covered here.</li>
+    <li><strong>Exact wording of the story chapters.</strong> I read the MTG Wiki through a page-reading tool rather than the original Wizards story articles it cites, so check direct quotes against the source stories before relying on exact phrasing.</li>
+    <li><strong>Original-printing collector numbers.</strong> Several &ldquo;first printed in&hellip;&rdquo; rows in the printings table above list the set and year but not a specific collector number, since the card-data tool returns only the default/current printing for a name lookup.</li>
+    <li><strong>Prices.</strong> Single lookups taken on one day; may have moved since.</li>
+    <li><strong>Scryfall</strong> blocks direct automated requests, so oracle and flavor text came from a card-data tool, cross-checked against Scryfall pages loaded in a browser.</li>
+  </ul>
+</section>
+
+<section id="sources">
+  <h2>Sources</h2>
+  <ul class="plain measure">
+    <li><a href="https://mtg.wiki/page/Liliana_Vess">MTG Wiki: Liliana Vess</a></li>
+    <li><a href="https://scryfall.com">Scryfall</a> (card text, flavor text, and printing history)</li>
+  </ul>
+</section>
+
+<footer>
+  <p>Fan-made reference page. Magic: The Gathering and its card images are property of Wizards of the Coast.</p>
+  <p>More in this series: <a href="../">all characters</a> &middot; <a href="../dihada/">Dihada, binder of wills</a> &middot; <a href="../edgar-markov/">Edgar Markov, first of the vampires</a> &middot; <a href="../gisa/">Gisa, ghoulcaller of Innistrad</a> &middot; <a href="../sheoldred/">Sheoldred, the Whispering One</a> &middot; <a href="../olivia-voldaren/">Olivia Voldaren, queen of the hungry</a> &middot; <a href="../sorin/">Sorin Markov, the Mortifier</a> &middot; <a href="../avacyn/">Avacyn, protector of Innistrad</a> &middot; <a href="../halana-and-alena/">Halana &amp; Alena, Kessig rangers</a></p>
+</footer>
+
+</div>
+
+<script>
+(function () {
+  var els = document.querySelectorAll('.mana');
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    var text = el.textContent;
+    var parts = text.match(/\{[^}]+\}/g);
+    if (!parts) continue;
+    el.setAttribute('role', 'img');
+    el.setAttribute('aria-label', 'Mana cost ' + parts.map(function (p) { return p.slice(1, -1); }).join(' '));
+    el.textContent = '';
+    for (var j = 0; j < parts.length; j++) {
+      var k = parts[j].slice(1, -1);
+      var s = document.createElement('i');
+      s.className = 'sym s-' + (/^\d+$/.test(k) ? 'n' : k.toLowerCase());
+      s.textContent = k;
+      s.setAttribute('aria-hidden', 'true');
+      el.appendChild(s);
+    }
+  }
+})();
+</script>
+
+</body>
+</html>
